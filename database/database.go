@@ -1,0 +1,48 @@
+package database
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"project_pos_app/config"
+	"time"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+)
+
+func SetDatabase(cfg config.Config) (*gorm.DB, error) {
+
+	logger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		logger.Config{
+			SlowThreshold:             time.Second,
+			Colorful:                  true,
+			IgnoreRecordNotFoundError: false,
+			LogLevel:                  logger.Info,
+		},
+	)
+
+	db, err := gorm.Open(postgres.Open(
+		fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s timezone=%s",
+			cfg.Database.DBHost, cfg.Database.DBPort, cfg.Database.DBName, cfg.Database.DBName, cfg.Database.DBPassword, cfg.Database.DBTimezone)), &gorm.Config{
+		Logger: logger,
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %v", err)
+	}
+
+	if cfg.Migration {
+		if err := Migration(db); err != nil {
+			return nil, fmt.Errorf("failed to make migration: " + err.Error())
+		}
+	}
+
+	if cfg.Seeder {
+		SeedAll(db)
+	}
+
+	return db, nil
+}
