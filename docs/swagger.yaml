@@ -1,0 +1,234 @@
+basePath: /
+definitions:
+  model.ErrorResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  model.Notification:
+    properties:
+      id:
+        example: 1
+        type: integer
+      message:
+        example: You have a new message
+        type: string
+      status:
+        example: unread
+        type: string
+      title:
+        example: New Message
+        type: string
+    type: object
+  model.SuccessResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: http://example.com/support
+  description: API for Point Of Sale
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://example.com/terms/
+  title: App pos Team 2
+  version: "1.0"
+paths:
+  /api/notifications:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all notifications, optionally filtered by status
+      parameters:
+      - description: Notification status (e.g., unread)
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of notifications retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Notification'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch notifications
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Get all notifications
+      tags:
+      - Notification
+    post:
+      consumes:
+      - application/json
+      description: Create a new notification
+      parameters:
+      - description: Notification payload
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/model.Notification'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Notification created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Notification'
+              type: object
+        "400":
+          description: Invalid payload
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to create notification
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Create a new notification
+      tags:
+      - Notification
+  /api/notifications/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a notification using its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification deleted successfully
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to delete notification
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Delete a notification by ID
+      tags:
+      - Notification
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a notification by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Notification'
+              type: object
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to fetch notification
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Get a notification by ID
+      tags:
+      - Notification
+    put:
+      consumes:
+      - application/json
+      description: Update the status or details of a notification
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification updated successfully
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to update notification
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Update a notification by ID
+      tags:
+      - Notification
+  /api/notifications/mark-as-read:
+    put:
+      consumes:
+      - application/json
+      description: Mark all notifications as read
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All notifications marked as read successfully
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "500":
+          description: Failed to mark notifications as read
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Mark all notifications as read
+      tags:
+      - Notification
+securityDefinitions:
+  Authentication:
+    in: header
+    name: Authorization
+    type: apiKey
+  UserID:
+    in: header
+    name: User-ID
+    type: apiKey
+  UserRole:
+    in: header
+    name: User-Role
+    type: apiKey
+swagger: "2.0"

@@ -26,7 +26,7 @@ func SetDatabase(cfg config.Config) (*gorm.DB, error) {
 
 	db, err := gorm.Open(postgres.Open(
 		fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s timezone=%s",
-			cfg.Database.DBHost, cfg.Database.DBPort, cfg.Database.DBName, cfg.Database.DBName, cfg.Database.DBPassword, cfg.Database.DBTimezone)), &gorm.Config{
+			cfg.Database.DBHost, cfg.Database.DBPort, cfg.Database.DBUser, cfg.Database.DBName, cfg.Database.DBPassword, cfg.Database.DBTimezone)), &gorm.Config{
 		Logger: logger,
 	})
 
@@ -41,7 +41,9 @@ func SetDatabase(cfg config.Config) (*gorm.DB, error) {
 	}
 
 	if cfg.Seeder {
-		SeedAll(db)
+		if err := SeedAll(db); err != nil {
+			return nil, fmt.Errorf("failed to make seeder: " + err.Error())
+		}
 	}
 
 	return db, nil
