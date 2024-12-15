@@ -72,6 +72,10 @@ func getTableName(seed interface{}) string {
 
 func dataSeeds() []interface{} {
 	return []interface{}{
+		model.SeedCategories(),
 		model.NotificationSeed(),
+		model.SeedProducts(),
+		model.SeedOrderProducts(),
+		model.SeedOrders(),
 	}
 }

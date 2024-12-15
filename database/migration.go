@@ -24,6 +24,10 @@ func Migration(db *gorm.DB) error {
 	}{
 		// {"user", models.User{}},
 		{"notification", model.Notification{}},
+		{"category", model.Category{}},
+		{"order_product", model.OrderProduct{}},
+		{"order", model.Order{}},
+		{"product", model.Product{}},
 	}
 
 	for _, migration := range allModel {
