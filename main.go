@@ -36,6 +36,7 @@ import (
 // @name User-Role
 
 func main() {
+	// Test()
 	ctx, err := infra.NewIntegrateContext()
 	if err != nil {
 		log.Fatal("can't init service context %w", err)
@@ -44,7 +45,7 @@ func main() {
 	r := router.NewRoutes(ctx)
 
 	// init cron
-	cmd.CronJob(&ctx.Ctl)
+	cmd.CronJob(ctx)
 
 	srv := &http.Server{
 		Addr:    ":8080",

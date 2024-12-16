@@ -1,6 +1,7 @@
 package notifservice_test
 
 import (
+	"errors"
 	"project_pos_app/helper"
 	"project_pos_app/model"
 	"testing"
@@ -112,12 +113,13 @@ func TestFindByID(t *testing.T) {
 	})
 
 	t.Run("Failed get a notification id invalid", func(t *testing.T) {
-		expectedNotif := model.Notification{ID: 9999}
+		// expectedNotif := model.Notification{ID: 9999}
 
-		mockDB.On("FindByID", 9999).Return(expectedNotif, nil)
+		mockDB.On("FindByID", 9999).Return(nil, errors.New("invalid id"))
 
-		result, _ := service.GetNotificationByID(9999)
+		result, err := service.GetNotificationByID(9999)
 		assert.Equal(t, result.Title, "")
+		assert.Error(t, err)
 	})
 }
 

@@ -6,13 +6,15 @@ import (
 )
 
 type Config struct {
-	AppName   string
-	Port      string
-	Debug     bool
-	Migration bool
-	Seeder    bool
-	Database  Database
-	Redis     Redis
+	AppName      string
+	Port         string
+	Debug        bool
+	Migration    bool
+	Seeder       bool
+	Database     Database
+	Redis        Redis
+	ProfitMargin float64
+	LowStock     int
 }
 
 type Database struct {
@@ -56,11 +58,13 @@ func SetConfig() (Config, error) {
 	}
 
 	config := Config{
-		AppName:   viper.GetString("APP_NAME"),
-		Port:      viper.GetString("PORT"),
-		Debug:     viper.GetBool("DEBUG"),
-		Migration: viper.GetBool("AUTO_MIGRATE"),
-		Seeder:    viper.GetBool("SEEDER"),
+		AppName:      viper.GetString("APP_NAME"),
+		Port:         viper.GetString("PORT"),
+		Debug:        viper.GetBool("DEBUG"),
+		Migration:    viper.GetBool("AUTO_MIGRATE"),
+		Seeder:       viper.GetBool("SEEDER"),
+		ProfitMargin: viper.GetFloat64("PROFIT_MARGIN"),
+		LowStock:     viper.GetInt("LOW_STOCK"),
 
 		Database: Database{
 			DBName:         viper.GetString("DB_NAME"),

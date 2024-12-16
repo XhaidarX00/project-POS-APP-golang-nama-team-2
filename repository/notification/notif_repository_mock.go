@@ -57,9 +57,12 @@ func (m *MockDB) GetAll(data *[]model.Notification, status string) error {
 }
 
 func (m *MockDB) FindByID(id int) (model.Notification, error) {
-	args := m.Called(id)
+	args := m.Called(id) // id = 9999
+	if args.Get(0) != nil {
+		return args.Get(0).(model.Notification), args.Error(1)
+	}
 
-	return args.Get(0).(model.Notification), args.Error(1)
+	return model.Notification{}, args.Error(1)
 }
 
 func (m *MockDB) Update(data *model.Notification, id int) error {
