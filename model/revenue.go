@@ -4,7 +4,7 @@ import "time"
 
 // OrderRevenue represents the structure for orders
 type OrderRevenue struct {
-	ID        uint      `gorm:"primaryKey" json:"id" example:"1"`
+	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id" example:"1"`
 	Status    string    `gorm:"type:varchar(50)" json:"status" binding:"required" example:"confirmed"`
 	Revenue   float64   `gorm:"type:decimal(10,2)" json:"revenue" binding:"required" example:"100.50"`
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at" example:"2024-12-01T00:00:00Z"`

@@ -8,8 +8,8 @@ import (
 	"net/http/httptest"
 	notifcontroller "project_pos_app/controller/notif_controller"
 	"project_pos_app/helper"
+	mocktesting "project_pos_app/mock_testing"
 	"project_pos_app/model"
-	"project_pos_app/repository/notification"
 	"project_pos_app/service"
 	notifservice "project_pos_app/service/notif_service"
 	"testing"
@@ -22,7 +22,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func notifBase() (notifcontroller.NotifController, *notification.MockDB) {
+func notifBase() (notifcontroller.NotifController, *mocktesting.MockDB, notifservice.MockNotifServiceInterface) {
 	log := *zap.NewNop()
 
 	mockRepo, _ := helper.InitService()
@@ -31,11 +31,11 @@ func notifBase() (notifcontroller.NotifController, *notification.MockDB) {
 		Notif: serviceNotif,
 	}
 
-	return notifcontroller.NewNotifController(&service, &log), mockRepo
+	return notifcontroller.NewNotifController(&service, &log), mockRepo, serviceNotif
 }
 
 func TestCreateNotification(t *testing.T) {
-	handler, mockService := notifBase()
+	handler, mockRepo, _ := notifBase()
 
 	t.Run("Successfully create a notification", func(t *testing.T) {
 		r := gin.Default()
@@ -45,7 +45,10 @@ func TestCreateNotification(t *testing.T) {
 			Title:   "Testing",
 			Message: "Test notification",
 		}
-		mockService.On("Create", newNotification).Once().Return(nil)
+		mockRepo.On("Create", newNotification).Once().Return(nil)
+		// err := mockService.CreateNotification(newNotification)
+		// assert.NoError(t, err)
+
 		body, _ := json.Marshal(newNotification)
 		req := httptest.NewRequest(http.MethodPost, "/api/notification", bytes.NewBuffer(body))
 		req.Header.Set("Content-Type", "application/json")
@@ -54,7 +57,7 @@ func TestCreateNotification(t *testing.T) {
 		r.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusCreated, w.Code)
-		mockService.AssertCalled(t, "Create", newNotification)
+		mockRepo.AssertCalled(t, "Create", newNotification)
 
 		var actualResponse map[string]interface{}
 		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
@@ -87,7 +90,7 @@ func TestCreateNotification(t *testing.T) {
 }
 
 func TestGetAllNotifications(t *testing.T) {
-	handler, mockRepo := notifBase()
+	handler, mockRepo, _ := notifBase()
 
 	t.Run("Successfully retrieve all notifications", func(t *testing.T) {
 		// Setup router
@@ -200,14 +203,14 @@ func TestGetAllNotifications(t *testing.T) {
 }
 
 func TestGetNotificationByID(t *testing.T) {
-	handler, mockService := notifBase()
+	handler, mockRepo, _ := notifBase()
 
 	t.Run("Successfully retrieve notification by ID", func(t *testing.T) {
 		r := gin.Default()
 		r.GET("/api/notification/:id", handler.GetNotificationByID)
 
 		now := time.Now()
-		expectedNotification := model.Notification{
+		expectedNotification := &model.Notification{
 			ID:        1,
 			Title:     "Testing",
 			Message:   "Test notification",
@@ -215,7 +218,7 @@ func TestGetNotificationByID(t *testing.T) {
 			UpdatedAt: now,
 		}
 
-		mockService.On("FindByID", 1).Once().Return(expectedNotification, nil)
+		mockRepo.On("FindByID", 1).Once().Return(expectedNotification, nil)
 
 		req := httptest.NewRequest(http.MethodGet, "/api/notification/1", nil)
 		w := httptest.NewRecorder()
@@ -223,7 +226,7 @@ func TestGetNotificationByID(t *testing.T) {
 		r.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusOK, w.Code)
-		mockService.AssertCalled(t, "FindByID", 1)
+		mockRepo.AssertCalled(t, "FindByID", 1)
 
 		var actualResponse map[string]interface{}
 		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
@@ -260,7 +263,7 @@ func TestGetNotificationByID(t *testing.T) {
 		r := gin.Default()
 		r.GET("/api/notification/:id", handler.GetNotificationByID)
 
-		mockService.On("FindByID", 999).Once().Return(model.Notification{}, fmt.Errorf("database error"))
+		mockRepo.On("FindByID", 999).Once().Return(&model.Notification{}, fmt.Errorf("database error"))
 
 		req := httptest.NewRequest(http.MethodGet, "/api/notification/999", nil)
 		w := httptest.NewRecorder()
@@ -268,7 +271,7 @@ func TestGetNotificationByID(t *testing.T) {
 		r.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusInternalServerError, w.Code)
-		mockService.AssertCalled(t, "FindByID", 999)
+		mockRepo.AssertCalled(t, "FindByID", 999)
 
 		var actualResponse map[string]interface{}
 		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
@@ -279,13 +282,13 @@ func TestGetNotificationByID(t *testing.T) {
 }
 
 func TestUpdateNotification(t *testing.T) {
-	handler, mockService := notifBase()
+	handler, mockRepo, _ := notifBase()
 
 	t.Run("Successfully update notification", func(t *testing.T) {
 		r := gin.Default()
 		r.PUT("/api/notification/:id", handler.UpdateNotification)
 
-		mockService.On("Update", mock.Anything, 1).Once().Return(nil)
+		mockRepo.On("Update", mock.Anything, 1).Once().Return(nil)
 
 		req := httptest.NewRequest(http.MethodPut, "/api/notification/1", nil)
 		w := httptest.NewRecorder()
@@ -293,7 +296,7 @@ func TestUpdateNotification(t *testing.T) {
 		r.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusOK, w.Code)
-		mockService.AssertCalled(t, "Update", mock.Anything, 1)
+		mockRepo.AssertCalled(t, "Update", mock.Anything, 1)
 
 		var actualResponse map[string]interface{}
 		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
@@ -324,32 +327,33 @@ func TestUpdateNotification(t *testing.T) {
 		r := gin.Default()
 		r.PUT("/api/notification/:id", handler.UpdateNotification)
 
-		mockService.On("Update", mock.Anything, 999).Once().Return(fmt.Errorf("database error"))
+		mockRepo.On("Update", mock.Anything, 999).Once().Return(fmt.Errorf("database error"))
 
 		req := httptest.NewRequest(http.MethodPut, "/api/notification/999", nil)
 		w := httptest.NewRecorder()
 
 		r.ServeHTTP(w, req)
 
+		mockRepo.On("FindByID", 999).Once().Return(nil, fmt.Errorf("record not found"))
 		assert.Equal(t, http.StatusInternalServerError, w.Code)
-		// mockService.AssertCalled(t, "Update", mock.Anything, 999)
+		mockRepo.AssertCalled(t, "Update", mock.Anything, 999)
 
-		// var actualResponse map[string]interface{}
-		// err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		// assert.NoError(t, err)
+		var actualResponse map[string]interface{}
+		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
+		assert.NoError(t, err)
 
-		// assert.Equal(t, "Failed to update notification", actualResponse["Message"])
+		assert.Equal(t, "Failed to update notification", actualResponse["Message"])
 	})
 }
 
 func TestDeleteNotification(t *testing.T) {
-	handler, mockService := notifBase()
+	handler, mockRepo, _ := notifBase()
 
 	t.Run("Successfully delete notification", func(t *testing.T) {
 		r := gin.Default()
 		r.DELETE("/api/notification/:id", handler.DeleteNotification)
 		now := time.Now()
-		notif := model.Notification{
+		notif := &model.Notification{
 			ID:        1,
 			Title:     "Testing",
 			Message:   "Test notification",
@@ -358,8 +362,8 @@ func TestDeleteNotification(t *testing.T) {
 			UpdatedAt: now,
 		}
 
-		mockService.On("FindByID", 1).Return(notif, nil)
-		mockService.On("Delete", 1).Once().Return(&gorm.DB{Error: nil})
+		mockRepo.On("FindByID", 1).Return(notif, nil)
+		mockRepo.On("Delete", 1).Once().Return(&gorm.DB{Error: nil})
 
 		req := httptest.NewRequest(http.MethodDelete, "/api/notification/1", nil)
 		w := httptest.NewRecorder()
@@ -367,7 +371,7 @@ func TestDeleteNotification(t *testing.T) {
 		r.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusOK, w.Code)
-		mockService.AssertCalled(t, "Delete", 1)
+		mockRepo.AssertCalled(t, "Delete", 1)
 
 		var actualResponse map[string]interface{}
 		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
@@ -397,7 +401,7 @@ func TestDeleteNotification(t *testing.T) {
 	t.Run("Failed to delete notification - Database Error", func(t *testing.T) {
 		r := gin.Default()
 		r.DELETE("/api/notification/:id", handler.DeleteNotification)
-		mockService.On("Delete", 999).Once().Return(&gorm.DB{Error: nil})
+		mockRepo.On("Delete", 999).Once().Return(&gorm.DB{Error: nil})
 
 		req := httptest.NewRequest(http.MethodDelete, "/api/notification/999", nil)
 		w := httptest.NewRecorder()
@@ -405,24 +409,24 @@ func TestDeleteNotification(t *testing.T) {
 		r.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusInternalServerError, w.Code)
-		mockService.AssertNotCalled(t, "Delete", 999)
+		mockRepo.AssertNotCalled(t, "Delete", 999)
 
-		// var actualResponse map[string]interface{}
-		// err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		// assert.NoError(t, err)
+		var actualResponse map[string]interface{}
+		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
+		assert.NoError(t, err)
 
-		// assert.Equal(t, "Failed to delete notification", actualResponse["Message"])
+		assert.Equal(t, "Failed to delete notification", actualResponse["Message"])
 	})
 }
 
 func TestMarkAllNotificationsAsRead(t *testing.T) {
-	handler, mockService := notifBase()
+	handler, mockRepo, _ := notifBase()
 
 	t.Run("Successfully mark all notifications as read", func(t *testing.T) {
 		r := gin.Default()
 		r.PUT("/api/notification/mark-read", handler.MarkAllNotificationsAsRead)
 		notifications := []model.Notification{}
-		mockService.On("MarkAllAsRead").Once().Return(notifications, nil)
+		mockRepo.On("MarkAllAsRead").Once().Return(notifications, nil)
 
 		req := httptest.NewRequest(http.MethodPut, "/api/notification/mark-read", nil)
 		w := httptest.NewRecorder()
@@ -430,7 +434,7 @@ func TestMarkAllNotificationsAsRead(t *testing.T) {
 		r.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusOK, w.Code)
-		mockService.AssertCalled(t, "MarkAllAsRead")
+		mockRepo.AssertCalled(t, "MarkAllAsRead")
 
 		var actualResponse map[string]interface{}
 		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
@@ -443,7 +447,7 @@ func TestMarkAllNotificationsAsRead(t *testing.T) {
 		r := gin.Default()
 		r.PUT("/api/notification/mark-read", handler.MarkAllNotificationsAsRead)
 
-		mockService.On("MarkAllAsRead").Once().Return(fmt.Errorf("database error"))
+		mockRepo.On("MarkAllAsRead").Once().Return(fmt.Errorf("database error"))
 
 		req := httptest.NewRequest(http.MethodPut, "/api/notification/mark-read", nil)
 		w := httptest.NewRecorder()
@@ -451,7 +455,7 @@ func TestMarkAllNotificationsAsRead(t *testing.T) {
 		r.ServeHTTP(w, req)
 
 		assert.Equal(t, http.StatusInternalServerError, w.Code)
-		mockService.AssertCalled(t, "MarkAllAsRead")
+		mockRepo.AssertCalled(t, "MarkAllAsRead")
 
 		// var actualResponse map[string]interface{}
 		// err := json.Unmarshal(w.Body.Bytes(), &actualResponse)

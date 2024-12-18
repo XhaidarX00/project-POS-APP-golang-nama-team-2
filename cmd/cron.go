@@ -25,14 +25,14 @@ func CronJob(ctx *infra.IntegrationContext) error {
 		for _, product := range products {
 			data := model.Notification{
 				Title:     "Low Stock Alert",
-				Message:   "Product " + product.ProductName + " has less than 10 items in stock.",
+				Message:   "Product " + product.Name + " has less than 10 items in stock.",
 				CreatedAt: time.Now(),
 			}
 			err := ctx.Ctl.Notif.Service.Notif.CreateNotification(data)
 			if err != nil {
-				log.Printf("Error sending notification for product %s: %v\n", product.ProductName, err)
+				log.Printf("Error sending notification for product %s: %v\n", product.Name, err)
 			} else {
-				log.Printf("Notification for product %s sent successfully.\n", product.ProductName)
+				log.Printf("Notification for product %s sent successfully.\n", product.Name)
 			}
 		}
 	})

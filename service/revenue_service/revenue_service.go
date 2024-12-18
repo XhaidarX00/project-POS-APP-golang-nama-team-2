@@ -16,7 +16,7 @@ type RevenueServiceInterface interface {
 	CalculateOrderRevenue() ([]model.OrderRevenue, error)
 	SaveProductRevenue(product model.ProductRevenue) error
 	CalculateProductRevenue() ([]model.ProductRevenue, error)
-	GetLowStockProducts(threshold int) ([]model.ProductRevenue, error)
+	GetLowStockProducts(threshold int) ([]model.Product, error)
 }
 
 type revenueService struct {
@@ -43,7 +43,7 @@ func (s *revenueService) FetchProductRevenues() ([]model.ProductRevenue, error) 
 	return s.Repo.Revenue.GetProductRevenues()
 }
 
-func (s *revenueService) GetLowStockProducts(threshold int) ([]model.ProductRevenue, error) {
+func (s *revenueService) GetLowStockProducts(threshold int) ([]model.Product, error) {
 	if threshold <= 0 {
 		return nil, errors.New("threshold must be a positive number")
 	}

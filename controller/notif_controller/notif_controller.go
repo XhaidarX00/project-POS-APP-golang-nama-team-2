@@ -129,6 +129,14 @@ func (c *NotifController) UpdateNotification(ctx *gin.Context) {
 		return
 	}
 
+	// existingNotif, err := c.Service.Notif.GetNotificationByID(notificationID)
+	// if err != nil || existingNotif == nil {
+	// 	c.Log.Error("Invalid notification ID", zap.Error(err))
+	// 	helper.Responses(ctx, http.StatusBadRequest, "Notification not found", nil)
+	// 	ctx.Abort()
+	// 	return
+	// }
+
 	if err := c.Service.Notif.UpdateNotification(notificationID); err != nil {
 		c.Log.Error("Failed to update notification", zap.Error(err))
 		helper.Responses(ctx, http.StatusInternalServerError, "Failed to update notification", nil)

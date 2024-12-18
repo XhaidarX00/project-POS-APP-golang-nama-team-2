@@ -1,8 +1,8 @@
 package notifservice
 
 import (
+	mocktesting "project_pos_app/mock_testing"
 	"project_pos_app/model"
-	"project_pos_app/repository/notification"
 	"time"
 
 	"go.uber.org/zap"
@@ -12,7 +12,7 @@ import (
 type MockNotifServiceInterface interface {
 	CreateNotification(data model.Notification) error
 	GetAllNotifications(status string) ([]model.Notification, error)
-	GetNotificationByID(id int) (model.Notification, error)
+	GetNotificationByID(id int) (*model.Notification, error)
 	DeleteNotification(id int) error
 	MarkAllNotificationsAsRead() error
 	UpdateNotification(int) error
@@ -20,12 +20,12 @@ type MockNotifServiceInterface interface {
 
 // MockNotifService implementasi mock service untuk notifikasi
 type MockNotifService struct {
-	Repo *notification.MockDB
+	Repo *mocktesting.MockDB
 	Log  *zap.Logger
 }
 
 // NewMockNotifService membuat instance baru dari mock service notifikasi
-func NewMockNotifService(repo *notification.MockDB, log *zap.Logger) MockNotifServiceInterface {
+func NewMockNotifService(repo *mocktesting.MockDB, log *zap.Logger) MockNotifServiceInterface {
 	return &MockNotifService{
 		Repo: repo,
 		Log:  log,
@@ -72,7 +72,7 @@ func (m *MockNotifService) GetAllNotifications(status string) ([]model.Notificat
 }
 
 // GetNotificationByID mengambil notifikasi berdasarkan ID
-func (m *MockNotifService) GetNotificationByID(id int) (model.Notification, error) {
+func (m *MockNotifService) GetNotificationByID(id int) (*model.Notification, error) {
 	m.Log.Info("Fetching notification by ID", zap.Int("id", id))
 	return m.Repo.FindByID(id)
 }

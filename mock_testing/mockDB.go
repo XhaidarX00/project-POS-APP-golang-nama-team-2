@@ -1,4 +1,4 @@
-package notification
+package mocktesting
 
 import (
 	"project_pos_app/model"
@@ -56,13 +56,13 @@ func (m *MockDB) GetAll(data *[]model.Notification, status string) error {
 	return args.Error(1)
 }
 
-func (m *MockDB) FindByID(id int) (model.Notification, error) {
+func (m *MockDB) FindByID(id int) (*model.Notification, error) {
 	args := m.Called(id) // id = 9999
 	if args.Get(0) != nil {
-		return args.Get(0).(model.Notification), args.Error(1)
+		return args.Get(0).(*model.Notification), args.Error(1)
 	}
 
-	return model.Notification{}, args.Error(1)
+	return nil, args.Error(1)
 }
 
 func (m *MockDB) Update(data *model.Notification, id int) error {
@@ -70,7 +70,7 @@ func (m *MockDB) Update(data *model.Notification, id int) error {
 
 	if args.Get(0) != nil {
 		updatedNotif := args.Get(0).(*model.Notification)
-		updatedNotif.Status = "reade"
+		updatedNotif.Status = "readed"
 		*data = *updatedNotif
 	}
 
@@ -105,4 +105,67 @@ func (m *MockDB) MarkAllAsRead() error {
 	}
 
 	return args.Error(1)
+}
+
+// Metode mock untuk revenueService
+
+func (m *MockDB) GetTotalRevenueByStatus() (map[string]float64, error) {
+	args := m.Called()
+	if args.Get(0) != nil {
+		return args.Get(0).(map[string]float64), nil
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockDB) GetMonthlyRevenue() (map[string]float64, error) {
+	args := m.Called()
+	if revenue := args.Get(0); revenue != nil {
+		return revenue.(map[string]float64), nil
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockDB) GetProductRevenues() ([]model.ProductRevenue, error) {
+	args := m.Called()
+	if productRevenues := args.Get(0); productRevenues != nil {
+		return productRevenues.([]model.ProductRevenue), nil
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockDB) SaveOrderRevenue(order model.OrderRevenue) error {
+	args := m.Called(order)
+	return args.Error(0)
+}
+
+func (m *MockDB) CalculateOrderRevenue() ([]model.OrderRevenue, error) {
+	args := m.Called()
+	if orderRevenues := args.Get(0); orderRevenues != nil {
+		result := orderRevenues.([]model.OrderRevenue)
+		return result, nil
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockDB) SaveProductRevenue(product model.ProductRevenue) error {
+	args := m.Called(product)
+	return args.Error(0)
+}
+
+func (m *MockDB) CalculateProductRevenue() ([]model.ProductRevenue, error) {
+	args := m.Called()
+	if productRevenues := args.Get(0); productRevenues != nil {
+		result := productRevenues.([]model.ProductRevenue)
+		return result, nil
+	}
+	return nil, args.Error(1)
+}
+
+func (m *MockDB) FindLowStockProducts(threshold int) ([]model.Product, error) {
+	args := m.Called(threshold)
+	if products := args.Get(0); products != nil {
+		result := products.([]model.Product)
+		return result, nil
+	}
+	return nil, args.Error(1)
 }

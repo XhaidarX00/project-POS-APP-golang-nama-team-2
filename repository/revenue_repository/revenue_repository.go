@@ -1,6 +1,7 @@
 package revenuerepository
 
 import (
+	"errors"
 	"project_pos_app/model"
 
 	"go.uber.org/zap"
@@ -15,7 +16,7 @@ type RevenueRepositoryInterface interface {
 	CalculateOrderRevenue() ([]model.OrderRevenue, error)
 	SaveProductRevenue(product model.ProductRevenue) error
 	CalculateProductRevenue() ([]model.ProductRevenue, error)
-	FindLowStockProducts(threshold int) ([]model.ProductRevenue, error)
+	FindLowStockProducts(threshold int) ([]model.Product, error)
 }
 
 type RevenueRepository struct {
@@ -30,15 +31,14 @@ func NewRevenueRepository(db *gorm.DB, log *zap.Logger) RevenueRepositoryInterfa
 	}
 }
 
-func (r *RevenueRepository) FindLowStockProducts(threshold int) ([]model.ProductRevenue, error) {
-	var products []model.ProductRevenue
-	result := r.DB.Where("stock < ?", threshold).Find(&products)
+func (r *RevenueRepository) FindLowStockProducts(threshold int) ([]model.Product, error) {
+	var products []model.Product
+	result := r.DB.Where("qty < ?", threshold).Find(&products)
 	return products, result.Error
 }
 
 func (r *RevenueRepository) GetProductRevenues() ([]model.ProductRevenue, error) {
 	var productRevenues []model.ProductRevenue
-
 	err := r.DB.Table("product_revenues").
 		Order("total_revenue DESC").
 		Find(&productRevenues).Error
@@ -110,7 +110,56 @@ func (r *RevenueRepository) CalculateOrderRevenue() ([]model.OrderRevenue, error
 }
 
 func (r *RevenueRepository) SaveOrderRevenue(order model.OrderRevenue) error {
-	return r.DB.Save(&order).Error
+	// Validasi input
+	if order.Status == "" {
+		return errors.New("order status cannot be empty")
+	}
+	if order.Revenue < 0 {
+		return errors.New("revenue cannot be negative")
+	}
+	if order.CreatedAt.IsZero() {
+		return errors.New("created_at cannot be empty")
+	}
+
+	// Mulai transaksi untuk memastikan konsistensi data
+	tx := r.DB.Begin()
+	if tx.Error != nil {
+		// return errors.New("database error")
+		return tx.Error
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback() // Rollback jika terjadi panic
+		}
+	}()
+
+	// Proses pencarian order yang sudah ada
+	var existingOrder model.OrderRevenue
+	result := tx.Where("id = ? AND cerate_at = ?", order.ID, order.CreatedAt).First(&existingOrder)
+
+	if result.Error == nil {
+		// Jika order sudah ada, lakukan pembaruan (update) data order
+		if err := tx.Model(&existingOrder).Updates(order).Error; err != nil {
+			tx.Rollback()
+			// return errors.New("database error")
+			return err
+		}
+	} else if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		// Jika order belum ada, buat data baru
+		if err := tx.Create(&order).Error; err != nil {
+			tx.Rollback()
+			// return errors.New("database error")
+			return err
+		}
+	} else {
+		tx.Rollback()
+		// return errors.New("database error")
+		// return err
+	}
+
+	// Komit transaksi jika tidak ada error
+	tx.Commit()
+	return nil
 }
 
 func (r *RevenueRepository) CalculateProductRevenue() ([]model.ProductRevenue, error) {
@@ -128,7 +177,59 @@ func (r *RevenueRepository) CalculateProductRevenue() ([]model.ProductRevenue, e
 }
 
 func (r *RevenueRepository) SaveProductRevenue(product model.ProductRevenue) error {
-	return r.DB.Save(&product).Error
+	// Validasi input
+	if product.ProductName == "" {
+		return errors.New("product name cannot be empty")
+	}
+	if product.SellPrice <= 0 {
+		return errors.New("sell price must be positive")
+	}
+	if product.RevenueDate.IsZero() {
+		return errors.New("revenue date cannot be empty")
+	}
+
+	// Mulai transaksi untuk memastikan konsistensi data
+	tx := r.DB.Begin()
+	if tx.Error != nil {
+		// return errors.New("database error")
+		return tx.Error
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback() // Rollback jika terjadi panic
+		}
+	}()
+
+	// Proses pencarian produk yang sudah ada
+	var existingRevenue model.ProductRevenue
+	result := tx.Where("product_name = ? AND revenue_date = ?", product.ProductName, product.RevenueDate).First(&existingRevenue)
+
+	if result.Error == nil {
+		// Jika produk sudah ada, lakukan pembaruan (update) data produk
+		if err := tx.Model(&existingRevenue).Updates(product).Error; err != nil {
+			tx.Rollback()
+			// return errors.New("database error")
+			return err
+		}
+	} else if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		// Jika produk belum ada, buat data baru
+		if err := tx.Create(&product).Error; err != nil {
+			tx.Rollback()
+			// return errors.New("database error")
+			return err
+		}
+	} else {
+		// Jika error lain terjadi
+		tx.Rollback()
+		// return errors.New("database error")
+	}
+
+	// Komit transaksi jika tidak ada error
+	if err := tx.Commit().Error; err != nil {
+		return errors.New("failed to commit transaction")
+	}
+
+	return nil
 }
 
 // func (r *RevenueRepository) GetTotalRevenueByStatus() (map[string]float64, error) {
@@ -204,33 +305,6 @@ func (r *RevenueRepository) SaveProductRevenue(product model.ProductRevenue) err
 // 	return productRevenues, result.Error
 // }
 
-// func (r *RevenueRepository) SaveProductRevenue(product model.ProductRevenue) error {
-// 	// Validasi input
-// 	if product.ProductName == "" {
-// 		return errors.New("product name cannot be empty")
-// 	}
-// 	if product.SellPrice <= 0 {
-// 		return errors.New("sell price must be positive")
-// 	}
-
-// 	// Cari produk yang sudah ada
-// 	var existingRevenue model.ProductRevenue
-// 	result := r.DB.Where("product_name = ? AND revenue_date = ?",
-// 		product.ProductName,
-// 		product.RevenueDate.Format("2006-01-02")).
-// 		First(&existingRevenue)
-
-// 	if result.Error == nil {
-// 		// Update jika sudah ada
-// 		return r.DB.Model(&existingRevenue).Updates(product).Error
-// 	} else if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-// 		// Buat baru jika tidak ditemukan
-// 		return r.DB.Create(&product).Error
-// 	}
-
-// 	return result.Error
-// }
-
 // func (r *RevenueRepository) CalculateOrderRevenue() ([]model.OrderRevenue, error) {
 // 	var orderRevenues []model.OrderRevenue
 
@@ -249,31 +323,4 @@ func (r *RevenueRepository) SaveProductRevenue(product model.ProductRevenue) err
 
 // 	result := r.DB.Raw(query).Scan(&orderRevenues)
 // 	return orderRevenues, result.Error
-// }
-
-// func (r *RevenueRepository) SaveOrderRevenue(order model.OrderRevenue) error {
-// 	// Validasi input
-// 	if order.Status == "" {
-// 		return errors.New("order status cannot be empty")
-// 	}
-// 	if order.Revenue < 0 {
-// 		return errors.New("revenue cannot be negative")
-// 	}
-
-// 	// Cari order yang sudah ada
-// 	var existingOrder model.OrderRevenue
-// 	result := r.DB.Where("id = ? AND created_at = ?",
-// 		order.ID,
-// 		order.CreatedAt).
-// 		First(&existingOrder)
-
-// 	if result.Error == nil {
-// 		// Update jika sudah ada
-// 		return r.DB.Model(&existingOrder).Updates(order).Error
-// 	} else if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-// 		// Buat baru jika tidak ditemukan
-// 		return r.DB.Create(&order).Error
-// 	}
-
-// 	return result.Error
 // }
