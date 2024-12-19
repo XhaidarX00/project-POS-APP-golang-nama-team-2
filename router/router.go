@@ -16,6 +16,7 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	r.POST("/login", ctx.Ctl.Auth.Login)
 
 	NotificationRoutes(r, ctx)
+	ProductRoutes(r, ctx)
 	return r
 }
 
@@ -28,5 +29,16 @@ func NotificationRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 		notifRoute.PUT("/notifications/:id", ctx.Ctl.Notif.UpdateNotification)
 		notifRoute.DELETE("/notifications/:id", ctx.Ctl.Notif.DeleteNotification)
 		notifRoute.PUT("/notifications/mark-all-read", ctx.Ctl.Notif.MarkAllNotificationsAsRead)
+	}
+}
+
+func ProductRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
+	productRoute := r.Group("/api")
+	{
+		productRoute.GET("/products", ctx.Ctl.Product.GetAllProducts)
+		productRoute.GET("/products/:id", ctx.Ctl.Product.GetProductByID)
+		productRoute.POST("/products", ctx.Ctl.Product.CreateProduct)
+		productRoute.PUT("/products/:id", ctx.Ctl.Product.UpdateProduct)
+		productRoute.DELETE("/product/:id", ctx.Ctl.Product.DeleteProduct)
 	}
 }
