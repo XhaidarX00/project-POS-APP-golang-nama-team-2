@@ -1,7 +1,6 @@
 package notification_test
 
 import (
-	"database/sql"
 	"fmt"
 	"regexp"
 	"testing"
@@ -14,16 +13,8 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
-
-// SetupTestDB membuat mock database untuk pengujian
-func SetupTestDB() (*sql.DB, sqlmock.Sqlmock) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		panic(fmt.Sprintf("failed to create sqlmock: %v", err))
-	}
-	return db, mock
-}
 
 func TestCreateNotification(t *testing.T) {
 	db, mock := helper.SetupTestDB()
@@ -150,14 +141,15 @@ func TestFindNotificationByID(t *testing.T) {
 	})
 
 	t.Run("Failed to find notification by ID - Not found", func(t *testing.T) {
-		mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "notifications" WHERE "notifications"."id" = $1`)).
+		// Menyesuaikan query untuk kasus "not found"
+		mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "notifications" WHERE "id" = $1`)).
 			WithArgs(2).
-			WillReturnError(fmt.Errorf("record not found"))
+			WillReturnError(gorm.ErrRecordNotFound)
 
 		notification, err := repo.FindByID(2)
 
 		assert.Error(t, err)
-		assert.Equal(t, 0, notification.ID)
+		assert.Nil(t, notification) // Pastikan objek notification nil
 		assert.EqualError(t, err, "notification not found")
 	})
 }
@@ -212,6 +204,18 @@ func TestUpdateNotification(t *testing.T) {
 		err := repo.Update(&notification, 2)
 		assert.Error(t, err)
 		assert.EqualError(t, err, "error update notif : notification not found")
+	})
+
+	t.Run("Failed to Update notifications - Database error", func(t *testing.T) {
+		mock.ExpectBegin()
+		mock.ExpectExec(regexp.QuoteMeta(`UPDATE "notifications" SET "status"=$1,"updated_at"=$2 WHERE "id" = $3`)).
+			WithArgs("readed", time.Now(), "new").
+			WillReturnError(fmt.Errorf("database error"))
+		mock.ExpectRollback()
+
+		err := repo.MarkAllAsRead()
+		assert.Error(t, err)
+		assert.EqualError(t, err, "error update status all notif")
 	})
 }
 

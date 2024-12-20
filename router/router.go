@@ -16,6 +16,8 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	r.POST("/login", ctx.Ctl.Auth.Login)
 
 	NotificationRoutes(r, ctx)
+	RevenueRoutes(r, ctx)
+	ProductRoutes(r, ctx)
 
 	order := r.Group("/order")
 	{
@@ -26,7 +28,7 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 		order.PUT("/:id", ctx.Ctl.Order.UpdateOrder)
 		order.DELETE("/:id", ctx.Ctl.Order.DeleteOrder)
 	}
-
+  
 	return r
 }
 
@@ -39,5 +41,25 @@ func NotificationRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 		notifRoute.PUT("/notifications/:id", ctx.Ctl.Notif.UpdateNotification)
 		notifRoute.DELETE("/notifications/:id", ctx.Ctl.Notif.DeleteNotification)
 		notifRoute.PUT("/notifications/mark-all-read", ctx.Ctl.Notif.MarkAllNotificationsAsRead)
+	}
+}
+
+func RevenueRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
+	revenueRoute := r.Group("/api")
+	{
+		revenueRoute.GET("/revenue/month", ctx.Ctl.Revenue.GetMonthlyRevenue)
+		revenueRoute.GET("/revenue/products", ctx.Ctl.Revenue.GetProductRevenues)
+		revenueRoute.GET("/revenue/status", ctx.Ctl.Revenue.GetTotalRevenueByStatus)
+	}
+}
+
+func ProductRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
+	productRoute := r.Group("/api")
+	{
+		productRoute.GET("/products", ctx.Ctl.Product.GetAllProducts)
+		productRoute.GET("/products/:id", ctx.Ctl.Product.GetProductByID)
+		productRoute.POST("/products", ctx.Ctl.Product.CreateProduct)
+		productRoute.PUT("/products/:id", ctx.Ctl.Product.UpdateProduct)
+		productRoute.DELETE("/product/:id", ctx.Ctl.Product.DeleteProduct)
 	}
 }

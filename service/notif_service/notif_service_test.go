@@ -1,6 +1,7 @@
 package notifservice_test
 
 import (
+	"errors"
 	"project_pos_app/helper"
 	"project_pos_app/model"
 	"testing"
@@ -13,18 +14,20 @@ import (
 
 func TestCreateNotification(t *testing.T) {
 	t.Run("Successfully create a notification", func(t *testing.T) {
+		now := time.Now()
+		dynamicDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
 		input := model.Notification{
 			ID:        1,
 			Title:     "Testing",
 			Message:   "Test notification",
 			Status:    "new",
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			CreatedAt: dynamicDate,
+			UpdatedAt: dynamicDate,
 		}
 
 		mockDB, service := helper.InitService()
 		mockDB.On("Create", input).Once().Return(nil)
-		err := service.CreateNotification(input)
+		err := service.Notif.CreateNotification(input)
 		assert.NoError(t, err)
 		mockDB.AssertExpectations(t)
 	})
@@ -34,7 +37,7 @@ func TestCreateNotification(t *testing.T) {
 
 		mockDB, service := helper.InitService()
 		mockDB.On("Create", input).Return(nil)
-		err := service.CreateNotification(input)
+		err := service.Notif.CreateNotification(input)
 		assert.Error(t, err)
 	})
 }
@@ -65,7 +68,7 @@ func TestGetAllNotifications(t *testing.T) {
 		mockDB.On("GetAll").Once().Return(notifications, nil)
 
 		// Panggil service
-		result, err := service.GetAllNotifications("new")
+		result, err := service.Notif.GetAllNotifications("new")
 
 		// Verifikasi hasil
 		assert.NoError(t, err)
@@ -80,7 +83,7 @@ func TestGetAllNotifications(t *testing.T) {
 		mockDB.On("GetAll").Return(notifications, nil)
 
 		// Panggil service
-		result, err := service.GetAllNotifications("new")
+		result, err := service.Notif.GetAllNotifications("new")
 
 		// Verifikasi hasil
 		assert.Nil(t, err)
@@ -93,7 +96,7 @@ func TestFindByID(t *testing.T) {
 	now := time.Now()
 
 	t.Run("Successfully get a notification", func(t *testing.T) {
-		expectedNotif := model.Notification{
+		expectedNotif := &model.Notification{
 			ID:        1,
 			Title:     "Testing",
 			Message:   "Test notification",
@@ -103,7 +106,7 @@ func TestFindByID(t *testing.T) {
 
 		mockDB.On("FindByID", 1).Return(expectedNotif, nil)
 
-		result, err := service.GetNotificationByID(1)
+		result, err := service.Notif.GetNotificationByID(1)
 
 		assert.NoError(t, err)
 		assert.Equal(t, expectedNotif, result)
@@ -112,12 +115,13 @@ func TestFindByID(t *testing.T) {
 	})
 
 	t.Run("Failed get a notification id invalid", func(t *testing.T) {
-		expectedNotif := model.Notification{ID: 9999}
+		// expectedNotif := model.Notification{ID: 9999}
 
-		mockDB.On("FindByID", 9999).Return(expectedNotif, nil)
+		mockDB.On("FindByID", 9999).Return(nil, errors.New("invalid id"))
 
-		result, _ := service.GetNotificationByID(9999)
-		assert.Equal(t, result.Title, "")
+		result, err := service.Notif.GetNotificationByID(9999)
+		assert.Error(t, err)
+		assert.Nil(t, result)
 	})
 }
 
@@ -126,7 +130,7 @@ func TestUpdateNotification(t *testing.T) {
 	now := time.Now()
 
 	t.Run("Successfully update a notification", func(t *testing.T) {
-		notif := model.Notification{
+		notif := &model.Notification{
 			ID:        1,
 			Title:     "Testing",
 			Message:   "Test notification",
@@ -135,13 +139,10 @@ func TestUpdateNotification(t *testing.T) {
 			UpdatedAt: now,
 		}
 
-		mockDB.On("FindByID", 1).Once().Return(notif, nil)
-		mockDB.On("Update", mock.Anything, 1).Once().Return(nil).Run(func(args mock.Arguments) {
-			updatedNotif := args.Get(0).(*model.Notification)
-			notif = *updatedNotif
-		})
+		mockDB.On("FindByID", notif.ID).Return(notif, nil)
+		mockDB.On("Update", notif, 1).Return(notif, nil)
 
-		err := service.UpdateNotification(1)
+		err := service.Notif.UpdateNotification(1)
 
 		assert.NoError(t, err)
 		assert.Equal(t, "readed", notif.Status)
@@ -149,15 +150,15 @@ func TestUpdateNotification(t *testing.T) {
 	})
 
 	t.Run("Failed update a notification invalid id", func(t *testing.T) {
-		notif := model.Notification{ID: 999999}
+		notif := &model.Notification{ID: 999999}
 
 		mockDB.On("FindByID", notif.ID).Return(notif, nil)
 		mockDB.On("Update", mock.Anything, notif.ID).Return(nil).Run(func(args mock.Arguments) {
 			updatedNotif := args.Get(0).(*model.Notification)
-			notif = *updatedNotif
+			notif = updatedNotif
 		})
 
-		err := service.UpdateNotification(notif.ID)
+		err := service.Notif.UpdateNotification(notif.ID)
 
 		assert.Error(t, err)
 		assert.Equal(t, notif.Title, "")
@@ -170,7 +171,7 @@ func TestDeleteNotification(t *testing.T) {
 	now := time.Now()
 
 	t.Run("Successfully delete a notification", func(t *testing.T) {
-		notif := model.Notification{
+		notif := &model.Notification{
 			ID:        1,
 			Title:     "Testing",
 			Message:   "Test notification",
@@ -182,19 +183,19 @@ func TestDeleteNotification(t *testing.T) {
 		mockDB.On("FindByID", 1).Return(notif, nil)
 		mockDB.On("Delete", 1).Return(&gorm.DB{Error: nil})
 
-		err := service.DeleteNotification(1)
+		err := service.Notif.DeleteNotification(1)
 
 		assert.NoError(t, err)
 		mockDB.AssertCalled(t, "Delete", 1)
 	})
 
-	t.Run("Successfully delete a notification", func(t *testing.T) {
-		notif := model.Notification{}
+	t.Run("Failed delete a notification", func(t *testing.T) {
+		notif := &model.Notification{}
 
 		mockDB.On("FindByID", notif.ID).Return(notif, nil)
 		mockDB.On("Delete", notif.ID).Return(&gorm.DB{Error: nil})
 
-		err := service.DeleteNotification(notif.ID)
+		err := service.Notif.DeleteNotification(notif.ID)
 
 		assert.Error(t, err)
 		mockDB.AssertNotCalled(t, "Delete", notif.ID)
@@ -227,7 +228,7 @@ func TestMarkAllAsRead(t *testing.T) {
 
 		mockDB.On("MarkAllAsRead").Once().Return(notifications, nil)
 
-		err := service.MarkAllNotificationsAsRead()
+		err := service.Notif.MarkAllNotificationsAsRead()
 
 		assert.NoError(t, err)
 		mockDB.AssertExpectations(t)
@@ -236,7 +237,7 @@ func TestMarkAllAsRead(t *testing.T) {
 	t.Run("Failed update status all notification", func(t *testing.T) {
 		notifications := []model.Notification{}
 		mockDB.On("MarkAllAsRead").Return(notifications, nil)
-		_ = service.MarkAllNotificationsAsRead()
+		_ = service.Notif.MarkAllNotificationsAsRead()
 		assert.Equal(t, 0, len(notifications))
 	})
 }

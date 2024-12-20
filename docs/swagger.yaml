@@ -1,11 +1,35 @@
 basePath: /
 definitions:
+  model.CreateNotification:
+    properties:
+      message:
+        example: You have a new message
+        type: string
+      status:
+        example: new
+        type: string
+      title:
+        example: New Message
+        type: string
+    type: object
   model.ErrorResponse:
     properties:
       message:
         type: string
       status:
         type: string
+    type: object
+  model.MonthlyRevenue:
+    properties:
+      month:
+        example: January
+        type: string
+      revenue:
+        example: 100.5
+        type: number
+    required:
+    - month
+    - revenue
     type: object
   model.Notification:
     properties:
@@ -16,11 +40,54 @@ definitions:
         example: You have a new message
         type: string
       status:
-        example: unread
+        example: new
         type: string
       title:
         example: New Message
         type: string
+    type: object
+  model.ProductRevenue:
+    properties:
+      id:
+        example: 1
+        type: integer
+      product_name:
+        example: Chicken Parmesan
+        type: string
+      profit:
+        example: 7985
+        type: number
+      profit_margin:
+        example: 15
+        type: number
+      revenue_date:
+        example: "2024-03-28"
+        type: string
+      sell_price:
+        example: 55
+        type: number
+      total_revenue:
+        example: 8000
+        type: number
+    required:
+    - product_name
+    - profit
+    - profit_margin
+    - revenue_date
+    - sell_price
+    - total_revenue
+    type: object
+  model.RevenueByStatus:
+    properties:
+      revenue:
+        example: 100.5
+        type: number
+      status:
+        example: confirmed
+        type: string
+    required:
+    - revenue
+    - status
     type: object
   model.SuccessResponse:
     properties:
@@ -28,7 +95,7 @@ definitions:
       message:
         type: string
       status:
-        type: string
+        type: integer
     type: object
 host: localhost:8080
 info:
@@ -85,7 +152,7 @@ paths:
         name: notification
         required: true
         schema:
-          $ref: '#/definitions/model.Notification'
+          $ref: '#/definitions/model.CreateNotification'
       produces:
       - application/json
       responses:
@@ -199,7 +266,7 @@ paths:
       summary: Update a notification by ID
       tags:
       - Notification
-  /api/notifications/mark-as-read:
+  /api/notifications/mark-all-read:
     put:
       consumes:
       - application/json
@@ -218,6 +285,78 @@ paths:
       summary: Mark all notifications as read
       tags:
       - Notification
+  /api/revenue/month:
+    get:
+      description: Get total revenue grouped by month
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fetch monthly revenue successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.MonthlyRevenue'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch monthly revenue
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Fetch monthly revenue
+      tags:
+      - Revenue
+  /api/revenue/products:
+    get:
+      description: Get revenue details for all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fetch product revenues successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.ProductRevenue'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch product revenues
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Fetch product revenues
+      tags:
+      - Revenue
+  /api/revenue/status:
+    get:
+      description: Get total revenue grouped by order status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fetch total revenue by status successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.RevenueByStatus'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch total revenue by status
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Fetch total revenue by status
+      tags:
+      - Revenue
 securityDefinitions:
   Authentication:
     in: header
