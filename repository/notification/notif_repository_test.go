@@ -205,6 +205,18 @@ func TestUpdateNotification(t *testing.T) {
 		assert.Error(t, err)
 		assert.EqualError(t, err, "error update notif : notification not found")
 	})
+
+	t.Run("Failed to Update notifications - Database error", func(t *testing.T) {
+		mock.ExpectBegin()
+		mock.ExpectExec(regexp.QuoteMeta(`UPDATE "notifications" SET "status"=$1,"updated_at"=$2 WHERE "id" = $3`)).
+			WithArgs("readed", time.Now(), "new").
+			WillReturnError(fmt.Errorf("database error"))
+		mock.ExpectRollback()
+
+		err := repo.MarkAllAsRead()
+		assert.Error(t, err)
+		assert.EqualError(t, err, "error update status all notif")
+	})
 }
 
 func TestDeleteNotification(t *testing.T) {

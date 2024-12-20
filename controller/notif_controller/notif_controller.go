@@ -29,7 +29,7 @@ func NewNotifController(service *service.AllService, log *zap.Logger) NotifContr
 // @Tags Notification
 // @Accept json
 // @Produce json
-// @Param notification body model.Notification true "Notification payload"
+// @Param notification body model.CreateNotification true "Notification payload"
 // @Success 201 {object} model.SuccessResponse{data=model.Notification} "Notification created successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid payload"
 // @Failure 500 {object} model.ErrorResponse "Failed to create notification"
@@ -39,7 +39,7 @@ func (c *NotifController) CreateNotifications(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&data)
 	if err != nil {
 		c.Log.Error("Invalid payload", zap.Error(err))
-		helper.Responses(ctx, http.StatusInternalServerError, "Invalid Payload: "+err.Error(), nil)
+		helper.Responses(ctx, http.StatusBadRequest, "Invalid Payload: "+err.Error(), nil)
 		ctx.Abort()
 		return
 	}
@@ -129,14 +129,6 @@ func (c *NotifController) UpdateNotification(ctx *gin.Context) {
 		return
 	}
 
-	// existingNotif, err := c.Service.Notif.GetNotificationByID(notificationID)
-	// if err != nil || existingNotif == nil {
-	// 	c.Log.Error("Invalid notification ID", zap.Error(err))
-	// 	helper.Responses(ctx, http.StatusBadRequest, "Notification not found", nil)
-	// 	ctx.Abort()
-	// 	return
-	// }
-
 	if err := c.Service.Notif.UpdateNotification(notificationID); err != nil {
 		c.Log.Error("Failed to update notification", zap.Error(err))
 		helper.Responses(ctx, http.StatusInternalServerError, "Failed to update notification", nil)
@@ -184,7 +176,7 @@ func (c *NotifController) DeleteNotification(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} model.SuccessResponse "All notifications marked as read successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to mark notifications as read"
-// @Router /api/notifications/mark-as-read [put]
+// @Router /api/notifications/mark-all-read [put]
 func (c *NotifController) MarkAllNotificationsAsRead(ctx *gin.Context) {
 	if err := c.Service.Notif.MarkAllNotificationsAsRead(); err != nil {
 		c.Log.Error("Failed to mark all notifications as read", zap.Error(err))

@@ -5,6 +5,7 @@ import (
 	"project_pos_app/helper"
 	"project_pos_app/model"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -155,5 +156,49 @@ func TestSaveOrderRevenue(t *testing.T) {
 
 		assert.Error(t, err)
 		assert.EqualError(t, err, "order status cannot be empty")
+	})
+}
+
+func TestFetchProductRevenue(t *testing.T) {
+	mockDB, service := helper.InitService()
+
+	t.Run("Successfully fetch products revenue", func(t *testing.T) {
+		revenueDate := time.Date(2024, 12, 18, 0, 0, 0, 0, time.UTC)
+		existingProductRevenue := []model.ProductRevenue{{
+			ID:           1,
+			ProductName:  "Product A",
+			SellPrice:    80,
+			Profit:       1500,
+			ProfitMargin: 12,
+			TotalRevenue: 1800,
+			RevenueDate:  revenueDate,
+		},
+			{
+				ProductName:  "Product A",
+				SellPrice:    100,
+				Profit:       1900,
+				ProfitMargin: 15,
+				TotalRevenue: 2000,
+				RevenueDate:  revenueDate,
+			},
+		}
+
+		mockDB.On("GetProductRevenues").Once().Return(existingProductRevenue, nil)
+
+		result, err := service.Revenue.FetchProductRevenues()
+
+		assert.NoError(t, err)
+		assert.Equal(t, existingProductRevenue, result)
+		mockDB.AssertExpectations(t)
+	})
+
+	t.Run("Failed to fetch products revenue due to repository error", func(t *testing.T) {
+		mockDB.On("GetProductRevenues").Return(nil, errors.New("repository error"))
+
+		result, err := service.Revenue.FetchProductRevenues()
+
+		assert.Error(t, err)
+		assert.Nil(t, result)
+		mockDB.AssertExpectations(t)
 	})
 }

@@ -34,8 +34,9 @@ func NewMockNotifService(repo *mocktesting.MockDB, log *zap.Logger) MockNotifSer
 
 // CreateNotification membuat notifikasi baru
 func (m *MockNotifService) CreateNotification(data model.Notification) error {
-	m.Log.Info("Creating notification", zap.Any("notification", data))
-	return m.Repo.Create(data)
+	m.Log.Info("Creating Mock notification", zap.Any("notification", data))
+	args := m.Repo.Called(data)
+	return args.Error(0)
 }
 
 // GetAllNotifications mengambil semua notifikasi berdasarkan status

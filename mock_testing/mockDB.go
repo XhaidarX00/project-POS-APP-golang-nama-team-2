@@ -37,12 +37,7 @@ func (m *MockDB) Model(value interface{}) *gorm.DB {
 
 func (m *MockDB) Create(data model.Notification) error {
 	args := m.Called(data)
-
-	if err := args.Error(0); err != nil {
-		return err
-	}
-
-	return nil
+	return args.Error(0)
 }
 
 func (m *MockDB) GetAll(data *[]model.Notification, status string) error {
@@ -56,6 +51,11 @@ func (m *MockDB) GetAll(data *[]model.Notification, status string) error {
 	return args.Error(1)
 }
 
+func (m *MockDB) GetAllNotif(data []model.Notification) ([]model.Notification, error) {
+	args := m.Called(data)
+	return args.Get(0).([]model.Notification), args.Error(1)
+}
+
 func (m *MockDB) FindByID(id int) (*model.Notification, error) {
 	args := m.Called(id) // id = 9999
 	if args.Get(0) != nil {
@@ -67,14 +67,12 @@ func (m *MockDB) FindByID(id int) (*model.Notification, error) {
 
 func (m *MockDB) Update(data *model.Notification, id int) error {
 	args := m.Called(data, id)
-
-	if args.Get(0) != nil {
-		updatedNotif := args.Get(0).(*model.Notification)
-		updatedNotif.Status = "readed"
-		*data = *updatedNotif
+	if notification := args.Get(0); notification != nil {
+		data = notification.(*model.Notification)
+		return nil
 	}
 
-	return args.Error(0)
+	return args.Error(1)
 }
 
 func (m *MockDB) Delete(id int) error {

@@ -23,8 +23,8 @@ func NewRevenueController(service *service.AllService, log *zap.Logger) RevenueC
 // @Description Get total revenue grouped by order status
 // @Tags Revenue
 // @Produce json
-// @Success 200 {object} models.SuccessResponse{data=[]models.RevenueByStatus} "Fetch total revenue by status successfully"
-// @Failure 500 {object} models.ErrorResponse "Failed to fetch total revenue by status"
+// @Success 200 {object} model.SuccessResponse{data=[]model.RevenueByStatus} "Fetch total revenue by status successfully"
+// @Failure 500 {object} model.ErrorResponse "Failed to fetch total revenue by status"
 // @Router /api/revenue/status [get]
 func (ctrl *RevenueController) GetTotalRevenueByStatus(ctx *gin.Context) {
 	data, err := ctrl.Service.Revenue.FetchTotalRevenueByStatus()
@@ -43,8 +43,8 @@ func (ctrl *RevenueController) GetTotalRevenueByStatus(ctx *gin.Context) {
 // @Description Get total revenue grouped by month
 // @Tags Revenue
 // @Produce json
-// @Success 200 {object} models.SuccessResponse{data=[]models.MonthlyRevenue} "Fetch monthly revenue successfully"
-// @Failure 500 {object} models.ErrorResponse "Failed to fetch monthly revenue"
+// @Success 200 {object} model.SuccessResponse{data=[]model.MonthlyRevenue} "Fetch monthly revenue successfully"
+// @Failure 500 {object} model.ErrorResponse "Failed to fetch monthly revenue"
 // @Router /api/revenue/month [get]
 func (ctrl *RevenueController) GetMonthlyRevenue(ctx *gin.Context) {
 	data, err := ctrl.Service.Revenue.FetchMonthlyRevenue()
@@ -63,8 +63,8 @@ func (ctrl *RevenueController) GetMonthlyRevenue(ctx *gin.Context) {
 // @Description Get revenue details for all products
 // @Tags Revenue
 // @Produce json
-// @Success 200 {object} models.SuccessResponse{data=[]models.ProductRevenue} "Fetch product revenues successfully"
-// @Failure 500 {object} models.ErrorResponse "Failed to fetch product revenues"
+// @Success 200 {object} model.SuccessResponse{data=[]model.ProductRevenue} "Fetch product revenues successfully"
+// @Failure 500 {object} model.ErrorResponse "Failed to fetch product revenues"
 // @Router /api/revenue/products [get]
 func (ctrl *RevenueController) GetProductRevenues(ctx *gin.Context) {
 	data, err := ctrl.Service.Revenue.FetchProductRevenues()

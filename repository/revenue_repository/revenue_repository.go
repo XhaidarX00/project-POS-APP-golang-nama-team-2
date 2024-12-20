@@ -3,6 +3,7 @@ package revenuerepository
 import (
 	"errors"
 	"project_pos_app/model"
+	"time"
 
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -50,10 +51,7 @@ func (r *RevenueRepository) GetProductRevenues() ([]model.ProductRevenue, error)
 }
 
 func (r *RevenueRepository) GetTotalRevenueByStatus() (map[string]float64, error) {
-	var results []struct {
-		Status  string
-		Revenue float64
-	}
+	var results []model.RevenueByStatus
 
 	totalRevenue := make(map[string]float64)
 
@@ -74,15 +72,17 @@ func (r *RevenueRepository) GetTotalRevenueByStatus() (map[string]float64, error
 }
 
 func (r *RevenueRepository) GetMonthlyRevenue() (map[string]float64, error) {
-	var results []struct {
-		Month   string
-		Revenue float64
-	}
+	var results []model.MonthlyRevenue
 
 	monthlyRevenue := make(map[string]float64)
 
+	// Dapatkan tahun sekarang
+	currentYear := time.Now().Year()
+
+	// Tambahkan filter untuk tahun sekarang
 	err := r.DB.Model(&model.OrderRevenue{}).
 		Select("TO_CHAR(created_at, 'YYYY-MM') as month, SUM(revenue) as revenue").
+		Where("EXTRACT(YEAR FROM created_at) = ?", currentYear). // Filter data berdasarkan tahun sekarang
 		Group("month").
 		Order("month").
 		Scan(&results).Error

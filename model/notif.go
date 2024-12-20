@@ -5,11 +5,19 @@ import (
 	"time"
 )
 
+type CreateNotification struct {
+	Title     string    `json:"title" example:"New Message"`
+	Message   string    `json:"message" example:"You have a new message"`
+	Status    string    `json:"status" example:"new"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
+}
+
 type Notification struct {
 	ID        int       `gorm:"primaryKey" json:"id" example:"1"`
 	Title     string    `json:"title" example:"New Message"`
 	Message   string    `json:"message" example:"You have a new message"`
-	Status    string    `json:"status" example:"unread"`
+	Status    string    `json:"status" example:"new"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
 }

@@ -1,7 +1,1 @@
-{"L":"INFO","T":"2024-12-18T03:33:48.838+0700","M":"Logger initialized successfully"}
-{"L":"ERROR","T":"2024-12-18T03:33:52.401+0700","M":"Failed get data","error":"record not found"}
-{"L":"ERROR","T":"2024-12-18T03:33:52.401+0700","M":"Failed to find notification for update","error":"notification not found"}
-{"L":"ERROR","T":"2024-12-18T03:33:52.401+0700","M":"Failed to update notification","error":"failed to find notification for update: notification not found"}
-{"L":"ERROR","T":"2024-12-18T03:34:07.944+0700","M":"Failed get data","error":"record not found"}
-{"L":"ERROR","T":"2024-12-18T03:34:07.944+0700","M":"Failed to find notification for update","error":"notification not found"}
-{"L":"ERROR","T":"2024-12-18T03:34:07.944+0700","M":"Failed to update notification","error":"failed to find notification for update: notification not found"}
+{"L":"INFO","T":"2024-12-19T20:44:14.361+0700","M":"Logger initialized successfully"}

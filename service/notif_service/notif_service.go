@@ -32,11 +32,12 @@ func NewNotifService(repo *repository.AllRepository, log *zap.Logger) NotifServi
 
 func (s *notifService) CreateNotification(data model.Notification) error {
 	now := time.Now()
+	dynamicDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
 	if data.Status == "" {
 		data.Status = "new"
 	}
-	data.CreatedAt = now
-	data.UpdatedAt = now
+	data.CreatedAt = dynamicDate
+	data.UpdatedAt = dynamicDate
 
 	if data.Title == "" {
 		return fmt.Errorf("title should not none")

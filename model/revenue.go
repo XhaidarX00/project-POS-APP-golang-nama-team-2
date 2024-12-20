@@ -2,6 +2,16 @@ package model
 
 import "time"
 
+type RevenueByStatus struct {
+	Status  string  `gorm:"type:varchar(50)" json:"status" binding:"required" example:"confirmed"`
+	Revenue float64 `gorm:"type:decimal(10,2)" json:"revenue" binding:"required" example:"100.50"`
+}
+
+type MonthlyRevenue struct {
+	Month   string  `gorm:"type:varchar(20)" json:"month" binding:"required" example:"January"`
+	Revenue float64 `gorm:"type:decimal(10,2)" json:"revenue" binding:"required" example:"100.50"`
+}
+
 // OrderRevenue represents the structure for orders
 type OrderRevenue struct {
 	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id" example:"1"`

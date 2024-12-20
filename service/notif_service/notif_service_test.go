@@ -14,13 +14,15 @@ import (
 
 func TestCreateNotification(t *testing.T) {
 	t.Run("Successfully create a notification", func(t *testing.T) {
+		now := time.Now()
+		dynamicDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
 		input := model.Notification{
 			ID:        1,
 			Title:     "Testing",
 			Message:   "Test notification",
 			Status:    "new",
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			CreatedAt: dynamicDate,
+			UpdatedAt: dynamicDate,
 		}
 
 		mockDB, service := helper.InitService()
@@ -137,11 +139,8 @@ func TestUpdateNotification(t *testing.T) {
 			UpdatedAt: now,
 		}
 
-		mockDB.On("FindByID", 1).Once().Return(notif, nil)
-		mockDB.On("Update", mock.Anything, 1).Once().Return(nil).Run(func(args mock.Arguments) {
-			updatedNotif := args.Get(0).(*model.Notification)
-			notif = updatedNotif
-		})
+		mockDB.On("FindByID", notif.ID).Return(notif, nil)
+		mockDB.On("Update", notif, 1).Return(notif, nil)
 
 		err := service.Notif.UpdateNotification(1)
 

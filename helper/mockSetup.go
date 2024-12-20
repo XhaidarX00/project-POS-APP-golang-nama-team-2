@@ -3,6 +3,7 @@ package helper
 import (
 	mocktesting "project_pos_app/mock_testing"
 	"project_pos_app/repository"
+	"project_pos_app/service"
 	notifservice "project_pos_app/service/notif_service"
 	revenueservice "project_pos_app/service/revenue_service"
 
@@ -22,12 +23,12 @@ func SetupTestDB() (*gorm.DB, sqlmock.Sqlmock) {
 	return gormDB, mock
 }
 
-type ServiceMock struct {
-	Notif   notifservice.NotifServiceInterface
-	Revenue revenueservice.RevenueServiceInterface
-}
+// type ServiceMock struct {
+// 	Notif   notifservice.NotifServiceInterface
+// 	Revenue revenueservice.RevenueServiceInterface
+// }
 
-func InitService() (*mocktesting.MockDB, ServiceMock) {
+func InitService() (*mocktesting.MockDB, *service.AllService) {
 	mockDB := new(mocktesting.MockDB)
 	MockRepo := &repository.AllRepository{
 		Notif:   mockDB,
@@ -37,9 +38,9 @@ func InitService() (*mocktesting.MockDB, ServiceMock) {
 	serviceNotif := notifservice.NewNotifService(MockRepo, mockLogger)
 	serviceRevenue := revenueservice.NewRevenueService(MockRepo, mockLogger)
 
-	var service ServiceMock
+	var service service.AllService
 	service.Notif = serviceNotif
 	service.Revenue = serviceRevenue
 
-	return mockDB, service
+	return mockDB, &service
 }
