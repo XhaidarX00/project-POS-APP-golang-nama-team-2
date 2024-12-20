@@ -6,6 +6,7 @@ import (
 	"project_pos_app/repository/notification"
 	productrepository "project_pos_app/repository/product"
 	revenuerepository "project_pos_app/repository/revenue_repository"
+	orderrepository "project_pos_app/repository/order_repository"
 
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -17,6 +18,7 @@ type AllRepository struct {
 	Notif   notification.NotifRepoInterface
 	Revenue revenuerepository.RevenueRepositoryInterface
 	Product productrepository.ProductRepo
+	Order   orderrepository.OrderRepository
 }
 
 func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
@@ -26,5 +28,6 @@ func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
 		Notif:   notification.NewNotifRepo(DB, Log),
 		Revenue: revenuerepository.NewRevenueRepository(DB, Log),
 		Product: productrepository.NewProductRepo(DB, Log),
+		Order:   orderrepository.NewOrderRepo(DB, Log),
 	}
 }

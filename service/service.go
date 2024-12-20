@@ -7,6 +7,7 @@ import (
 	notifservice "project_pos_app/service/notif_service"
 	productservice "project_pos_app/service/product_service"
 	revenueservice "project_pos_app/service/revenue_service"
+	orderservice "project_pos_app/service/order_service"
 
 	"go.uber.org/zap"
 )
@@ -17,6 +18,7 @@ type AllService struct {
 	Notif   notifservice.NotifServiceInterface
 	Revenue revenueservice.RevenueServiceInterface
 	Product productservice.ProductService
+	Order   orderservice.OrderService
 }
 
 func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService {
@@ -26,5 +28,6 @@ func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService 
 		Notif:   notifservice.NewNotifService(repo, log),
 		Revenue: revenueservice.NewRevenueService(repo, log),
 		Product: productservice.NewProductService(repo, log),
+		Order:   orderservice.NewOrderService(repo, log),
 	}
 }

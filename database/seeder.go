@@ -75,5 +75,10 @@ func dataSeeds() []interface{} {
 		model.NotificationSeed(),
 		model.RevenueSeedOrder(),
 		model.RevenueSeedProduct(),
+		model.SeedProducts(),
+		model.SeedOrderProducts(),
+		model.SeedOrders(),
+		model.SeedTables(),
+		model.SeedPayments(),
 	}
 }
