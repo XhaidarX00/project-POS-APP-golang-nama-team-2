@@ -28,6 +28,8 @@ func Migration(db *gorm.DB) error {
 		{"order_product", model.OrderProduct{}},
 		{"order", model.Order{}},
 		{"product", model.Product{}},
+		{"table", model.Table{}},
+		{"payment", model.Payment{}},
 	}
 
 	for _, migration := range allModel {

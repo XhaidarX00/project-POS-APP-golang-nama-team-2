@@ -1,11 +1,10 @@
 package model
 
 type OrderProduct struct {
-	ID        uint    `gorm:"primaryKey" json:"id"`
-	OrderID   uint    `json:"order_id"`
-	ProductID uint    `json:"product_id"`
-	Product   Product `gorm:"foreignKey:ProductID"`
-	Qty       int     `json:"qty"`
+	ID        uint `gorm:"primaryKey" json:"id"`
+	OrderID   uint `json:"order_id"`
+	ProductID uint `json:"product_id"`
+	Qty       int  `json:"qty"`
 }
 
 func SeedOrderProducts() []OrderProduct {

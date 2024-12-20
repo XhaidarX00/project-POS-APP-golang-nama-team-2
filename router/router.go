@@ -16,6 +16,17 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	r.POST("/login", ctx.Ctl.Auth.Login)
 
 	NotificationRoutes(r, ctx)
+
+	order := r.Group("/order")
+	{
+		order.GET("/", ctx.Ctl.Order.GetAllOrder)
+		order.GET("/table", ctx.Ctl.Order.GetAllTable)
+		order.GET("/payment", ctx.Ctl.Order.GetAllPayment)
+		order.POST("/", ctx.Ctl.Order.CreateOrder)
+		order.PUT("/:id", ctx.Ctl.Order.UpdateOrder)
+		order.DELETE("/:id", ctx.Ctl.Order.DeleteOrder)
+	}
+
 	return r
 }
 
