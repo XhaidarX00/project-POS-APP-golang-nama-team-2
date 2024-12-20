@@ -51,7 +51,7 @@ func (os *orderService) UpdateOrder(id int, order *model.Order) error {
 
 	order.Tax = 12
 
-	if order.PaymentMethod != "" && order.Status != "cancelled" {
+	if order.PaymentMethod != 0 && order.Status != "cancelled" {
 		order.Status = "completed"
 	}
 

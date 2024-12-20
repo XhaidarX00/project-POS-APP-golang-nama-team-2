@@ -100,7 +100,7 @@ func TestCreateOrder(t *testing.T) {
 		Status:        "completed",
 		TotalAmount:   2000,
 		Tax:           12,
-		PaymentMethod: "bank",
+		PaymentMethod: 1,
 		CreatedAt:     time.Now(),
 		UpdatedAt:     time.Now(),
 		OrderProducts: []model.OrderProduct{
@@ -291,7 +291,7 @@ func TestUpdateOrder(t *testing.T) {
 		Status:        "completed",
 		TotalAmount:   2000,
 		Tax:           12,
-		PaymentMethod: "bank",
+		PaymentMethod: 1,
 		CreatedAt:     time.Now(),
 		UpdatedAt:     time.Now(),
 		OrderProducts: []model.OrderProduct{

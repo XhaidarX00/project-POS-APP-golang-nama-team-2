@@ -69,11 +69,6 @@ func (oc *orderController) UpdateOrder(c *gin.Context) {
 		return
 	}
 
-	if order.PaymentMethod == "" {
-		helper.Responses(c, http.StatusBadRequest, "payment is required", nil)
-		return
-	}
-
 	if err := oc.service.Order.UpdateOrder(id, &order); err != nil {
 		helper.Responses(c, http.StatusBadRequest, "failed to update order: "+err.Error(), nil)
 		return
