@@ -4,6 +4,7 @@ import (
 	authrepository "project_pos_app/repository/auth_repository"
 	examplerepository "project_pos_app/repository/example_repository"
 	"project_pos_app/repository/notification"
+	productrepository "project_pos_app/repository/product"
 	revenuerepository "project_pos_app/repository/revenue_repository"
 
 	"go.uber.org/zap"
@@ -15,6 +16,7 @@ type AllRepository struct {
 	Auth    authrepository.AuthRepoInterface
 	Notif   notification.NotifRepoInterface
 	Revenue revenuerepository.RevenueRepositoryInterface
+	Product productrepository.ProductRepo
 }
 
 func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
@@ -23,5 +25,6 @@ func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
 		Auth:    authrepository.NewManagementVoucherRepo(DB, Log),
 		Notif:   notification.NewNotifRepo(DB, Log),
 		Revenue: revenuerepository.NewRevenueRepository(DB, Log),
+		Product: productrepository.NewProductRepo(DB, Log),
 	}
 }

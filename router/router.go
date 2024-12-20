@@ -17,6 +17,7 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 
 	NotificationRoutes(r, ctx)
 	RevenueRoutes(r, ctx)
+	ProductRoutes(r, ctx)
 	return r
 }
 
@@ -38,5 +39,16 @@ func RevenueRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 		revenueRoute.GET("/revenue/month", ctx.Ctl.Revenue.GetMonthlyRevenue)
 		revenueRoute.GET("/revenue/products", ctx.Ctl.Revenue.GetProductRevenues)
 		revenueRoute.GET("/revenue/status", ctx.Ctl.Revenue.GetTotalRevenueByStatus)
+	}
+}
+
+func ProductRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
+	productRoute := r.Group("/api")
+	{
+		productRoute.GET("/products", ctx.Ctl.Product.GetAllProducts)
+		productRoute.GET("/products/:id", ctx.Ctl.Product.GetProductByID)
+		productRoute.POST("/products", ctx.Ctl.Product.CreateProduct)
+		productRoute.PUT("/products/:id", ctx.Ctl.Product.UpdateProduct)
+		productRoute.DELETE("/product/:id", ctx.Ctl.Product.DeleteProduct)
 	}
 }

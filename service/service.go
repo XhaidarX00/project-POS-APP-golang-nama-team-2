@@ -5,6 +5,7 @@ import (
 	authservice "project_pos_app/service/auth_service"
 	exampleservice "project_pos_app/service/example_service"
 	notifservice "project_pos_app/service/notif_service"
+	productservice "project_pos_app/service/product_service"
 	revenueservice "project_pos_app/service/revenue_service"
 
 	"go.uber.org/zap"
@@ -15,6 +16,7 @@ type AllService struct {
 	Auth    authservice.AuthService
 	Notif   notifservice.NotifServiceInterface
 	Revenue revenueservice.RevenueServiceInterface
+	Product productservice.ProductService
 }
 
 func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService {
@@ -23,5 +25,6 @@ func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService 
 		Auth:    authservice.NewManagementVoucherService(repo, log),
 		Notif:   notifservice.NewNotifService(repo, log),
 		Revenue: revenueservice.NewRevenueService(repo, log),
+		Product: productservice.NewProductService(repo, log),
 	}
 }
