@@ -12,7 +12,7 @@ import (
 type NotifServiceInterface interface {
 	CreateNotification(data model.Notification) error
 	GetAllNotifications(status string) ([]model.Notification, error)
-	GetNotificationByID(id int) (model.Notification, error)
+	GetNotificationByID(id int) (*model.Notification, error)
 	UpdateNotification(id int) error
 	DeleteNotification(id int) error
 	MarkAllNotificationsAsRead() error
@@ -32,11 +32,12 @@ func NewNotifService(repo *repository.AllRepository, log *zap.Logger) NotifServi
 
 func (s *notifService) CreateNotification(data model.Notification) error {
 	now := time.Now()
+	dynamicDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
 	if data.Status == "" {
 		data.Status = "new"
 	}
-	data.CreatedAt = now
-	data.UpdatedAt = now
+	data.CreatedAt = dynamicDate
+	data.UpdatedAt = dynamicDate
 
 	if data.Title == "" {
 		return fmt.Errorf("title should not none")
@@ -54,15 +55,15 @@ func (s *notifService) GetAllNotifications(status string) ([]model.Notification,
 	return notifications, nil
 }
 
-func (s *notifService) GetNotificationByID(id int) (model.Notification, error) {
+func (s *notifService) GetNotificationByID(id int) (*model.Notification, error) {
 	notification, err := s.Repo.Notif.FindByID(id)
 	if err != nil {
 		s.Log.Error("Failed to fetch notification by ID", zap.Error(err))
-		return model.Notification{}, err
+		return nil, err
 	}
 
 	if notification.Title == "" {
-		return model.Notification{}, fmt.Errorf("title is reqired")
+		return nil, fmt.Errorf("title is reqired")
 	}
 
 	return notification, nil
@@ -80,7 +81,7 @@ func (s *notifService) UpdateNotification(id int) error {
 	}
 
 	notification.Status = "readed"
-	if err := s.Repo.Notif.Update(&notification, id); err != nil {
+	if err := s.Repo.Notif.Update(notification, id); err != nil {
 		s.Log.Error("Failed to update notification", zap.Error(err))
 		return fmt.Errorf("failed to update notification: %w", err)
 	}

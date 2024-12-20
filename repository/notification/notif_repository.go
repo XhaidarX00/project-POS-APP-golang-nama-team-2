@@ -11,7 +11,7 @@ import (
 type NotifRepoInterface interface {
 	Create(data model.Notification) error
 	GetAll(data *[]model.Notification, status string) error
-	FindByID(id int) (model.Notification, error)
+	FindByID(id int) (*model.Notification, error)
 	Update(data *model.Notification, id int) error
 	Delete(id int) error
 	MarkAllAsRead() error
@@ -48,19 +48,19 @@ func (r *notifRepo) GetAll(data *[]model.Notification, status string) error {
 	return nil
 }
 
-func (r *notifRepo) FindByID(id int) (model.Notification, error) {
+func (r *notifRepo) FindByID(id int) (*model.Notification, error) {
 	var data model.Notification
 	err := r.DB.First(&data, id).Error
 	if err != nil {
 		r.Log.Error("Failed get data", zap.Error(err))
-		return model.Notification{}, fmt.Errorf("notification not found")
+		return nil, fmt.Errorf("notification not found")
 	}
-	return data, nil
+	return &data, nil
 }
 
 func (r *notifRepo) Update(data *model.Notification, id int) error {
 	var err error
-	*data, err = r.FindByID(id)
+	data, err = r.FindByID(id)
 	if err != nil {
 		r.Log.Error("Error UpdateNotif : ", zap.Error(err))
 		return fmt.Errorf("error update notif : %s", err.Error())

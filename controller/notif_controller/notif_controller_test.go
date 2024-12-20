@@ -3,460 +3,390 @@ package notifcontroller_test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	notifcontroller "project_pos_app/controller/notif_controller"
 	"project_pos_app/helper"
+	mocktesting "project_pos_app/mock_testing"
 	"project_pos_app/model"
-	"project_pos_app/repository/notification"
-	"project_pos_app/service"
-	notifservice "project_pos_app/service/notif_service"
 	"testing"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/suite"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
-func notifBase() (notifcontroller.NotifController, *notification.MockDB) {
-	log := *zap.NewNop()
+type NotifControllerSuite struct {
+	suite.Suite
+	controller notifcontroller.NotifController
+	mockDB     *mocktesting.MockDB
+	ctx        *gin.Context
+	writer     *httptest.ResponseRecorder
+}
 
-	mockRepo, _ := helper.InitService()
-	serviceNotif := notifservice.NewMockNotifService(mockRepo, &log)
-	service := service.AllService{
-		Notif: serviceNotif,
+func TestNotifControllerSuite(t *testing.T) {
+	suite.Run(t, new(NotifControllerSuite))
+}
+
+func (suite *NotifControllerSuite) SetupTest() {
+	mockLogger := zap.NewNop()
+	mockDB, mockService := helper.InitService()
+
+	suite.controller = notifcontroller.NewNotifController(mockService, mockLogger)
+	suite.mockDB = mockDB
+	gin.SetMode(gin.TestMode)
+	suite.writer = httptest.NewRecorder()
+	suite.ctx, _ = gin.CreateTestContext(suite.writer)
+}
+
+func (suite *NotifControllerSuite) TestCreateNotifications() {
+	now := time.Now()
+	dynamicDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
+	payload := model.Notification{
+		Title:     "New Notification",
+		Message:   "This is a test notification",
+		Status:    "new",
+		CreatedAt: dynamicDate,
+		UpdatedAt: dynamicDate,
 	}
 
-	return notifcontroller.NewNotifController(&service, &log), mockRepo
+	suite.Run("Success Created", func() {
+		// Mock service response
+		suite.mockDB.On("Create", payload).Once().Return(nil)
+
+		// Prepare request
+		body, _ := json.Marshal(payload)
+		suite.ctx.Request = httptest.NewRequest(http.MethodPost, "/api/notifications", bytes.NewBuffer(body))
+		suite.ctx.Request.Header.Set("Content-Type", "application/json")
+
+		// Call controller
+		suite.controller.CreateNotifications(suite.ctx)
+
+		expected := model.SuccessResponse{
+			Status:  http.StatusCreated,
+			Message: "Create notification successfully",
+			Data:    nil,
+		}
+
+		var apiResponse model.SuccessResponse
+		err := json.Unmarshal(suite.writer.Body.Bytes(), &apiResponse)
+
+		suite.NoError(err)
+		suite.Equal(expected, apiResponse)
+		suite.Equal(http.StatusCreated, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Create notification successfully")
+		suite.mockDB.AssertCalled(suite.T(), "Create", payload)
+	})
+
+	suite.Run("Invalid Payload", func() {
+		// Reset setup data
+		suite.SetupTest()
+
+		// Mock service response
+		suite.mockDB.On("Create", payload).Return(errors.New("invalid payload"))
+
+		// Invalid JSON payload
+		suite.ctx.Request = httptest.NewRequest(http.MethodPost, "/api/notifications", bytes.NewBuffer([]byte("{invalid_json")))
+		suite.ctx.Request.Header.Set("Content-Type", "application/json")
+
+		// Call controller
+		suite.controller.CreateNotifications(suite.ctx)
+
+		suite.Equal(http.StatusBadRequest, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Invalid Payload")
+	})
+
+	suite.Run("Database Error", func() {
+		// Reset setup data
+		suite.SetupTest()
+
+		now := time.Now()
+		dynamicDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
+		payload := model.Notification{
+			Title:     "New Notification",
+			Message:   "This is a test notification",
+			Status:    "new",
+			CreatedAt: dynamicDate,
+			UpdatedAt: dynamicDate,
+		}
+
+		// Mock service response with error
+		suite.mockDB.On("Create", payload).Return(errors.New("database error"))
+
+		// Prepare request
+		body, _ := json.Marshal(payload)
+		suite.ctx.Request = httptest.NewRequest(http.MethodPost, "/api/notifications", bytes.NewBuffer(body))
+		suite.ctx.Request.Header.Set("Content-Type", "application/json")
+
+		// Call controller
+		suite.controller.CreateNotifications(suite.ctx)
+
+		suite.Equal(http.StatusInternalServerError, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Failed to fetch notifications")
+		suite.mockDB.AssertCalled(suite.T(), "Create", payload)
+	})
 }
 
-func TestCreateNotification(t *testing.T) {
-	handler, mockService := notifBase()
+func (suite *NotifControllerSuite) TestGetAllNotifications() {
+	suite.Run("Success Fetch", func() {
+		notifications := []model.Notification{
+			{ID: 1, Title: "Notif 1", Message: "Message 1", Status: "new"},
+			{ID: 2, Title: "Notif 2", Message: "Message 2", Status: "read"},
+		}
 
-	t.Run("Successfully create a notification", func(t *testing.T) {
-		r := gin.Default()
-		r.POST("/api/notification", handler.CreateNotifications)
+		suite.mockDB.On("GetAll").Return(notifications, nil)
 
-		newNotification := model.Notification{
+		suite.ctx.Request = httptest.NewRequest(http.MethodGet, "/api/notifications", nil)
+
+		suite.controller.GetAllNotifications(suite.ctx)
+
+		mapNotifications, err := helper.StructToMapSlice(&notifications)
+		suite.NoError(err)
+
+		expected := model.SuccessResponse{
+			Status:  http.StatusOK,
+			Message: "Get all notification successfully",
+			Data:    mapNotifications,
+		}
+
+		var apiResponse model.SuccessResponse
+		err = json.Unmarshal(suite.writer.Body.Bytes(), &apiResponse)
+		suite.NoError(err)
+		apiResponse.Data, err = helper.ConvertFieldInData(apiResponse.Data, "id", "int")
+		suite.NoError(err)
+
+		suite.Equal(expected, apiResponse)
+		suite.Equal(http.StatusOK, suite.writer.Code)
+		suite.mockDB.AssertCalled(suite.T(), "GetAll")
+	})
+
+	suite.Run("Database Error", func() {
+		suite.SetupTest()
+		suite.mockDB.On("GetAll").Return(nil, errors.New("database error"))
+
+		suite.ctx.Request = httptest.NewRequest(http.MethodGet, "/api/notifications", nil)
+
+		suite.controller.GetAllNotifications(suite.ctx)
+
+		suite.Equal(http.StatusInternalServerError, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Failed to fetch notifications")
+		suite.mockDB.AssertCalled(suite.T(), "GetAll")
+	})
+}
+
+func (suite *NotifControllerSuite) TestGetNotificationByID() {
+	suite.Run("Success Fetch", func() {
+		notification := model.Notification{ID: 1, Title: "Notif 1", Message: "Message 1", Status: "new"}
+
+		suite.mockDB.On("FindByID", 1).Return(&notification, nil)
+
+		suite.ctx.Request = httptest.NewRequest(http.MethodGet, "/api/notifications/1", nil)
+		suite.ctx.Params = append(suite.ctx.Params, gin.Param{Key: "id", Value: "1"})
+
+		suite.controller.GetNotificationByID(suite.ctx)
+		mapNotifications, err := helper.StructToMap(&notification)
+		suite.NoError(err)
+		expected := model.SuccessResponse{
+			Status:  http.StatusOK,
+			Message: "Notification retrieved successfully",
+			Data:    mapNotifications,
+		}
+
+		var apiResponse model.SuccessResponse
+		err = json.Unmarshal(suite.writer.Body.Bytes(), &apiResponse)
+		suite.NoError(err)
+
+		apiResponse.Data, err = helper.ConvertFieldInMap(apiResponse.Data, "id", "int")
+		suite.NoError(err)
+
+		suite.Equal(expected, apiResponse)
+		suite.Equal(http.StatusOK, suite.writer.Code)
+		suite.mockDB.AssertCalled(suite.T(), "FindByID", 1)
+	})
+
+	suite.Run("Invalid ID Format", func() {
+		suite.SetupTest()
+		suite.ctx.Request = httptest.NewRequest(http.MethodGet, "/api/notifications/invalid", nil)
+		suite.ctx.Params = append(suite.ctx.Params, gin.Param{Key: "id", Value: "invalid"})
+
+		suite.controller.GetNotificationByID(suite.ctx)
+
+		suite.Equal(http.StatusBadRequest, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Invalid ID format")
+	})
+
+	suite.Run("Database Error", func() {
+		suite.SetupTest()
+		suite.mockDB.On("FindByID", 1).Return(nil, errors.New("database error"))
+
+		suite.ctx.Request = httptest.NewRequest(http.MethodGet, "/api/notifications/1", nil)
+		suite.ctx.Params = append(suite.ctx.Params, gin.Param{Key: "id", Value: "1"})
+
+		suite.controller.GetNotificationByID(suite.ctx)
+
+		suite.Equal(http.StatusInternalServerError, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Failed to fetch notification")
+		suite.mockDB.AssertCalled(suite.T(), "FindByID", 1)
+	})
+}
+
+func (suite *NotifControllerSuite) TestUpdateNotification() {
+	now := time.Now()
+	dynamicDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
+	suite.Run("Success Update", func() {
+		notif := &model.Notification{
+			ID:      1,
 			Title:   "Testing",
 			Message: "Test notification",
+			Status:  "new",
 		}
-		mockService.On("Create", newNotification).Once().Return(nil)
-		body, _ := json.Marshal(newNotification)
-		req := httptest.NewRequest(http.MethodPost, "/api/notification", bytes.NewBuffer(body))
-		req.Header.Set("Content-Type", "application/json")
-		w := httptest.NewRecorder()
 
-		r.ServeHTTP(w, req)
+		suite.mockDB.On("FindByID", notif.ID).Return(notif, nil)
+		suite.mockDB.On("Update", notif, 1).Return(notif, nil)
 
-		assert.Equal(t, http.StatusCreated, w.Code)
-		mockService.AssertCalled(t, "Create", newNotification)
+		notif.UpdatedAt = dynamicDate
+		suite.ctx.Request = httptest.NewRequest(http.MethodPut, "/api/notifications/1", nil)
+		suite.ctx.Params = append(suite.ctx.Params, gin.Param{Key: "id", Value: "1"})
 
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
+		suite.controller.UpdateNotification(suite.ctx)
 
-		assert.Equal(t, "Create notification successfully", actualResponse["Message"])
-		assert.Nil(t, actualResponse["data"])
+		suite.Equal(http.StatusOK, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Notification updated successfully")
+		suite.mockDB.AssertCalled(suite.T(), "Update", notif, 1)
 	})
 
-	t.Run("Failed to create a notification - Invalid Payload", func(t *testing.T) {
-		r := gin.Default()
-		r.POST("/api/notification", handler.CreateNotifications)
+	suite.Run("Invalid ID Format", func() {
+		suite.SetupTest()
+		suite.ctx.Request = httptest.NewRequest(http.MethodPut, "/api/notifications/invalid", nil)
+		suite.ctx.Params = append(suite.ctx.Params, gin.Param{Key: "id", Value: "invalid"})
 
-		invalidBody := `{"Title": "New Notification"` // Invalid JSON
-		req := httptest.NewRequest(http.MethodPost, "/api/notification", bytes.NewBufferString(invalidBody))
-		req.Header.Set("Content-Type", "application/json")
-		w := httptest.NewRecorder()
+		suite.controller.UpdateNotification(suite.ctx)
 
-		r.ServeHTTP(w, req)
+		suite.Equal(http.StatusBadRequest, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Invalid ID format")
+	})
 
-		assert.Equal(t, http.StatusInternalServerError, w.Code)
+	suite.Run("Database Error", func() {
+		suite.SetupTest()
+		notif := &model.Notification{
+			ID:      9999,
+			Title:   "Testing",
+			Message: "Test notification",
+			Status:  "new",
+		}
 
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
+		suite.mockDB.On("FindByID", notif.ID).Return(nil, errors.New("record not found"))
+		suite.mockDB.On("Update", notif, notif.ID).Return(nil, errors.New("database error"))
 
-		assert.Contains(t, actualResponse["Message"], "Invalid Payload")
-		assert.Nil(t, actualResponse["data"])
+		suite.ctx.Request = httptest.NewRequest(http.MethodPut, "/api/notifications/9999", nil)
+		suite.ctx.Params = append(suite.ctx.Params, gin.Param{Key: "id", Value: "9999"})
+
+		suite.controller.UpdateNotification(suite.ctx)
+
+		suite.Equal(http.StatusInternalServerError, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Failed to update notification")
 	})
 }
 
-func TestGetAllNotifications(t *testing.T) {
-	handler, mockRepo := notifBase()
+func (suite *NotifControllerSuite) TestDeleteNotification() {
+	suite.Run("Success Delete", func() {
+		notif := &model.Notification{
+			ID:      1,
+			Title:   "Testing",
+			Message: "Test notification",
+			Status:  "new",
+		}
 
-	t.Run("Successfully retrieve all notifications", func(t *testing.T) {
-		// Setup router
-		r := gin.Default()
-		r.GET("/api/notification", handler.GetAllNotifications)
+		suite.mockDB.On("FindByID", notif.ID).Return(notif, nil)
+		suite.mockDB.On("Delete", notif.ID).Return(&gorm.DB{Error: nil})
 
-		// Mock data
+		suite.ctx.Request = httptest.NewRequest(http.MethodDelete, "/api/notifications/1", nil)
+		suite.ctx.Params = append(suite.ctx.Params, gin.Param{Key: "id", Value: "1"})
+
+		suite.controller.DeleteNotification(suite.ctx)
+
+		suite.Equal(http.StatusOK, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Notification deleted successfully")
+		suite.mockDB.AssertCalled(suite.T(), "Delete", 1)
+	})
+
+	suite.Run("Invalid ID Format", func() {
+		suite.SetupTest()
+		suite.ctx.Request = httptest.NewRequest(http.MethodDelete, "/api/notifications/invalid", nil)
+		suite.ctx.Params = append(suite.ctx.Params, gin.Param{Key: "id", Value: "invalid"})
+
+		suite.controller.DeleteNotification(suite.ctx)
+
+		suite.Equal(http.StatusBadRequest, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Invalid ID format")
+	})
+
+	suite.Run("Database Error", func() {
+		suite.SetupTest()
+		notif := &model.Notification{
+			ID: 9999,
+		}
+
+		suite.mockDB.On("FindByID", notif.ID).Return(nil, errors.New("record not found"))
+		suite.mockDB.On("Delete", notif.ID).Return(errors.New("database error"))
+
+		suite.ctx.Request = httptest.NewRequest(http.MethodDelete, "/api/notifications/9999", nil)
+		suite.ctx.Params = append(suite.ctx.Params, gin.Param{Key: "id", Value: "9999"})
+
+		suite.controller.DeleteNotification(suite.ctx)
+
+		suite.Equal(http.StatusInternalServerError, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Failed to delete notification")
+	})
+}
+
+func (suite *NotifControllerSuite) TestMarkAllNotificationsAsRead() {
+	suite.Run("Success Mark as Read", func() {
 		now := time.Now()
+		dynamicDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
 		notifications := []model.Notification{
 			{
 				ID:        1,
 				Title:     "Testing",
 				Message:   "Test notification",
-				CreatedAt: now,
-				UpdatedAt: now,
+				Status:    "new",
+				CreatedAt: dynamicDate,
+				UpdatedAt: dynamicDate,
 			},
 			{
 				ID:        2,
 				Title:     "Testing2",
 				Message:   "Test notification2",
-				CreatedAt: now,
-				UpdatedAt: now,
+				Status:    "new",
+				CreatedAt: dynamicDate,
+				UpdatedAt: dynamicDate,
 			},
 		}
 
-		// Mock repository behavior
-		mockRepo.On("GetAll").Once().Return(notifications, nil)
+		suite.mockDB.On("MarkAllAsRead").Once().Return(notifications, nil)
 
-		// Create request and response recorder
-		req := httptest.NewRequest(http.MethodGet, "/api/notification", nil)
-		w := httptest.NewRecorder()
+		suite.ctx.Request = httptest.NewRequest(http.MethodPut, "/api/notifications/mark-as-read", nil)
 
-		// Serve request
-		r.ServeHTTP(w, req)
+		suite.controller.MarkAllNotificationsAsRead(suite.ctx)
 
-		// Assertions
-		assert.Equal(t, http.StatusOK, w.Code)
-		mockRepo.AssertCalled(t, "GetAll")
-
-		// Parse response body
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		// Validate "message" field
-		message, ok := actualResponse["Message"].(string)
-		assert.True(t, ok, "expected 'Message' field in the response to be a string")
-		assert.Equal(t, "Get all notification successfully", message)
-
-		// Validate "Status" field
-		status, ok := actualResponse["Status"].(float64)
-		assert.True(t, ok, "expected 'Status' field in the response to be a number")
-		assert.Equal(t, float64(200), status)
-
-		// Validate "data" field
-		data, ok := actualResponse["data"].([]interface{})
-		assert.True(t, ok, "expected 'data' field in the response to be a slice")
-		assert.Len(t, data, 2)
-
-		// Validate individual notification fields
-		firstNotification, ok := data[0].(map[string]interface{})
-		assert.True(t, ok, "expected each item in 'data' to be a map")
-		assert.Equal(t, float64(1), firstNotification["id"])
-		assert.Equal(t, "Testing", firstNotification["title"])
-		assert.Equal(t, "Test notification", firstNotification["message"])
-		assert.Equal(t, "", firstNotification["status"])
-
-		secondNotification, ok := data[1].(map[string]interface{})
-		assert.True(t, ok, "expected each item in 'data' to be a map")
-		assert.Equal(t, float64(2), secondNotification["id"])
-		assert.Equal(t, "Testing2", secondNotification["title"])
-		assert.Equal(t, "Test notification2", secondNotification["message"])
-		assert.Equal(t, "", secondNotification["status"])
+		suite.Equal(http.StatusOK, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "All notifications marked as read")
+		suite.mockDB.AssertCalled(suite.T(), "MarkAllAsRead")
 	})
 
-	t.Run("Failed to retrieve notifications", func(t *testing.T) {
-		// Setup router
-		r := gin.Default()
-		r.GET("/api/notification", handler.GetAllNotifications)
+	suite.Run("Database Error", func() {
+		suite.SetupTest()
+		suite.mockDB.On("MarkAllAsRead").Return(nil, errors.New("database error"))
 
-		// Mock repository behavior
-		mockRepo.On("GetAll").Once().Return(nil, fmt.Errorf("database error"))
+		suite.ctx.Request = httptest.NewRequest(http.MethodPut, "/api/notifications/mark-as-read", nil)
 
-		// Create request and response recorder
-		req := httptest.NewRequest(http.MethodGet, "/api/notification", nil)
-		w := httptest.NewRecorder()
+		suite.controller.MarkAllNotificationsAsRead(suite.ctx)
 
-		// Serve request
-		r.ServeHTTP(w, req)
-
-		// Assertions
-		assert.Equal(t, http.StatusInternalServerError, w.Code)
-		mockRepo.AssertCalled(t, "GetAll")
-
-		// Parse response body
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		// Validate "message" field
-		message, ok := actualResponse["Message"].(string)
-		assert.True(t, ok, "expected 'Message' field in the response to be a string")
-		assert.Equal(t, "Failed to fetch notifications", message)
-
-		// Validate "Status" field
-		status, ok := actualResponse["Status"].(float64)
-		assert.True(t, ok, "expected 'Status' field in the response to be a number")
-		assert.Equal(t, float64(500), status)
-	})
-}
-
-func TestGetNotificationByID(t *testing.T) {
-	handler, mockService := notifBase()
-
-	t.Run("Successfully retrieve notification by ID", func(t *testing.T) {
-		r := gin.Default()
-		r.GET("/api/notification/:id", handler.GetNotificationByID)
-
-		now := time.Now()
-		expectedNotification := model.Notification{
-			ID:        1,
-			Title:     "Testing",
-			Message:   "Test notification",
-			CreatedAt: now,
-			UpdatedAt: now,
-		}
-
-		mockService.On("FindByID", 1).Once().Return(expectedNotification, nil)
-
-		req := httptest.NewRequest(http.MethodGet, "/api/notification/1", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusOK, w.Code)
-		mockService.AssertCalled(t, "FindByID", 1)
-
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		assert.Equal(t, "Notification retrieved successfully", actualResponse["Message"])
-
-		data, ok := actualResponse["data"].(map[string]interface{})
-		assert.True(t, ok)
-		assert.Equal(t, float64(1), data["id"])
-		assert.Equal(t, "Testing", data["title"])
-		assert.Equal(t, "Test notification", data["message"])
-	})
-
-	t.Run("Failed to retrieve notification - Invalid ID", func(t *testing.T) {
-		r := gin.Default()
-		r.GET("/api/notification/:id", handler.GetNotificationByID)
-
-		req := httptest.NewRequest(http.MethodGet, "/api/notification/invalid", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusBadRequest, w.Code)
-
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		assert.Equal(t, "Invalid ID format", actualResponse["Message"])
-	})
-
-	t.Run("Failed to retrieve notification - Database Error", func(t *testing.T) {
-		r := gin.Default()
-		r.GET("/api/notification/:id", handler.GetNotificationByID)
-
-		mockService.On("FindByID", 999).Once().Return(model.Notification{}, fmt.Errorf("database error"))
-
-		req := httptest.NewRequest(http.MethodGet, "/api/notification/999", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusInternalServerError, w.Code)
-		mockService.AssertCalled(t, "FindByID", 999)
-
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		assert.Equal(t, "Failed to fetch notification", actualResponse["Message"])
-	})
-}
-
-func TestUpdateNotification(t *testing.T) {
-	handler, mockService := notifBase()
-
-	t.Run("Successfully update notification", func(t *testing.T) {
-		r := gin.Default()
-		r.PUT("/api/notification/:id", handler.UpdateNotification)
-
-		mockService.On("Update", mock.Anything, 1).Once().Return(nil)
-
-		req := httptest.NewRequest(http.MethodPut, "/api/notification/1", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusOK, w.Code)
-		mockService.AssertCalled(t, "Update", mock.Anything, 1)
-
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		assert.Equal(t, "Notification updated successfully", actualResponse["Message"])
-	})
-
-	t.Run("Failed to update notification - Invalid ID", func(t *testing.T) {
-		r := gin.Default()
-		r.PUT("/api/notification/:id", handler.UpdateNotification)
-
-		req := httptest.NewRequest(http.MethodPut, "/api/notification/invalid", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusBadRequest, w.Code)
-
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		assert.Equal(t, "Invalid ID format", actualResponse["Message"])
-	})
-
-	t.Run("Failed to update notification - Database Error", func(t *testing.T) {
-		r := gin.Default()
-		r.PUT("/api/notification/:id", handler.UpdateNotification)
-
-		mockService.On("Update", mock.Anything, 999).Once().Return(fmt.Errorf("database error"))
-
-		req := httptest.NewRequest(http.MethodPut, "/api/notification/999", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusInternalServerError, w.Code)
-		// mockService.AssertCalled(t, "Update", mock.Anything, 999)
-
-		// var actualResponse map[string]interface{}
-		// err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		// assert.NoError(t, err)
-
-		// assert.Equal(t, "Failed to update notification", actualResponse["Message"])
-	})
-}
-
-func TestDeleteNotification(t *testing.T) {
-	handler, mockService := notifBase()
-
-	t.Run("Successfully delete notification", func(t *testing.T) {
-		r := gin.Default()
-		r.DELETE("/api/notification/:id", handler.DeleteNotification)
-		now := time.Now()
-		notif := model.Notification{
-			ID:        1,
-			Title:     "Testing",
-			Message:   "Test notification",
-			Status:    "new",
-			CreatedAt: now,
-			UpdatedAt: now,
-		}
-
-		mockService.On("FindByID", 1).Return(notif, nil)
-		mockService.On("Delete", 1).Once().Return(&gorm.DB{Error: nil})
-
-		req := httptest.NewRequest(http.MethodDelete, "/api/notification/1", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusOK, w.Code)
-		mockService.AssertCalled(t, "Delete", 1)
-
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		assert.Equal(t, "Notification deleted successfully", actualResponse["Message"])
-	})
-
-	t.Run("Failed to delete notification - Invalid ID", func(t *testing.T) {
-		r := gin.Default()
-		r.DELETE("/api/notification/:id", handler.DeleteNotification)
-
-		req := httptest.NewRequest(http.MethodDelete, "/api/notification/invalid", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusBadRequest, w.Code)
-
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		assert.Equal(t, "Invalid ID format", actualResponse["Message"])
-	})
-
-	t.Run("Failed to delete notification - Database Error", func(t *testing.T) {
-		r := gin.Default()
-		r.DELETE("/api/notification/:id", handler.DeleteNotification)
-		mockService.On("Delete", 999).Once().Return(&gorm.DB{Error: nil})
-
-		req := httptest.NewRequest(http.MethodDelete, "/api/notification/999", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusInternalServerError, w.Code)
-		mockService.AssertNotCalled(t, "Delete", 999)
-
-		// var actualResponse map[string]interface{}
-		// err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		// assert.NoError(t, err)
-
-		// assert.Equal(t, "Failed to delete notification", actualResponse["Message"])
-	})
-}
-
-func TestMarkAllNotificationsAsRead(t *testing.T) {
-	handler, mockService := notifBase()
-
-	t.Run("Successfully mark all notifications as read", func(t *testing.T) {
-		r := gin.Default()
-		r.PUT("/api/notification/mark-read", handler.MarkAllNotificationsAsRead)
-		notifications := []model.Notification{}
-		mockService.On("MarkAllAsRead").Once().Return(notifications, nil)
-
-		req := httptest.NewRequest(http.MethodPut, "/api/notification/mark-read", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusOK, w.Code)
-		mockService.AssertCalled(t, "MarkAllAsRead")
-
-		var actualResponse map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		assert.NoError(t, err)
-
-		assert.Equal(t, "All notifications marked as read", actualResponse["Message"])
-	})
-
-	t.Run("Failed to mark all notifications as read - Database Error", func(t *testing.T) {
-		r := gin.Default()
-		r.PUT("/api/notification/mark-read", handler.MarkAllNotificationsAsRead)
-
-		mockService.On("MarkAllAsRead").Once().Return(fmt.Errorf("database error"))
-
-		req := httptest.NewRequest(http.MethodPut, "/api/notification/mark-read", nil)
-		w := httptest.NewRecorder()
-
-		r.ServeHTTP(w, req)
-
-		assert.Equal(t, http.StatusInternalServerError, w.Code)
-		mockService.AssertCalled(t, "MarkAllAsRead")
-
-		// var actualResponse map[string]interface{}
-		// err := json.Unmarshal(w.Body.Bytes(), &actualResponse)
-		// assert.NoError(t, err)
-
-		// assert.Equal(t, "Failed to mark all notifications as read", actualResponse["Message"])
+		suite.Equal(http.StatusInternalServerError, suite.writer.Code)
+		suite.Contains(suite.writer.Body.String(), "Failed to mark all notifications as read")
+		suite.mockDB.AssertCalled(suite.T(), "MarkAllAsRead")
 	})
 }
