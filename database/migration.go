@@ -32,6 +32,7 @@ func Migration(db *gorm.DB) error {
 		{"table", model.Table{}},
 		{"payment", model.Payment{}},
 		{"user", model.User{}},
+		{"reservation", model.Reservation{}},
 		{"superadmin", model.Superadmin{}},
 		{"permission", model.Permission{}},
 		{"access_permission", model.AccessPermission{}},

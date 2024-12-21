@@ -8,6 +8,7 @@ import (
 	notifservice "project_pos_app/service/notif_service"
 	orderservice "project_pos_app/service/order_service"
 	productservice "project_pos_app/service/product_service"
+	reservationservice "project_pos_app/service/reservation_service"
 	revenueservice "project_pos_app/service/revenue_service"
 	superadminservice "project_pos_app/service/superadmin_service"
 
@@ -23,6 +24,7 @@ type AllService struct {
 	Order      orderservice.OrderService
 	Superadmin superadminservice.SuperadminService
 	Access     accessservice.AccessService
+  Reservation reservationservice.ServiceReservation
 }
 
 func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService {
@@ -35,5 +37,6 @@ func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService 
 		Order:      orderservice.NewOrderService(repo, log),
 		Superadmin: superadminservice.NewSuperadminService(repo, log),
 		Access:     accessservice.NewAccessService(repo, log),
+    Reservation: reservationservice.NewRevenueService(repo, log),
 	}
 }
