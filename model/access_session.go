@@ -29,6 +29,7 @@ func SeedPermissions() []Permission {
 		{Name: "Product"},
 		{Name: "Notification"},
 		{Name: "Reservation"},
+		{Name: "Category"},
 	}
 }
 

@@ -26,7 +26,6 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	RevenueRoutes(r, ctx)
 	ProductRoutes(r, ctx)
 	CategoryRoutes(r, ctx)
-
 	ReservationRoutes(r, ctx)
 	OrderRoutes(r, ctx)
 	SuperAdmin(r, ctx)
@@ -106,6 +105,7 @@ func SuperAdmin(r *gin.Engine, ctx *infra.IntegrationContext) {
 func CategoryRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 	categoryRoute := r.Group("/api")
 	{
+		categoryRoute.Use(ctx.Middleware.Access.AccessMiddleware())
 		categoryRoute.GET("/categories", ctx.Ctl.Category.GetAllCategory)
 		categoryRoute.GET("/categories/products", func(c *gin.Context) {
 			ctx.Ctl.Product.GetAllProducts(c)
