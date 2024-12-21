@@ -103,15 +103,15 @@ func SuperAdmin(r *gin.Engine, ctx *infra.IntegrationContext) {
 }
 
 func CategoryRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
-	categoryRoute := r.Group("/api")
+	categoryRoute := r.Group("/category")
 	{
 		categoryRoute.Use(ctx.Middleware.Access.AccessMiddleware())
-		categoryRoute.GET("/categories", ctx.Ctl.Category.GetAllCategory)
-		categoryRoute.GET("/categories/products", func(c *gin.Context) {
+		categoryRoute.GET("/", ctx.Ctl.Category.GetAllCategory)
+		categoryRoute.GET("/products", func(c *gin.Context) {
 			ctx.Ctl.Product.GetAllProducts(c)
 		})
-		categoryRoute.GET("/categories/:id", ctx.Ctl.Category.GetCategoryByID)
-		categoryRoute.POST("/categories", ctx.Ctl.Category.CreateCategory)
-		categoryRoute.PUT("/categories/:id", ctx.Ctl.Category.UpdateCategory)
+		categoryRoute.GET("/:id", ctx.Ctl.Category.GetCategoryByID)
+		categoryRoute.POST("/", ctx.Ctl.Category.CreateCategory)
+		categoryRoute.PUT("/:id", ctx.Ctl.Category.UpdateCategory)
 	}
 }

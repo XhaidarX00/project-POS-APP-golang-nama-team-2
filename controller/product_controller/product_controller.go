@@ -32,9 +32,9 @@ func NewProductController(service *service.AllService, log *zap.Logger) *Product
 // @Produce json
 // @Param page query int false "Page number" default(1)
 // @Param limit query int false "Number of items per page" default(10)
-// @Success 200 {object} model.SuccessResponse{data=[]model.Category} "List of categories retrieved successfully"
+// @Success 200 {object} model.SuccessResponse{data=[]model.Product} "List of categories retrieved successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to fetch categories"
-// @Router /api/categories [get]
+// @Router /product [get]
 func (pc *ProductController) GetAllProducts(c *gin.Context) {
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
 	if err != nil || page < 1 {
@@ -72,7 +72,7 @@ func (pc *ProductController) GetAllProducts(c *gin.Context) {
 // @Success 200 {object} model.SuccessResponse{data=model.Product} "Product retrieved successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid product ID"
 // @Failure 404 {object} model.ErrorResponse "Product not found"
-// @Router /api/products/{id} [get]
+// @Router /product/{id} [get]
 func (pc *ProductController) GetProductByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -106,7 +106,7 @@ func (pc *ProductController) GetProductByID(c *gin.Context) {
 // @Success 201 {object} model.SuccessResponse{data=model.Product} "Product created successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid product data"
 // @Failure 500 {object} model.ErrorResponse "Failed to create product"
-// @Router /api/products [post]
+// @Router /product [post]
 func (pc *ProductController) CreateProduct(c *gin.Context) {
 	pc.log.Info("Starting product creation")
 
@@ -197,7 +197,7 @@ func (pc *ProductController) CreateProduct(c *gin.Context) {
 // @Failure 400 {object} model.ErrorResponse "Invalid product ID or data"
 // @Failure 404 {object} model.ErrorResponse "Product not found"
 // @Failure 500 {object} model.ErrorResponse "Failed to update product"
-// @Router /api/products/{id} [put]
+// @Router /product/{id} [put]
 func (pc *ProductController) UpdateProduct(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -248,7 +248,7 @@ func (pc *ProductController) UpdateProduct(c *gin.Context) {
 // @Failure 400 {object} model.ErrorResponse "Invalid product ID"
 // @Failure 404 {object} model.ErrorResponse "Product not found"
 // @Failure 500 {object} model.ErrorResponse "Failed to delete product"
-// @Router /api/products/{id} [delete]
+// @Router /product/{id} [delete]
 func (pc *ProductController) DeleteProduct(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
