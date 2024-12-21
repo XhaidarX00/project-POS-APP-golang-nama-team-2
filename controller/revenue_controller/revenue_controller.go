@@ -25,7 +25,7 @@ func NewRevenueController(service *service.AllService, log *zap.Logger) RevenueC
 // @Produce json
 // @Success 200 {object} model.SuccessResponse{data=[]model.RevenueByStatus} "Fetch total revenue by status successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to fetch total revenue by status"
-// @Router /api/revenue/status [get]
+// @Router /revenue/status [get]
 func (ctrl *RevenueController) GetTotalRevenueByStatus(ctx *gin.Context) {
 	data, err := ctrl.Service.Revenue.FetchTotalRevenueByStatus()
 	if err != nil {
@@ -45,7 +45,7 @@ func (ctrl *RevenueController) GetTotalRevenueByStatus(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} model.SuccessResponse{data=[]model.MonthlyRevenue} "Fetch monthly revenue successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to fetch monthly revenue"
-// @Router /api/revenue/month [get]
+// @Router /revenue/month [get]
 func (ctrl *RevenueController) GetMonthlyRevenue(ctx *gin.Context) {
 	data, err := ctrl.Service.Revenue.FetchMonthlyRevenue()
 	if err != nil {
@@ -65,7 +65,7 @@ func (ctrl *RevenueController) GetMonthlyRevenue(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} model.SuccessResponse{data=[]model.ProductRevenue} "Fetch product revenues successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to fetch product revenues"
-// @Router /api/revenue/products [get]
+// @Router /revenue/products [get]
 func (ctrl *RevenueController) GetProductRevenues(ctx *gin.Context) {
 	data, err := ctrl.Service.Revenue.FetchProductRevenues()
 	if err != nil {

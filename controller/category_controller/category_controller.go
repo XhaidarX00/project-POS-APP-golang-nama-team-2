@@ -34,7 +34,7 @@ func NewCategoryController(service *service.AllService, log *zap.Logger) *Catego
 // @Param limit query int false "Number of items per page" default(10)
 // @Success 200 {object} model.SuccessResponse{data=[]model.Category} "List of categories retrieved successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to fetch categories"
-// @Router /api/categories [get]
+// @Router /category [get]
 func (cc *CategoryController) GetAllCategory(c *gin.Context) {
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
 	if err != nil || page < 1 {
@@ -72,7 +72,7 @@ func (cc *CategoryController) GetAllCategory(c *gin.Context) {
 // @Success 200 {object} model.SuccessResponse{data=model.Category} "Category retrieved successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid category ID"
 // @Failure 404 {object} model.ErrorResponse "Category not found"
-// @Router /api/categories/{id} [get]
+// @Router /category/{id} [get]
 func (cc *CategoryController) GetCategoryByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -103,7 +103,7 @@ func (cc *CategoryController) GetCategoryByID(c *gin.Context) {
 // @Success 201 {object} model.SuccessResponse{data=model.Category} "Category created successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid category data"
 // @Failure 500 {object} model.ErrorResponse "Failed to create category"
-// @Router /api/categories [post]
+// @Router /category [post]
 func (cc *CategoryController) CreateCategory(c *gin.Context) {
 	cc.log.Info("Starting category creation")
 
@@ -167,7 +167,7 @@ func (cc *CategoryController) CreateCategory(c *gin.Context) {
 // @Failure 400 {object} model.ErrorResponse "Invalid category ID or data"
 // @Failure 404 {object} model.ErrorResponse "Category not found"
 // @Failure 500 {object} model.ErrorResponse "Failed to update category"
-// @Router /api/categories/{id} [put]
+// @Router /category/{id} [put]
 func (cc *CategoryController) UpdateCategory(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil || id < 1 {
