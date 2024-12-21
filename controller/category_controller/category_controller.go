@@ -30,6 +30,7 @@ func NewCategoryController(service *service.AllService, log *zap.Logger) *Catego
 // @Tags Categories
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param page query int false "Page number" default(1)
 // @Param limit query int false "Number of items per page" default(10)
 // @Success 200 {object} model.SuccessResponse{data=[]model.Category} "List of categories retrieved successfully"
@@ -69,6 +70,7 @@ func (cc *CategoryController) GetAllCategory(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "Category ID"
+// @Security Authentication
 // @Success 200 {object} model.SuccessResponse{data=model.Category} "Category retrieved successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid category ID"
 // @Failure 404 {object} model.ErrorResponse "Category not found"
@@ -97,6 +99,7 @@ func (cc *CategoryController) GetCategoryByID(c *gin.Context) {
 // @Tags Categories
 // @Accept multipart/form-data
 // @Produce json
+// @Security Authentication
 // @Param name formData string true "Category Name"
 // @Param description formData string true "Category Description"
 // @Param icon formData file true "Category Icon"
@@ -159,6 +162,7 @@ func (cc *CategoryController) CreateCategory(c *gin.Context) {
 // @Tags Categories
 // @Accept multipart/form-data
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Category ID"
 // @Param name formData string false "Category Name"
 // @Param description formData string false "Category Description"

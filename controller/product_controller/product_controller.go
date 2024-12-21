@@ -25,15 +25,16 @@ func NewProductController(service *service.AllService, log *zap.Logger) *Product
 }
 
 // GetAllCategory godoc
-// @Summary Get all categories
-// @Description Get a list of categories with optional pagination
-// @Tags Categories
+// @Summary Get all products
+// @Description Get a list of products with optional pagination
+// @Tags Products
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param page query int false "Page number" default(1)
 // @Param limit query int false "Number of items per page" default(10)
-// @Success 200 {object} model.SuccessResponse{data=[]model.Product} "List of categories retrieved successfully"
-// @Failure 500 {object} model.ErrorResponse "Failed to fetch categories"
+// @Success 200 {object} model.SuccessResponse{data=[]model.Product} "List of products retrieved successfully"
+// @Failure 500 {object} model.ErrorResponse "Failed to fetch products"
 // @Router /product [get]
 func (pc *ProductController) GetAllProducts(c *gin.Context) {
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
@@ -68,6 +69,7 @@ func (pc *ProductController) GetAllProducts(c *gin.Context) {
 // @Tags Products
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Product ID"
 // @Success 200 {object} model.SuccessResponse{data=model.Product} "Product retrieved successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid product ID"
@@ -98,6 +100,7 @@ func (pc *ProductController) GetProductByID(c *gin.Context) {
 // @Tags Products
 // @Accept multipart/form-data
 // @Produce json
+// @Security Authentication
 // @Param name formData string true "Product Name"
 // @Param description formData string true "Product Description"
 // @Param price formData float64 true "Product Price"
@@ -187,6 +190,7 @@ func (pc *ProductController) CreateProduct(c *gin.Context) {
 // @Tags Products
 // @Accept multipart/form-data
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Product ID"
 // @Param name formData string false "Product Name"
 // @Param description formData string false "Product Description"
@@ -243,6 +247,7 @@ func (pc *ProductController) UpdateProduct(c *gin.Context) {
 // @Tags Products
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Product ID" example(1)
 // @Success 200 {object} model.SuccessResponse{data=map[string]string} "Product deleted successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid product ID"

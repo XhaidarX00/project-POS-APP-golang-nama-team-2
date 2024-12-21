@@ -266,7 +266,7 @@ info:
   title: App pos Team 2
   version: "1.0"
 paths:
-  /api/categories:
+  /category:
     get:
       consumes:
       - application/json
@@ -346,7 +346,7 @@ paths:
       summary: Create a new category
       tags:
       - Categories
-  /api/categories/{id}:
+  /category/{id}:
     get:
       consumes:
       - application/json
@@ -429,7 +429,38 @@ paths:
       summary: Update an existing category
       tags:
       - Categories
-  /api/notifications:
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: Log the user out by invalidating their authorization token
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully logged out
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Logout user
+      tags:
+      - Superadmin
+  /notification:
     get:
       consumes:
       - application/json
@@ -494,7 +525,7 @@ paths:
       summary: Create a new notification
       tags:
       - Notification
-  /api/notifications/{id}:
+  /notification/{id}:
     delete:
       consumes:
       - application/json
@@ -584,7 +615,7 @@ paths:
       summary: Update a notification by ID
       tags:
       - Notification
-  /api/notifications/mark-all-read:
+  /notification/mark-all-read:
     put:
       consumes:
       - application/json
@@ -603,294 +634,6 @@ paths:
       summary: Mark all notifications as read
       tags:
       - Notification
-  /api/products:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add a new product to the inventory
-      parameters:
-      - description: Product Name
-        in: formData
-        name: name
-        required: true
-        type: string
-      - description: Product Description
-        in: formData
-        name: description
-        required: true
-        type: string
-      - description: Product Price
-        in: formData
-        name: price
-        required: true
-        type: number
-      - description: Product Stock
-        in: formData
-        name: stock
-        required: true
-        type: integer
-      - description: Product Image
-        in: formData
-        name: image
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Product created successfully
-          schema:
-            allOf:
-            - $ref: '#/definitions/model.SuccessResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.Product'
-              type: object
-        "400":
-          description: Invalid product data
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-        "500":
-          description: Failed to create product
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-      summary: Create a new product
-      tags:
-      - Products
-  /api/products/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Remove a product by its ID
-      parameters:
-      - description: Product ID
-        example: 1
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Product deleted successfully
-          schema:
-            allOf:
-            - $ref: '#/definitions/model.SuccessResponse'
-            - properties:
-                data:
-                  additionalProperties:
-                    type: string
-                  type: object
-              type: object
-        "400":
-          description: Invalid product ID
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-        "404":
-          description: Product not found
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-        "500":
-          description: Failed to delete product
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-      summary: Delete a product
-      tags:
-      - Products
-    get:
-      consumes:
-      - application/json
-      description: Retrieve a single product by its ID
-      parameters:
-      - description: Product ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Product retrieved successfully
-          schema:
-            allOf:
-            - $ref: '#/definitions/model.SuccessResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.Product'
-              type: object
-        "400":
-          description: Invalid product ID
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-        "404":
-          description: Product not found
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-      summary: Get product by ID
-      tags:
-      - Products
-    put:
-      consumes:
-      - multipart/form-data
-      description: Update the details of a product by its ID
-      parameters:
-      - description: Product ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Product Name
-        in: formData
-        name: name
-        type: string
-      - description: Product Description
-        in: formData
-        name: description
-        type: string
-      - description: Product Price
-        in: formData
-        name: price
-        type: number
-      - description: Product Stock
-        in: formData
-        name: stock
-        type: integer
-      - description: Product Image
-        in: formData
-        name: image
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Product updated successfully
-          schema:
-            allOf:
-            - $ref: '#/definitions/model.SuccessResponse'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.Product'
-              type: object
-        "400":
-          description: Invalid product ID or data
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-        "404":
-          description: Product not found
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-        "500":
-          description: Failed to update product
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-      summary: Update an existing product
-      tags:
-      - Products
-  /api/revenue/month:
-    get:
-      description: Get total revenue grouped by month
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Fetch monthly revenue successfully
-          schema:
-            allOf:
-            - $ref: '#/definitions/model.SuccessResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.MonthlyRevenue'
-                  type: array
-              type: object
-        "500":
-          description: Failed to fetch monthly revenue
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-      summary: Fetch monthly revenue
-      tags:
-      - Revenue
-  /api/revenue/products:
-    get:
-      description: Get revenue details for all products
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Fetch product revenues successfully
-          schema:
-            allOf:
-            - $ref: '#/definitions/model.SuccessResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.ProductRevenue'
-                  type: array
-              type: object
-        "500":
-          description: Failed to fetch product revenues
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-      summary: Fetch product revenues
-      tags:
-      - Revenue
-  /api/revenue/status:
-    get:
-      description: Get total revenue grouped by order status
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Fetch total revenue by status successfully
-          schema:
-            allOf:
-            - $ref: '#/definitions/model.SuccessResponse'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.RevenueByStatus'
-                  type: array
-              type: object
-        "500":
-          description: Failed to fetch total revenue by status
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-      summary: Fetch total revenue by status
-      tags:
-      - Revenue
-  /logout:
-    post:
-      consumes:
-      - application/json
-      description: Log the user out by invalidating their authorization token
-      parameters:
-      - description: Bearer Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully logged out
-          schema:
-            $ref: '#/definitions/model.SuccessResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/model.ErrorResponse'
-      security:
-      - Authentication: []
-      summary: Logout user
-      tags:
-      - Superadmin
   /order:
     get:
       consumes:
@@ -1085,6 +828,299 @@ paths:
       summary: Retrieve all tables
       tags:
       - Tables
+  /product:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of categories with optional pagination
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of categories retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Product'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch categories
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Get all categories
+      tags:
+      - Categories
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add a new product to the inventory
+      parameters:
+      - description: Product Name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Product Description
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Product Price
+        in: formData
+        name: price
+        required: true
+        type: number
+      - description: Product Stock
+        in: formData
+        name: stock
+        required: true
+        type: integer
+      - description: Product Image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Product created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Product'
+              type: object
+        "400":
+          description: Invalid product data
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to create product
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Create a new product
+      tags:
+      - Products
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a product by its ID
+      parameters:
+      - description: Product ID
+        example: 1
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product deleted successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: string
+                  type: object
+              type: object
+        "400":
+          description: Invalid product ID
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to delete product
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Delete a product
+      tags:
+      - Products
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a single product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Product'
+              type: object
+        "400":
+          description: Invalid product ID
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Get product by ID
+      tags:
+      - Products
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update the details of a product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product Name
+        in: formData
+        name: name
+        type: string
+      - description: Product Description
+        in: formData
+        name: description
+        type: string
+      - description: Product Price
+        in: formData
+        name: price
+        type: number
+      - description: Product Stock
+        in: formData
+        name: stock
+        type: integer
+      - description: Product Image
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Product'
+              type: object
+        "400":
+          description: Invalid product ID or data
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to update product
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Update an existing product
+      tags:
+      - Products
+  /revenue/month:
+    get:
+      description: Get total revenue grouped by month
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fetch monthly revenue successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.MonthlyRevenue'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch monthly revenue
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Fetch monthly revenue
+      tags:
+      - Revenue
+  /revenue/products:
+    get:
+      description: Get revenue details for all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fetch product revenues successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.ProductRevenue'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch product revenues
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Fetch product revenues
+      tags:
+      - Revenue
+  /revenue/status:
+    get:
+      description: Get total revenue grouped by order status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fetch total revenue by status successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.RevenueByStatus'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch total revenue by status
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Fetch total revenue by status
+      tags:
+      - Revenue
   /superadmin:
     get:
       consumes:

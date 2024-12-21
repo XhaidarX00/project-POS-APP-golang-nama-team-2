@@ -29,6 +29,7 @@ func NewNotifController(service *service.AllService, log *zap.Logger) NotifContr
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param notification body model.CreateNotification true "Notification payload"
 // @Success 201 {object} model.SuccessResponse{data=model.Notification} "Notification created successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid payload"
@@ -61,6 +62,7 @@ func (c *NotifController) CreateNotifications(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param status query string false "Notification status (e.g., unread)"
 // @Success 200 {object} model.SuccessResponse{data=[]model.Notification} "List of notifications retrieved successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to fetch notifications"
@@ -83,6 +85,7 @@ func (c *NotifController) GetAllNotifications(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Notification ID"
 // @Success 200 {object} model.SuccessResponse{data=model.Notification} "Notification retrieved successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid ID format"
@@ -114,6 +117,7 @@ func (c *NotifController) GetNotificationByID(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Notification ID"
 // @Success 200 {object} model.SuccessResponse "Notification updated successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid ID format"
@@ -144,6 +148,7 @@ func (c *NotifController) UpdateNotification(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Notification ID"
 // @Success 200 {object} model.SuccessResponse "Notification deleted successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid ID format"
@@ -174,6 +179,7 @@ func (c *NotifController) DeleteNotification(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Success 200 {object} model.SuccessResponse "All notifications marked as read successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to mark notifications as read"
 // @Router /notification/mark-all-read [put]
