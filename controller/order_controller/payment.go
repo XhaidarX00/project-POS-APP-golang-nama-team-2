@@ -13,8 +13,9 @@ import (
 // @Tags Payments
 // @Accept json
 // @Produce json
-// @Success 200 {object} SuccessResponse{data=[]model.Payment} "Payment methods successfully retrieved"
-// @Failure 404 {object} ErrorResponse "Payment methods not found"
+// @Security Authentication
+// @Success 200 {object} model.SuccessResponse{data=[]model.Payment} "Payment methods successfully retrieved"
+// @Failure 404 {object} model.ErrorResponse "Payment methods not found"
 // @Router /order/payment [get]
 func (oc *orderController) GetAllPayment(c *gin.Context) {
 

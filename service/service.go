@@ -33,7 +33,6 @@ type AllService struct {
 
 func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService {
 	return &AllService{
-		Example:     exampleservice.NewExampleService(repo, log),
 		Auth:        authservice.NewManagementVoucherService(repo, log),
 		Notif:       notifservice.NewNotifService(repo, log),
 		Revenue:     revenueservice.NewRevenueService(repo, log),

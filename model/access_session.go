@@ -23,11 +23,12 @@ func SeedPermissions() []Permission {
 	return []Permission{
 		{Name: "Dashboard"},
 		{Name: "Revenue"},
-		{Name: "Inventory"},
 		{Name: "Order"},
 		{Name: "Superadmin"},
 		{Name: "Product"},
 		{Name: "Notification"},
+		{Name: "Reservation"},
+		{Name: "Category"},
 	}
 }
 
@@ -35,11 +36,13 @@ func SeedAccessPermissions() []AccessPermission {
 
 	accessPermissions := []AccessPermission{
 		{UserID: 1, PermissionID: 1, Status: true},
-		{UserID: 1, PermissionID: 2, Status: false},
+		{UserID: 1, PermissionID: 2, Status: true},
 		{UserID: 1, PermissionID: 3, Status: true},
-		{UserID: 1, PermissionID: 4, Status: false},
+		{UserID: 1, PermissionID: 4, Status: true},
 		{UserID: 1, PermissionID: 5, Status: true},
 		{UserID: 1, PermissionID: 6, Status: true},
+		{UserID: 1, PermissionID: 7, Status: true},
+		{UserID: 1, PermissionID: 8, Status: true},
 
 		{UserID: 2, PermissionID: 1, Status: false},
 		{UserID: 2, PermissionID: 2, Status: true},
@@ -47,6 +50,8 @@ func SeedAccessPermissions() []AccessPermission {
 		{UserID: 2, PermissionID: 4, Status: true},
 		{UserID: 2, PermissionID: 5, Status: false},
 		{UserID: 2, PermissionID: 6, Status: true},
+		{UserID: 2, PermissionID: 7, Status: true},
+		{UserID: 2, PermissionID: 8, Status: true},
 
 		{UserID: 3, PermissionID: 1, Status: true},
 		{UserID: 3, PermissionID: 2, Status: false},
@@ -54,6 +59,8 @@ func SeedAccessPermissions() []AccessPermission {
 		{UserID: 3, PermissionID: 4, Status: true},
 		{UserID: 3, PermissionID: 5, Status: true},
 		{UserID: 3, PermissionID: 6, Status: false},
+		{UserID: 3, PermissionID: 7, Status: false},
+		{UserID: 3, PermissionID: 8, Status: false},
 
 		{UserID: 4, PermissionID: 1, Status: true},
 		{UserID: 4, PermissionID: 2, Status: false},
@@ -61,6 +68,8 @@ func SeedAccessPermissions() []AccessPermission {
 		{UserID: 4, PermissionID: 4, Status: false},
 		{UserID: 4, PermissionID: 5, Status: true},
 		{UserID: 4, PermissionID: 6, Status: true},
+		{UserID: 4, PermissionID: 7, Status: true},
+		{UserID: 4, PermissionID: 8, Status: true},
 
 		{UserID: 5, PermissionID: 1, Status: true},
 		{UserID: 5, PermissionID: 2, Status: false},
@@ -68,6 +77,8 @@ func SeedAccessPermissions() []AccessPermission {
 		{UserID: 5, PermissionID: 4, Status: true},
 		{UserID: 5, PermissionID: 5, Status: false},
 		{UserID: 5, PermissionID: 6, Status: true},
+		{UserID: 5, PermissionID: 7, Status: true},
+		{UserID: 5, PermissionID: 8, Status: true},
 
 		{UserID: 6, PermissionID: 1, Status: true},
 		{UserID: 6, PermissionID: 2, Status: false},
@@ -75,6 +86,8 @@ func SeedAccessPermissions() []AccessPermission {
 		{UserID: 6, PermissionID: 4, Status: false},
 		{UserID: 6, PermissionID: 5, Status: false},
 		{UserID: 6, PermissionID: 6, Status: true},
+		{UserID: 6, PermissionID: 7, Status: true},
+		{UserID: 6, PermissionID: 8, Status: true},
 
 		{UserID: 7, PermissionID: 1, Status: true},
 		{UserID: 7, PermissionID: 2, Status: true},
@@ -82,6 +95,8 @@ func SeedAccessPermissions() []AccessPermission {
 		{UserID: 7, PermissionID: 4, Status: true},
 		{UserID: 7, PermissionID: 5, Status: true},
 		{UserID: 7, PermissionID: 6, Status: true},
+		{UserID: 7, PermissionID: 7, Status: true},
+		{UserID: 7, PermissionID: 8, Status: true},
 
 		{UserID: 8, PermissionID: 1, Status: true},
 		{UserID: 8, PermissionID: 2, Status: true},
@@ -89,6 +104,8 @@ func SeedAccessPermissions() []AccessPermission {
 		{UserID: 8, PermissionID: 4, Status: false},
 		{UserID: 8, PermissionID: 5, Status: true},
 		{UserID: 8, PermissionID: 6, Status: true},
+		{UserID: 8, PermissionID: 7, Status: true},
+		{UserID: 8, PermissionID: 8, Status: true},
 
 		{UserID: 9, PermissionID: 1, Status: true},
 		{UserID: 9, PermissionID: 2, Status: true},
@@ -96,6 +113,8 @@ func SeedAccessPermissions() []AccessPermission {
 		{UserID: 9, PermissionID: 4, Status: true},
 		{UserID: 9, PermissionID: 5, Status: true},
 		{UserID: 9, PermissionID: 6, Status: false},
+		{UserID: 9, PermissionID: 7, Status: false},
+		{UserID: 9, PermissionID: 8, Status: false},
 
 		{UserID: 10, PermissionID: 1, Status: true},
 		{UserID: 10, PermissionID: 2, Status: true},
@@ -103,6 +122,8 @@ func SeedAccessPermissions() []AccessPermission {
 		{UserID: 10, PermissionID: 4, Status: false},
 		{UserID: 10, PermissionID: 5, Status: true},
 		{UserID: 10, PermissionID: 6, Status: true},
+		{UserID: 10, PermissionID: 7, Status: true},
+		{UserID: 10, PermissionID: 8, Status: true},
 	}
 
 	return accessPermissions

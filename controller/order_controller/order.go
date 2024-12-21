@@ -37,8 +37,9 @@ func NewOrderController(service *service.AllService, log *zap.Logger) OrderContr
 // @Produce json
 // @Param search query string false "Search keyword to filter orders"
 // @Param status query string false "Filter orders by status"
-// @Success 200 {object} SuccessResponse{data=[]OrderResponse} "Order successfully retrieved"
-// @Failure 404 {object} ErrorResponse "Order not found"
+// @Success 200 {object} model.SuccessResponse{data=[]model.OrderResponse} "Order successfully retrieved"
+// @Failure 404 {object} model.ErrorResponse "Order not found"
+// @Security Authentication
 // @Router /order [get]
 func (oc *orderController) GetAllOrder(c *gin.Context) {
 	search := c.Query("search")
@@ -59,10 +60,11 @@ func (oc *orderController) GetAllOrder(c *gin.Context) {
 // @Tags Orders
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param order body model.Order true "Order payload"
-// @Success 201 {object} SuccessResponse{data=model.Order} "Order successfully created"
-// @Failure 400 {object} ErrorResponse "Failed to create order"
-// @Failure 500 {object} ErrorResponse "Invalid input"
+// @Success 201 {object} model.SuccessResponse "Order successfully created"
+// @Failure 400 {object} model.ErrorResponse "Failed to create order"
+// @Failure 500 {object} model.ErrorResponse "Invalid input"
 // @Router /order [post]
 func (oc *orderController) CreateOrder(c *gin.Context) {
 
@@ -78,7 +80,7 @@ func (oc *orderController) CreateOrder(c *gin.Context) {
 		return
 	}
 
-	helper.Responses(c, http.StatusCreated, "Order Succesfully Created", order)
+	helper.Responses(c, http.StatusCreated, "Order Succesfully Created", nil)
 }
 
 // UpdateOrder godoc
@@ -88,10 +90,11 @@ func (oc *orderController) CreateOrder(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "Order ID"
+// @Security Authentication
 // @Param order body model.Order true "Updated order payload"
-// @Success 200 {object} SuccessResponse{data=model.Order} "Order successfully updated"
-// @Failure 400 {object} ErrorResponse "Failed to update order"
-// @Failure 500 {object} ErrorResponse "Invalid input"
+// @Success 200 {object} model.SuccessResponse "Order successfully updated"
+// @Failure 400 {object} model.ErrorResponse "Failed to update order"
+// @Failure 500 {object} model.ErrorResponse "Invalid input"
 // @Router /order/{id} [put]
 func (oc *orderController) UpdateOrder(c *gin.Context) {
 
@@ -108,7 +111,7 @@ func (oc *orderController) UpdateOrder(c *gin.Context) {
 		return
 	}
 
-	helper.Responses(c, http.StatusOK, "Order Succesfully Updated", order)
+	helper.Responses(c, http.StatusOK, "Order Succesfully Updated", nil)
 }
 
 // DeleteOrder godoc
@@ -117,9 +120,10 @@ func (oc *orderController) UpdateOrder(c *gin.Context) {
 // @Tags Orders
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Order ID"
-// @Success 200 {object} SuccessResponse{data=map[string]int} "Successfully deleted order"
-// @Failure 404 {object} ErrorResponse "Order not found"
+// @Success 200 {object} model.SuccessResponse{data=map[string]int} "Successfully deleted order"
+// @Failure 404 {object} model.ErrorResponse "Order not found"
 // @Router /order/{id} [delete]
 func (oc *orderController) DeleteOrder(c *gin.Context) {
 

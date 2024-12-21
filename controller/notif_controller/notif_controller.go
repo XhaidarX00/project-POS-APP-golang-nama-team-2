@@ -29,11 +29,12 @@ func NewNotifController(service *service.AllService, log *zap.Logger) NotifContr
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param notification body model.CreateNotification true "Notification payload"
 // @Success 201 {object} model.SuccessResponse{data=model.Notification} "Notification created successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid payload"
 // @Failure 500 {object} model.ErrorResponse "Failed to create notification"
-// @Router /api/notifications [post]
+// @Router /notification [post]
 func (c *NotifController) CreateNotifications(ctx *gin.Context) {
 	var data model.Notification
 	err := ctx.ShouldBindJSON(&data)
@@ -61,10 +62,11 @@ func (c *NotifController) CreateNotifications(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param status query string false "Notification status (e.g., unread)"
 // @Success 200 {object} model.SuccessResponse{data=[]model.Notification} "List of notifications retrieved successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to fetch notifications"
-// @Router /api/notifications [get]
+// @Router /notification [get]
 func (c *NotifController) GetAllNotifications(ctx *gin.Context) {
 	status := ctx.Query("status")
 	notifications, err := c.Service.Notif.GetAllNotifications(status)
@@ -83,11 +85,12 @@ func (c *NotifController) GetAllNotifications(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Notification ID"
 // @Success 200 {object} model.SuccessResponse{data=model.Notification} "Notification retrieved successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid ID format"
 // @Failure 500 {object} model.ErrorResponse "Failed to fetch notification"
-// @Router /api/notifications/{id} [get]
+// @Router /notification/{id} [get]
 func (c *NotifController) GetNotificationByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	notifID, err := strconv.Atoi(id)
@@ -114,11 +117,12 @@ func (c *NotifController) GetNotificationByID(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Notification ID"
 // @Success 200 {object} model.SuccessResponse "Notification updated successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid ID format"
 // @Failure 500 {object} model.ErrorResponse "Failed to update notification"
-// @Router /api/notifications/{id} [put]
+// @Router /notification/{id} [put]
 func (c *NotifController) UpdateNotification(ctx *gin.Context) {
 	id := ctx.Param("id")
 	notificationID, err := strconv.Atoi(id)
@@ -144,11 +148,12 @@ func (c *NotifController) UpdateNotification(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "Notification ID"
 // @Success 200 {object} model.SuccessResponse "Notification deleted successfully"
 // @Failure 400 {object} model.ErrorResponse "Invalid ID format"
 // @Failure 500 {object} model.ErrorResponse "Failed to delete notification"
-// @Router /api/notifications/{id} [delete]
+// @Router /notification/{id} [delete]
 func (c *NotifController) DeleteNotification(ctx *gin.Context) {
 	id := ctx.Param("id")
 	notificationID, err := strconv.Atoi(id)
@@ -174,9 +179,10 @@ func (c *NotifController) DeleteNotification(ctx *gin.Context) {
 // @Tags Notification
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Success 200 {object} model.SuccessResponse "All notifications marked as read successfully"
 // @Failure 500 {object} model.ErrorResponse "Failed to mark notifications as read"
-// @Router /api/notifications/mark-all-read [put]
+// @Router /notification/mark-all-read [put]
 func (c *NotifController) MarkAllNotificationsAsRead(ctx *gin.Context) {
 	if err := c.Service.Notif.MarkAllNotificationsAsRead(); err != nil {
 		c.Log.Error("Failed to mark all notifications as read", zap.Error(err))

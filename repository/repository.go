@@ -33,7 +33,6 @@ type AllRepository struct {
 
 func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
 	return &AllRepository{
-		Example:     examplerepository.NewExampleRepo(DB, Log),
 		Auth:        authrepository.NewManagementVoucherRepo(DB, Log),
 		Notif:       notification.NewNotifRepo(DB, Log),
 		Revenue:     revenuerepository.NewRevenueRepository(DB, Log),
