@@ -7,6 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetAllTable godoc
+// @Summary Retrieve all tables
+// @Description Get a list of all tables
+// @Tags Tables
+// @Accept json
+// @Produce json
+// @Success 200 {object} SuccessResponse{data=[]model.Table} "Tables successfully retrieved"
+// @Failure 404 {object} ErrorResponse "Tables not found"
+// @Router /order/table [get]
 func (oc *orderController) GetAllTable(c *gin.Context) {
 
 	tables, err := oc.service.Order.GetAllTable()

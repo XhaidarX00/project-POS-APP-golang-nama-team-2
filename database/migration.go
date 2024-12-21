@@ -37,6 +37,7 @@ func Migration(db *gorm.DB) error {
 		{"permission", model.Permission{}},
 		{"access_permission", model.AccessPermission{}},
 		{"session", model.Session{}},
+		{"employee", model.Employee{}},
 	}
 
 	for _, migration := range allModel {

@@ -11,6 +11,7 @@ type SuperadminService interface {
 	ListDataAdmin() ([]*model.ResponseEmployee, error)
 	UpdateSuperadmin(id int, admin *model.Superadmin) error
 	UpdateAccessUser(id int, input *model.AccessPermission) error
+	Logout(token string) error
 }
 
 type superadminService struct {
@@ -44,6 +45,15 @@ func (as *superadminService) UpdateAccessUser(id int, input *model.AccessPermiss
 
 	err := as.Repo.Superadmin.UpdateAccessUser(id, input)
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (as *superadminService) Logout(token string) error {
+
+	if err := as.Repo.Superadmin.Logout(token); err != nil {
 		return err
 	}
 
