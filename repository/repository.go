@@ -2,6 +2,7 @@ package repository
 
 import (
 	authrepository "project_pos_app/repository/auth_repository"
+	categoryrepository "project_pos_app/repository/category_repository"
 	examplerepository "project_pos_app/repository/example_repository"
 	"project_pos_app/repository/notification"
 	orderrepository "project_pos_app/repository/order_repository"
@@ -21,6 +22,7 @@ type AllRepository struct {
 	Product    productrepository.ProductRepo
 	Order      orderrepository.OrderRepository
 	Superadmin profilesuperadmin.SuperadminRepo
+	Category   categoryrepository.CategoryRepository
 }
 
 func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
@@ -32,5 +34,6 @@ func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
 		Product:    productrepository.NewProductRepo(DB, Log),
 		Order:      orderrepository.NewOrderRepo(DB, Log),
 		Superadmin: profilesuperadmin.NewSuperadmin(DB, Log),
+		Category:   categoryrepository.NewCategoryRepo(DB, Log),
 	}
 }

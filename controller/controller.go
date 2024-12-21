@@ -2,6 +2,7 @@ package controller
 
 import (
 	authcontroller "project_pos_app/controller/auth_controller"
+	categorycontroller "project_pos_app/controller/category_controller"
 	examplecontroller "project_pos_app/controller/example_controller"
 	notifcontroller "project_pos_app/controller/notif_controller"
 	productcontroller "project_pos_app/controller/product_controller"
@@ -24,6 +25,7 @@ type AllController struct {
 	Product    productcontroller.ProductController
 	Order      ordercontroller.OrderController
 	Superadmin superadmincontroller.SuperadminController
+	Category   categorycontroller.CategoryController
 }
 
 func NewAllController(service *service.AllService, log *zap.Logger, cfg *database.Cache) AllController {
@@ -35,5 +37,6 @@ func NewAllController(service *service.AllService, log *zap.Logger, cfg *databas
 		Product:    *productcontroller.NewProductController(service, log),
 		Order:      ordercontroller.NewOrderController(service, log),
 		Superadmin: superadmincontroller.NewSuperadminController(service, log),
+		Category:   *categorycontroller.NewCategoryController(service, log),
 	}
 }
