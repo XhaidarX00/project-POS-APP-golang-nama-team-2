@@ -1,1 +1,2 @@
-{"L":"INFO","T":"2024-12-20T19:21:15.651+0700","M":"Logger initialized successfully"}
+{"L":"INFO","T":"2024-12-21T08:27:51.664+0700","M":"Logger initialized successfully"}
+{"L":"ERROR","T":"2024-12-21T08:28:18.431+0700","M":"Failed to Update Reservation","Error":"Already Booked"}
