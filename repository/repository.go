@@ -4,7 +4,6 @@ import (
 	accessrepository "project_pos_app/repository/access_repository"
 	authrepository "project_pos_app/repository/auth_repository"
 	categoryrepository "project_pos_app/repository/category_repository"
-	examplerepository "project_pos_app/repository/example_repository"
 	"project_pos_app/repository/notification"
 	orderrepository "project_pos_app/repository/order_repository"
 	productrepository "project_pos_app/repository/product"
@@ -17,7 +16,6 @@ import (
 )
 
 type AllRepository struct {
-	Example     examplerepository.ExampleRepository
 	Auth        authrepository.AuthRepoInterface
 	Notif       notification.NotifRepoInterface
 	Revenue     revenuerepository.RevenueRepositoryInterface
@@ -31,7 +29,6 @@ type AllRepository struct {
 
 func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
 	return &AllRepository{
-		Example:     examplerepository.NewExampleRepo(DB, Log),
 		Auth:        authrepository.NewManagementVoucherRepo(DB, Log),
 		Notif:       notification.NewNotifRepo(DB, Log),
 		Revenue:     revenuerepository.NewRevenueRepository(DB, Log),
