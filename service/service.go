@@ -9,11 +9,13 @@ import (
 	productservice "project_pos_app/service/product_service"
 	reservationservice "project_pos_app/service/reservation_service"
 	revenueservice "project_pos_app/service/revenue_service"
+	superadminservice "project_pos_app/service/superadmin_service"
 
 	"go.uber.org/zap"
 )
 
 type AllService struct {
+	Superadmin  superadminservice.SuperadminService
 	Example     exampleservice.ExampleService
 	Auth        authservice.AuthService
 	Notif       notifservice.NotifServiceInterface
@@ -31,6 +33,7 @@ func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService 
 		Revenue:     revenueservice.NewRevenueService(repo, log),
 		Product:     productservice.NewProductService(repo, log),
 		Order:       orderservice.NewOrderService(repo, log),
+		Superadmin:  superadminservice.NewSuperadminService(repo, log),
 		Reservation: reservationservice.NewRevenueService(repo, log),
 	}
 }

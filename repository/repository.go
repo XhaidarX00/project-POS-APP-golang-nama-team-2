@@ -6,6 +6,7 @@ import (
 	"project_pos_app/repository/notification"
 	orderrepository "project_pos_app/repository/order_repository"
 	productrepository "project_pos_app/repository/product"
+	profilesuperadmin "project_pos_app/repository/profile_superadmin"
 	reservationrepository "project_pos_app/repository/reservation_repository"
 	revenuerepository "project_pos_app/repository/revenue_repository"
 
@@ -14,6 +15,7 @@ import (
 )
 
 type AllRepository struct {
+	Superadmin  profilesuperadmin.SuperadminRepo
 	Example     examplerepository.ExampleRepository
 	Auth        authrepository.AuthRepoInterface
 	Notif       notification.NotifRepoInterface
@@ -31,6 +33,7 @@ func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
 		Revenue:     revenuerepository.NewRevenueRepository(DB, Log),
 		Product:     productrepository.NewProductRepo(DB, Log),
 		Order:       orderrepository.NewOrderRepo(DB, Log),
+		Superadmin:  profilesuperadmin.NewSuperadmin(DB, Log),
 		Reservation: reservationrepository.NewReservationRepository(DB, Log),
 	}
 }

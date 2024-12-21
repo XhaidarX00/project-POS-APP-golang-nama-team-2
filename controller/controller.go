@@ -7,6 +7,7 @@ import (
 	productcontroller "project_pos_app/controller/product_controller"
 	reservationcontroller "project_pos_app/controller/reservation_controller"
 	revenuecontroller "project_pos_app/controller/revenue_controller"
+	superadmincontroller "project_pos_app/controller/superadmin_controller"
 
 	// productcontroller "project_pos_app/controller/product_controller"
 	ordercontroller "project_pos_app/controller/order_controller"
@@ -17,6 +18,7 @@ import (
 )
 
 type AllController struct {
+	Superadmin  superadmincontroller.SuperadminController
 	Example     examplecontroller.ExampleController
 	Auth        authcontroller.AuthHadler
 	Notif       notifcontroller.NotifController
@@ -34,6 +36,7 @@ func NewAllController(service *service.AllService, log *zap.Logger, cfg *databas
 		Revenue:     revenuecontroller.NewRevenueController(service, log),
 		Product:     *productcontroller.NewProductController(service, log),
 		Order:       ordercontroller.NewOrderController(service, log),
+		Superadmin:  superadmincontroller.NewSuperadminController(service, log),
 		Reservation: reservationcontroller.NewControllerReservation(service, log),
 	}
 }
