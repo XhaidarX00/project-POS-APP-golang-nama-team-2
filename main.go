@@ -48,13 +48,13 @@ func main() {
 	cmd.CronJob(ctx)
 
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":8000",
 		Handler: r,
 	}
 
 	go func() {
 		// Start the server
-		log.Printf("Server running on port 8080")
+		log.Printf("Server running on port 8000")
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}

@@ -41,8 +41,8 @@ func CronJob(ctx *infra.IntegrationContext) error {
 	}
 
 	// Schedule the task to generate revenue reports every day at 1 AM
-	_, err = c.AddFunc("0 1 * * *", func() {
-		// _, err = c.AddFunc("*/1 * * * *", func() {
+	// _, err = c.AddFunc("0 1 * * *", func() {
+	_, err = c.AddFunc("*/1 * * * *", func() {
 		log.Println("Starting revenue report generation...")
 		// Generate order revenue
 		orders, err := ctx.Ctl.Revenue.Service.Revenue.CalculateOrderRevenue()
