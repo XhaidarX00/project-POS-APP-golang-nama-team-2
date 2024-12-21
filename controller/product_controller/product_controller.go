@@ -24,17 +24,17 @@ func NewProductController(service *service.AllService, log *zap.Logger) *Product
 	}
 }
 
-// GetAllProducts godoc
-// @Summary Get all products
-// @Description Get a list of products with optional pagination
-// @Tags Products
+// GetAllCategory godoc
+// @Summary Get all categories
+// @Description Get a list of categories with optional pagination
+// @Tags Categories
 // @Accept json
 // @Produce json
 // @Param page query int false "Page number" default(1)
 // @Param limit query int false "Number of items per page" default(10)
-// @Success 200 {object} map[string]interface{}
-// @Failure 500 {object} map[string]string{"error": "Failed to fetch products"}
-// @Router /api/products [get]
+// @Success 200 {object} model.SuccessResponse{data=[]model.Category} "List of categories retrieved successfully"
+// @Failure 500 {object} model.ErrorResponse "Failed to fetch categories"
+// @Router /api/categories [get]
 func (pc *ProductController) GetAllProducts(c *gin.Context) {
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
 	if err != nil || page < 1 {
@@ -64,14 +64,14 @@ func (pc *ProductController) GetAllProducts(c *gin.Context) {
 
 // GetProductByID godoc
 // @Summary Get product by ID
-// @Description Get a single product by its ID
+// @Description Retrieve a single product by its ID
 // @Tags Products
 // @Accept json
 // @Produce json
 // @Param id path int true "Product ID"
-// @Success 200 {object} model.Product
-// @Failure 400 {object} map[string]string{"error": "Invalid product ID"}
-// @Failure 404 {object} map[string]string{"error": "Product not found"}
+// @Success 200 {object} model.SuccessResponse{data=model.Product} "Product retrieved successfully"
+// @Failure 400 {object} model.ErrorResponse "Invalid product ID"
+// @Failure 404 {object} model.ErrorResponse "Product not found"
 // @Router /api/products/{id} [get]
 func (pc *ProductController) GetProductByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
@@ -94,17 +94,18 @@ func (pc *ProductController) GetProductByID(c *gin.Context) {
 
 // CreateProduct godoc
 // @Summary Create a new product
-// @Description Add a new product to the database
+// @Description Add a new product to the inventory
 // @Tags Products
 // @Accept multipart/form-data
 // @Produce json
 // @Param name formData string true "Product Name"
 // @Param description formData string true "Product Description"
 // @Param price formData float64 true "Product Price"
-// @Param image formData file false "Product Image" // File field for image
-// @Success 201 {object} model.Product
-// @Failure 400 {object} map[string]string{"error": "Invalid product data"}
-// @Failure 500 {object} map[string]string{"error": "Failed to create product"}
+// @Param stock formData int true "Product Stock"
+// @Param image formData file true "Product Image"
+// @Success 201 {object} model.SuccessResponse{data=model.Product} "Product created successfully"
+// @Failure 400 {object} model.ErrorResponse "Invalid product data"
+// @Failure 500 {object} model.ErrorResponse "Failed to create product"
 // @Router /api/products [post]
 func (pc *ProductController) CreateProduct(c *gin.Context) {
 	pc.log.Info("Starting product creation")
@@ -182,16 +183,20 @@ func (pc *ProductController) CreateProduct(c *gin.Context) {
 
 // UpdateProduct godoc
 // @Summary Update an existing product
-// @Description Update a product by its ID
+// @Description Update the details of a product by its ID
 // @Tags Products
-// @Accept json
+// @Accept multipart/form-data
 // @Produce json
 // @Param id path int true "Product ID"
-// @Param product body model.Product true "Product data"
-// @Success 200 {object} model.Product
-// @Failure 400 {object} map[string]string{"error": "Invalid product ID"}
-// @Failure 400 {object} map[string]string{"error": "Invalid product data"}
-// @Failure 500 {object} map[string]string{"error": "Failed to update product"}
+// @Param name formData string false "Product Name"
+// @Param description formData string false "Product Description"
+// @Param price formData float64 false "Product Price"
+// @Param stock formData int false "Product Stock"
+// @Param image formData file false "Product Image"
+// @Success 200 {object} model.SuccessResponse{data=model.Product} "Product updated successfully"
+// @Failure 400 {object} model.ErrorResponse "Invalid product ID or data"
+// @Failure 404 {object} model.ErrorResponse "Product not found"
+// @Failure 500 {object} model.ErrorResponse "Failed to update product"
 // @Router /api/products/{id} [put]
 func (pc *ProductController) UpdateProduct(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
@@ -238,10 +243,11 @@ func (pc *ProductController) UpdateProduct(c *gin.Context) {
 // @Tags Products
 // @Accept json
 // @Produce json
-// @Param id path int true "Product ID"
-// @Success 200 {object} map[string]string{"message": "Product deleted successfully"}
-// @Failure 400 {object} map[string]string{"error": "Invalid product ID"}
-// @Failure 500 {object} map[string]string{"error": "Failed to delete product"}
+// @Param id path int true "Product ID" example(1)
+// @Success 200 {object} model.SuccessResponse{data=map[string]string} "Product deleted successfully"
+// @Failure 400 {object} model.ErrorResponse "Invalid product ID"
+// @Failure 404 {object} model.ErrorResponse "Product not found"
+// @Failure 500 {object} model.ErrorResponse "Failed to delete product"
 // @Router /api/products/{id} [delete]
 func (pc *ProductController) DeleteProduct(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))

@@ -25,6 +25,8 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	NotificationRoutes(r, ctx)
 	RevenueRoutes(r, ctx)
 	ProductRoutes(r, ctx)
+	CategoryRoutes(r, ctx)
+
 	ReservationRoutes(r, ctx)
 	order := r.Group("/order")
 	{
@@ -87,5 +89,18 @@ func ReservationRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 		reservationRoute.GET("/reservation/:id", ctx.Ctl.Reservation.GetById)
 		reservationRoute.POST("/reservation", ctx.Ctl.Reservation.Create)
 		reservationRoute.PUT("/reservation/:id", ctx.Ctl.Reservation.Edit)
+	}
+}
+
+func CategoryRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
+	categoryRoute := r.Group("/api")
+	{
+		categoryRoute.GET("/categories", ctx.Ctl.Category.GetAllCategory)
+		categoryRoute.GET("/categories/products", func(c *gin.Context) {
+			ctx.Ctl.Product.GetAllProducts(c)
+		})
+		categoryRoute.GET("/categories/:id", ctx.Ctl.Category.GetCategoryByID)
+		categoryRoute.POST("/categories", ctx.Ctl.Category.CreateCategory)
+		categoryRoute.PUT("/categories/:id", ctx.Ctl.Category.UpdateCategory)
 	}
 }
