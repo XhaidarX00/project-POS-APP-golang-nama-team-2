@@ -12,6 +12,7 @@ type SuperadminRepo interface {
 	ListDataAdmin() ([]*model.ResponseEmployee, error)
 	UpdateSuperadmin(id int, admin *model.Superadmin) error
 	UpdateAccessUser(id int, input *model.AccessPermission) error
+	Logout(token string) error
 }
 
 type superadminRepo struct {
@@ -86,6 +87,17 @@ func (ar *superadminRepo) UpdateAccessUser(id int, input *model.AccessPermission
 
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (ar *superadminRepo) Logout(token string) error {
+
+	updateResult := ar.DB.Model(&model.Session{}).Where("token = ?", token).Update("token", nil)
+
+	if updateResult.Error != nil {
+		return fmt.Errorf("failed to logout: %w", updateResult.Error)
 	}
 
 	return nil

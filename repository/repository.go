@@ -3,6 +3,7 @@ package repository
 import (
 	accessrepository "project_pos_app/repository/access_repository"
 	authrepository "project_pos_app/repository/auth_repository"
+	categoryrepository "project_pos_app/repository/category_repository"
 	dashboardrepository "project_pos_app/repository/dashboard_repository"
 	examplerepository "project_pos_app/repository/example_repository"
 	"project_pos_app/repository/notification"
@@ -17,6 +18,8 @@ import (
 )
 
 type AllRepository struct {
+	Category    categoryrepository.CategoryRepository
+	Access      accessrepository.AccessRepository
 	Example     examplerepository.ExampleRepository
 	Auth        authrepository.AuthRepoInterface
 	Notif       notification.NotifRepoInterface
@@ -24,7 +27,6 @@ type AllRepository struct {
 	Product     productrepository.ProductRepo
 	Order       orderrepository.OrderRepository
 	Superadmin  profilesuperadmin.SuperadminRepo
-	Access      accessrepository.AccessRepository
 	Reservation reservationrepository.RepositoryReservation
 	Dashboard   dashboardrepository.RepositoryDashboard
 }
@@ -38,6 +40,7 @@ func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
 		Product:     productrepository.NewProductRepo(DB, Log),
 		Order:       orderrepository.NewOrderRepo(DB, Log),
 		Superadmin:  profilesuperadmin.NewSuperadmin(DB, Log),
+		Category:    categoryrepository.NewCategoryRepo(DB, Log),
 		Access:      accessrepository.NewAccessRepository(DB, Log),
 		Reservation: reservationrepository.NewReservationRepository(DB, Log),
 		Dashboard:   dashboardrepository.NewReservationRepository(DB, Log),

@@ -146,8 +146,8 @@ func (r *RevenueRepository) SaveOrderRevenue(order model.OrderRevenue) error {
 	// Mulai transaksi untuk memastikan konsistensi data
 	tx := r.DB.Begin()
 	if tx.Error != nil {
-		// return errors.New("database error")
-		return tx.Error
+		return errors.New("database error")
+		// return tx.Error
 	}
 	defer func() {
 		if r := recover(); r != nil {
@@ -163,15 +163,15 @@ func (r *RevenueRepository) SaveOrderRevenue(order model.OrderRevenue) error {
 		// Jika order sudah ada, lakukan pembaruan (update) data order
 		if err := tx.Model(&existingOrder).Updates(order).Error; err != nil {
 			tx.Rollback()
-			// return errors.New("database error")
-			return err
+			return errors.New("database error")
+			// return err
 		}
 	} else if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		// Jika order belum ada, buat data baru
 		if err := tx.Create(&order).Error; err != nil {
 			tx.Rollback()
-			// return errors.New("database error")
-			return err
+			return errors.New("database error")
+			// return err
 		}
 	} else {
 		tx.Rollback()
