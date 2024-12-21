@@ -35,6 +35,7 @@ func Migration(db *gorm.DB) error {
 		{"superadmin", model.Superadmin{}},
 		{"employee", model.Employee{}},
 		{"user", model.User{}},
+		{"reservation", model.Reservation{}},
 	}
 
 	for _, migration := range allModel {
