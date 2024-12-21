@@ -3,6 +3,7 @@ package repository
 import (
 	accessrepository "project_pos_app/repository/access_repository"
 	authrepository "project_pos_app/repository/auth_repository"
+	dashboardrepository "project_pos_app/repository/dashboard_repository"
 	examplerepository "project_pos_app/repository/example_repository"
 	"project_pos_app/repository/notification"
 	orderrepository "project_pos_app/repository/order_repository"
@@ -16,27 +17,29 @@ import (
 )
 
 type AllRepository struct {
-	Example    examplerepository.ExampleRepository
-	Auth       authrepository.AuthRepoInterface
-	Notif      notification.NotifRepoInterface
-	Revenue    revenuerepository.RevenueRepositoryInterface
-	Product    productrepository.ProductRepo
-	Order      orderrepository.OrderRepository
-	Superadmin profilesuperadmin.SuperadminRepo
-	Access     accessrepository.AccessRepository
-  Reservation reservationrepository.RepositoryReservation
+	Example     examplerepository.ExampleRepository
+	Auth        authrepository.AuthRepoInterface
+	Notif       notification.NotifRepoInterface
+	Revenue     revenuerepository.RevenueRepositoryInterface
+	Product     productrepository.ProductRepo
+	Order       orderrepository.OrderRepository
+	Superadmin  profilesuperadmin.SuperadminRepo
+	Access      accessrepository.AccessRepository
+	Reservation reservationrepository.RepositoryReservation
+	Dashboard   dashboardrepository.RepositoryDashboard
 }
 
 func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
 	return &AllRepository{
-		Example:    examplerepository.NewExampleRepo(DB, Log),
-		Auth:       authrepository.NewManagementVoucherRepo(DB, Log),
-		Notif:      notification.NewNotifRepo(DB, Log),
-		Revenue:    revenuerepository.NewRevenueRepository(DB, Log),
-		Product:    productrepository.NewProductRepo(DB, Log),
-		Order:      orderrepository.NewOrderRepo(DB, Log),
-		Superadmin: profilesuperadmin.NewSuperadmin(DB, Log),
-		Access:     accessrepository.NewAccessRepository(DB, Log),
-    Reservation: reservationrepository.NewReservationRepository(DB, Log),
+		Example:     examplerepository.NewExampleRepo(DB, Log),
+		Auth:        authrepository.NewManagementVoucherRepo(DB, Log),
+		Notif:       notification.NewNotifRepo(DB, Log),
+		Revenue:     revenuerepository.NewRevenueRepository(DB, Log),
+		Product:     productrepository.NewProductRepo(DB, Log),
+		Order:       orderrepository.NewOrderRepo(DB, Log),
+		Superadmin:  profilesuperadmin.NewSuperadmin(DB, Log),
+		Access:      accessrepository.NewAccessRepository(DB, Log),
+		Reservation: reservationrepository.NewReservationRepository(DB, Log),
+		Dashboard:   dashboardrepository.NewReservationRepository(DB, Log),
 	}
 }

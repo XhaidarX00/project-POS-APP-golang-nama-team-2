@@ -25,6 +25,7 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	RevenueRoutes(r, ctx)
 	ProductRoutes(r, ctx)
 	ReservationRoutes(r, ctx)
+	DashboardRoutes(r, ctx)
 	order := r.Group("/order")
 	{
 		order.Use(ctx.Middleware.Access.AccessMiddleware())
@@ -86,5 +87,11 @@ func ReservationRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 		reservationRoute.GET("/reservation/:id", ctx.Ctl.Reservation.GetById)
 		reservationRoute.POST("/reservation", ctx.Ctl.Reservation.Create)
 		reservationRoute.PUT("/reservation/:id", ctx.Ctl.Reservation.Edit)
+	}
+}
+func DashboardRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
+	reservationRoute := r.Group("/api")
+	{
+		reservationRoute.GET("/dashboard/popular", ctx.Ctl.Dashboard.GetPopularProduct)
 	}
 }
