@@ -2,6 +2,7 @@ package service
 
 import (
 	"project_pos_app/repository"
+	accessservice "project_pos_app/service/access_service"
 	authservice "project_pos_app/service/auth_service"
 	exampleservice "project_pos_app/service/example_service"
 	notifservice "project_pos_app/service/notif_service"
@@ -15,25 +16,27 @@ import (
 )
 
 type AllService struct {
-	Superadmin  superadminservice.SuperadminService
-	Example     exampleservice.ExampleService
-	Auth        authservice.AuthService
-	Notif       notifservice.NotifServiceInterface
-	Revenue     revenueservice.RevenueServiceInterface
-	Product     productservice.ProductService
-	Order       orderservice.OrderService
-	Reservation reservationservice.ServiceReservation
+	Example    exampleservice.ExampleService
+	Auth       authservice.AuthService
+	Notif      notifservice.NotifServiceInterface
+	Revenue    revenueservice.RevenueServiceInterface
+	Product    productservice.ProductService
+	Order      orderservice.OrderService
+	Superadmin superadminservice.SuperadminService
+	Access     accessservice.AccessService
+  Reservation reservationservice.ServiceReservation
 }
 
 func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService {
 	return &AllService{
-		Example:     exampleservice.NewExampleService(repo, log),
-		Auth:        authservice.NewManagementVoucherService(repo, log),
-		Notif:       notifservice.NewNotifService(repo, log),
-		Revenue:     revenueservice.NewRevenueService(repo, log),
-		Product:     productservice.NewProductService(repo, log),
-		Order:       orderservice.NewOrderService(repo, log),
-		Superadmin:  superadminservice.NewSuperadminService(repo, log),
-		Reservation: reservationservice.NewRevenueService(repo, log),
+		Example:    exampleservice.NewExampleService(repo, log),
+		Auth:       authservice.NewManagementVoucherService(repo, log),
+		Notif:      notifservice.NewNotifService(repo, log),
+		Revenue:    revenueservice.NewRevenueService(repo, log),
+		Product:    productservice.NewProductService(repo, log),
+		Order:      orderservice.NewOrderService(repo, log),
+		Superadmin: superadminservice.NewSuperadminService(repo, log),
+		Access:     accessservice.NewAccessService(repo, log),
+    Reservation: reservationservice.NewRevenueService(repo, log),
 	}
 }

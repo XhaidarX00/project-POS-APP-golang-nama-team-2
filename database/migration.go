@@ -22,7 +22,6 @@ func Migration(db *gorm.DB) error {
 		name  string
 		model interface{}
 	}{
-		// {"user", models.User{}},
 		{"notification", model.Notification{}},
 		{"revenue_product", model.ProductRevenue{}},
 		{"revenue_order", model.OrderRevenue{}},
@@ -32,10 +31,12 @@ func Migration(db *gorm.DB) error {
 		{"product", model.Product{}},
 		{"table", model.Table{}},
 		{"payment", model.Payment{}},
-		{"superadmin", model.Superadmin{}},
-		{"employee", model.Employee{}},
 		{"user", model.User{}},
 		{"reservation", model.Reservation{}},
+		{"superadmin", model.Superadmin{}},
+		{"permission", model.Permission{}},
+		{"access_permission", model.AccessPermission{}},
+		{"session", model.Session{}},
 	}
 
 	for _, migration := range allModel {
