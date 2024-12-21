@@ -25,6 +25,7 @@ func NewControllerReservation(service *service.AllService, log *zap.Logger) Cont
 // @Tags Reservation
 // @Accept  json
 // @Produce  json
+// @Security Authentication
 // @Success 200 {object} helper.Response{data=[]model.Reservation} "Get Summary Success"
 // @Failure 500 {object} helper.Response "server error"
 // @Router  /reservation [get]
@@ -44,6 +45,7 @@ func (ctrl *ControllerReservation) GetAll(ctx *gin.Context) {
 // @Tags Reservation
 // @Accept  json
 // @Produce  json
+// @Security Authentication
 // @Success 200 {object} helper.Response{data=model.Reservation} "Get Summary Success"
 // @Failure 500 {object} helper.Response "server error"
 // @Router  /reservation/{id} [get]
@@ -66,6 +68,7 @@ func (ctrl *ControllerReservation) GetById(ctx *gin.Context) {
 // @Tags Reservation
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Success 201 {string} helper.Response{data=model.Reservation} "Reservation successfully created"
 // @Failure 400 {object} helper.Response "Invalid form data"
 // @Failure 500 {object} helper.Response "Internal Server Error"
@@ -92,6 +95,7 @@ func (ctrl *ControllerReservation) Create(ctx *gin.Context) {
 // @Tags Reservation
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Success 201 {string} helper.Response{data=model.Reservation} "Reservation successfully updated"
 // @Failure 400 {object} helper.Response "Invalid form data"
 // @Failure 500 {object} helper.Response "Internal Server Error"

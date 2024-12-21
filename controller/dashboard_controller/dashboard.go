@@ -28,6 +28,7 @@ func NewControllerDashboard(service *service.AllService, log *zap.Logger) Contro
 // @Tags Dashboard
 // @Accept  json
 // @Produce  json
+// @Security Authentication
 // @Success 200 {object} helper.Response{data=[]model.Product} "Get Summary Success"
 // @Failure 500 {object} helper.Response "server error"
 // @Router  /api/dashboard/popular [get]
@@ -46,6 +47,7 @@ func (ctrl *ControllerDashboard) GetPopularProduct(ctx *gin.Context) {
 // @Tags Dashboard
 // @Accept  json
 // @Produce  json
+// @Security Authentication
 // @Success 200 {object} helper.Response{data=[]model.Product} "Get Summary Success"
 // @Failure 500 {object} helper.Response "server error"
 // @Router  /api/dashboard/new [get]
@@ -64,6 +66,7 @@ func (ctrl *ControllerDashboard) GetNewProduct(ctx *gin.Context) {
 // @Tags Dashboard
 // @Accept  json
 // @Produce  json
+// @Security Authentication
 // @Success 200 {object} helper.Response{data=model.Summary} "Get Summary Success"
 // @Failure 500 {object} helper.Response "server error"
 // @Router  /api/dashboard/summary [get]
@@ -83,6 +86,7 @@ func (ctrl *ControllerDashboard) GetSummary(ctx *gin.Context) {
 // @Description Generate an Excel report and return it as an attachment
 // @Tags Dashboard
 // @Accept  json
+// @Security Authentication
 // @Produce  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 // @Success 200 {file} file "Order_Report.xlsx"
 // @Failure 500 {object} helper.Response "server error"
