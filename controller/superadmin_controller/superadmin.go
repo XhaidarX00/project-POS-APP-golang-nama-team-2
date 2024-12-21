@@ -35,8 +35,9 @@ func NewSuperadminController(service *service.AllService, log *zap.Logger) Super
 // @Tags Superadmin
 // @Accept json
 // @Produce json
-// @Success 200 {object} SuccessResponse{data=[]ResponseEmployee} "Successfully retrieved admin data"
-// @Failure 404 {object} ErrorResponse "Admin data not found"
+// @Security Authentication
+// @Success 200 {object} model.SuccessResponse{data=[]model.ResponseEmployee} "Successfully retrieved admin data"
+// @Failure 404 {object} model.ErrorResponse "Admin data not found"
 // @Router /superadmin [get]
 func (sc *superadminController) ListDataAdmin(c *gin.Context) {
 
@@ -56,15 +57,16 @@ func (sc *superadminController) ListDataAdmin(c *gin.Context) {
 // @Tags Superadmin
 // @Accept multipart/form-data
 // @Produce json
+// @Security Authentication
 // @Param email formData string true "Email of the superadmin" minlength(3) maxlength(100)
 // @Param full_name formData string true "Full name of the superadmin" minlength(3) maxlength(100)
 // @Param address formData string false "Address of the superadmin" maxlength(255)
 // @Param new_password formData string false "New password for the superadmin" minlength(8)
 // @Param confirm_password formData string false "Confirm password (must match new_password)"
 // @Param image formData file true "Profile image (maximum size 5MB)"
-// @Success 200 {object} SuccessResponse "Successfully updated superadmin"
-// @Failure 400 {object} ErrorResponse "Invalid input data or validation error"
-// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Success 200 {object} model.SuccessResponse "Successfully updated superadmin"
+// @Failure 400 {object} model.ErrorResponse "Invalid input data or validation error"
+// @Failure 500 {object} model.ErrorResponse "Internal server error"
 // @Router /superadmin [put]
 func (sc *superadminController) UpdateSuperadmin(c *gin.Context) {
 	var SuperadminInput struct {
@@ -147,11 +149,12 @@ func (sc *superadminController) UpdateSuperadmin(c *gin.Context) {
 // @Tags Superadmin
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param id path int true "User ID"
 // @Param input body model.AccessPermission true "Access Permission Payload"
-// @Success 200 {object} SuccessResponse "Successfully updated access permissions"
-// @Failure 400 {object} ErrorResponse "Invalid input payload"
-// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Success 200 {object} model.SuccessResponse "Successfully updated access permissions"
+// @Failure 400 {object} model.ErrorResponse "Invalid input payload"
+// @Failure 500 {object} model.ErrorResponse "Internal server error"
 // @Router /superadmin/{id} [put]
 func (ac *superadminController) UpdateAccessUser(c *gin.Context) {
 
@@ -179,10 +182,11 @@ func (ac *superadminController) UpdateAccessUser(c *gin.Context) {
 // @Tags Superadmin
 // @Accept json
 // @Produce json
+// @Security Authentication
 // @Param Authorization header string true "Bearer Token"
-// @Success 200 {object} SuccessResponse "Successfully logged out"
-// @Failure 401 {object} ErrorResponse "Unauthorized"
-// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Success 200 {object} model.SuccessResponse "Successfully logged out"
+// @Failure 401 {object} model.ErrorResponse "Unauthorized"
+// @Failure 500 {object} model.ErrorResponse "Internal server error"
 // @Router /logout [post]
 func (ac *superadminController) Logout(c *gin.Context) {
 

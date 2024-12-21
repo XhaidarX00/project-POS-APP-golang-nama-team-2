@@ -52,12 +52,21 @@ func (sr *superadminRepo) UpdateSuperadmin(id int, admin *model.Superadmin) erro
 		}
 	}()
 
-	if err := tx.Model(&model.User{}).Where("id = ?", admin.UserID).Updates(admin.User).Error; err != nil {
+	updateData := map[string]interface{}{
+		"email": admin.User.Email,
+	}
+
+	if admin.User.Password != "" {
+		updateData["password"] = admin.User.Password
+	}
+
+	if err := tx.Model(&model.User{}).Where("id = ?", id).Updates(updateData).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
 
-	if err := tx.Model(&model.Superadmin{}).Where("id = ?", id).Updates(admin).Error; err != nil {
+	if err := tx.Model(&model.Superadmin{}).Where("user_id = ?", id).
+		Updates(admin).Error; err != nil {
 		tx.Rollback()
 		return err
 	}

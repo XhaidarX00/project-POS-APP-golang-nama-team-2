@@ -28,6 +28,7 @@ func SeedPermissions() []Permission {
 		{Name: "Superadmin"},
 		{Name: "Product"},
 		{Name: "Notification"},
+		{Name: "Reservation"},
 	}
 }
 
@@ -35,9 +36,9 @@ func SeedAccessPermissions() []AccessPermission {
 
 	accessPermissions := []AccessPermission{
 		{UserID: 1, PermissionID: 1, Status: true},
-		{UserID: 1, PermissionID: 2, Status: false},
+		{UserID: 1, PermissionID: 2, Status: true},
 		{UserID: 1, PermissionID: 3, Status: true},
-		{UserID: 1, PermissionID: 4, Status: false},
+		{UserID: 1, PermissionID: 4, Status: true},
 		{UserID: 1, PermissionID: 5, Status: true},
 		{UserID: 1, PermissionID: 6, Status: true},
 

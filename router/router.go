@@ -28,24 +28,8 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	CategoryRoutes(r, ctx)
 
 	ReservationRoutes(r, ctx)
-	order := r.Group("/order")
-	{
-		order.Use(ctx.Middleware.Access.AccessMiddleware())
-		order.GET("/", ctx.Ctl.Order.GetAllOrder)
-		order.GET("/table", ctx.Ctl.Order.GetAllTable)
-		order.GET("/payment", ctx.Ctl.Order.GetAllPayment)
-		order.POST("/", ctx.Ctl.Order.CreateOrder)
-		order.PUT("/:id", ctx.Ctl.Order.UpdateOrder)
-		order.DELETE("/:id", ctx.Ctl.Order.DeleteOrder)
-	}
-
-	superadmin := r.Group("/superadmin")
-	{
-		superadmin.Use(ctx.Middleware.Access.AccessMiddleware())
-		superadmin.GET("/", ctx.Ctl.Superadmin.ListDataAdmin)
-		superadmin.PUT("/", ctx.Ctl.Superadmin.UpdateSuperadmin)
-		superadmin.PUT("/:id", ctx.Ctl.Superadmin.UpdateAccessUser)
-	}
+	OrderRoutes(r, ctx)
+	SuperAdmin(r, ctx)
 
 	return r
 }
@@ -66,6 +50,7 @@ func NotificationRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 func RevenueRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 	revenueRoute := r.Group("/revenue")
 	{
+		revenueRoute.Use(ctx.Middleware.Access.AccessMiddleware())
 		revenueRoute.GET("/month", ctx.Ctl.Revenue.GetMonthlyRevenue)
 		revenueRoute.GET("/products", ctx.Ctl.Revenue.GetProductRevenues)
 		revenueRoute.GET("/status", ctx.Ctl.Revenue.GetTotalRevenueByStatus)
@@ -75,6 +60,7 @@ func RevenueRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 func ProductRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 	productRoute := r.Group("/product")
 	{
+		productRoute.Use(ctx.Middleware.Access.AccessMiddleware())
 		productRoute.GET("/", ctx.Ctl.Product.GetAllProducts)
 		productRoute.GET("/:id", ctx.Ctl.Product.GetProductByID)
 		productRoute.POST("/", ctx.Ctl.Product.CreateProduct)
@@ -82,13 +68,38 @@ func ProductRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 		productRoute.DELETE("/:id", ctx.Ctl.Product.DeleteProduct)
 	}
 }
+
 func ReservationRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
-	reservationRoute := r.Group("/api")
+	reservationRoute := r.Group("/reservation")
 	{
-		reservationRoute.GET("/reservation", ctx.Ctl.Reservation.GetAll)
-		reservationRoute.GET("/reservation/:id", ctx.Ctl.Reservation.GetById)
-		reservationRoute.POST("/reservation", ctx.Ctl.Reservation.Create)
-		reservationRoute.PUT("/reservation/:id", ctx.Ctl.Reservation.Edit)
+		reservationRoute.Use(ctx.Middleware.Access.AccessMiddleware())
+		reservationRoute.GET("/", ctx.Ctl.Reservation.GetAll)
+		reservationRoute.GET("/:id", ctx.Ctl.Reservation.GetById)
+		reservationRoute.POST("/", ctx.Ctl.Reservation.Create)
+		reservationRoute.PUT("/:id", ctx.Ctl.Reservation.Edit)
+	}
+}
+
+func OrderRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
+	order := r.Group("/order")
+	{
+		order.Use(ctx.Middleware.Access.AccessMiddleware())
+		order.GET("/", ctx.Ctl.Order.GetAllOrder)
+		order.GET("/table", ctx.Ctl.Order.GetAllTable)
+		order.GET("/payment", ctx.Ctl.Order.GetAllPayment)
+		order.POST("/", ctx.Ctl.Order.CreateOrder)
+		order.PUT("/:id", ctx.Ctl.Order.UpdateOrder)
+		order.DELETE("/:id", ctx.Ctl.Order.DeleteOrder)
+	}
+}
+
+func SuperAdmin(r *gin.Engine, ctx *infra.IntegrationContext) {
+	superadmin := r.Group("/superadmin")
+	{
+		superadmin.Use(ctx.Middleware.Access.SuperAdminOnly())
+		superadmin.GET("/", ctx.Ctl.Superadmin.ListDataAdmin)
+		superadmin.PUT("/", ctx.Ctl.Superadmin.UpdateSuperadmin)
+		superadmin.PUT("/:id", ctx.Ctl.Superadmin.UpdateAccessUser)
 	}
 }
 

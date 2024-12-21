@@ -13,8 +13,9 @@ import (
 // @Tags Tables
 // @Accept json
 // @Produce json
-// @Success 200 {object} SuccessResponse{data=[]model.Table} "Tables successfully retrieved"
-// @Failure 404 {object} ErrorResponse "Tables not found"
+// @Security Authentication
+// @Success 200 {object} model.SuccessResponse{data=[]model.Table} "Tables successfully retrieved"
+// @Failure 404 {object} model.ErrorResponse "Tables not found"
 // @Router /order/table [get]
 func (oc *orderController) GetAllTable(c *gin.Context) {
 

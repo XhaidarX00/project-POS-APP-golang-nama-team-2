@@ -12,7 +12,7 @@ type Table struct {
 	IsBook    bool            `json:"is_book"`
 	CreatedAt time.Time       `json:"created_at"`
 	UpdatedAt time.Time       `json:"updated_at"`
-	DeletedAt *gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+	DeletedAt *gorm.DeletedAt `gorm:"index" json:"deleted_at" swaggerignore:"true"`
 }
 
 func SeedTables() []Table {
