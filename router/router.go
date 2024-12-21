@@ -30,24 +30,6 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	OrderRoutes(r, ctx)
 	SuperAdmin(r, ctx)
 	DashboardRoutes(r, ctx)
-	order := r.Group("/order")
-	{
-		order.Use(ctx.Middleware.Access.AccessMiddleware())
-		order.GET("/", ctx.Ctl.Order.GetAllOrder)
-		order.GET("/table", ctx.Ctl.Order.GetAllTable)
-		order.GET("/payment", ctx.Ctl.Order.GetAllPayment)
-		order.POST("/", ctx.Ctl.Order.CreateOrder)
-		order.PUT("/:id", ctx.Ctl.Order.UpdateOrder)
-		order.DELETE("/:id", ctx.Ctl.Order.DeleteOrder)
-	}
-
-	superadmin := r.Group("/superadmin")
-	{
-		superadmin.Use(ctx.Middleware.Access.AccessMiddleware())
-		superadmin.GET("/", ctx.Ctl.Superadmin.ListDataAdmin)
-		superadmin.PUT("/", ctx.Ctl.Superadmin.UpdateSuperadmin)
-		superadmin.PUT("/:id", ctx.Ctl.Superadmin.UpdateAccessUser)
-	}
 
 	return r
 }

@@ -1,5 +1,21 @@
 basePath: /
 definitions:
+  helper.Response:
+    properties:
+      data: {}
+      limit:
+        type: integer
+      message:
+        type: string
+      page:
+        type: integer
+      status:
+        type: integer
+      total_items:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
   model.AccessPermission:
     properties:
       id:
@@ -239,6 +255,15 @@ definitions:
       status:
         type: integer
     type: object
+  model.Summary:
+    properties:
+      dailySales:
+        type: integer
+      monthlySales:
+        type: integer
+      totalTables:
+        type: integer
+    type: object
   model.Table:
     properties:
       created_at:
@@ -266,6 +291,101 @@ info:
   title: App pos Team 2
   version: "1.0"
 paths:
+  /api/dashboard/new:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For New Product Dashboard
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Product'
+                  type: array
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get New Product
+      tags:
+      - Dashboard
+  /api/dashboard/popular:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For Popular Product Dashboard
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Product'
+                  type: array
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get Popular Product
+      tags:
+      - Dashboard
+  /api/dashboard/report:
+    get:
+      consumes:
+      - application/json
+      description: Generate an Excel report and return it as an attachment
+      produces:
+      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      responses:
+        "200":
+          description: Order_Report.xlsx
+          schema:
+            type: file
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Generate an Excel report
+      tags:
+      - Dashboard
+  /api/dashboard/summary:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For Summary Dashboard
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Summary'
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get Summary
+      tags:
+      - Dashboard
   /category:
     get:
       consumes:
@@ -300,6 +420,8 @@ paths:
           description: Failed to fetch categories
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Get all categories
       tags:
       - Categories
@@ -343,6 +465,8 @@ paths:
           description: Failed to create category
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Create a new category
       tags:
       - Categories
@@ -377,6 +501,8 @@ paths:
           description: Category not found
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Get category by ID
       tags:
       - Categories
@@ -426,6 +552,8 @@ paths:
           description: Failed to update category
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Update an existing category
       tags:
       - Categories
@@ -488,6 +616,8 @@ paths:
           description: Failed to fetch notifications
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Get all notifications
       tags:
       - Notification
@@ -522,6 +652,8 @@ paths:
           description: Failed to create notification
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Create a new notification
       tags:
       - Notification
@@ -551,6 +683,8 @@ paths:
           description: Failed to delete notification
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Delete a notification by ID
       tags:
       - Notification
@@ -584,6 +718,8 @@ paths:
           description: Failed to fetch notification
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Get a notification by ID
       tags:
       - Notification
@@ -612,6 +748,8 @@ paths:
           description: Failed to update notification
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Update a notification by ID
       tags:
       - Notification
@@ -631,6 +769,8 @@ paths:
           description: Failed to mark notifications as read
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Mark all notifications as read
       tags:
       - Notification
@@ -832,7 +972,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get a list of categories with optional pagination
+      description: Get a list of products with optional pagination
       parameters:
       - default: 1
         description: Page number
@@ -848,7 +988,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: List of categories retrieved successfully
+          description: List of products retrieved successfully
           schema:
             allOf:
             - $ref: '#/definitions/model.SuccessResponse'
@@ -859,12 +999,14 @@ paths:
                   type: array
               type: object
         "500":
-          description: Failed to fetch categories
+          description: Failed to fetch products
           schema:
             $ref: '#/definitions/model.ErrorResponse'
-      summary: Get all categories
+      security:
+      - Authentication: []
+      summary: Get all products
       tags:
-      - Categories
+      - Products
     post:
       consumes:
       - multipart/form-data
@@ -915,6 +1057,8 @@ paths:
           description: Failed to create product
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Create a new product
       tags:
       - Products
@@ -956,6 +1100,8 @@ paths:
           description: Failed to delete product
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Delete a product
       tags:
       - Products
@@ -989,6 +1135,8 @@ paths:
           description: Product not found
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Get product by ID
       tags:
       - Products
@@ -1046,6 +1194,8 @@ paths:
           description: Failed to update product
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Update an existing product
       tags:
       - Products
@@ -1070,6 +1220,8 @@ paths:
           description: Failed to fetch monthly revenue
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Fetch monthly revenue
       tags:
       - Revenue
@@ -1094,6 +1246,8 @@ paths:
           description: Failed to fetch product revenues
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Fetch product revenues
       tags:
       - Revenue
@@ -1118,6 +1272,8 @@ paths:
           description: Failed to fetch total revenue by status
           schema:
             $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
       summary: Fetch total revenue by status
       tags:
       - Revenue

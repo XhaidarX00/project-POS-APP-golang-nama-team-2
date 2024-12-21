@@ -18,8 +18,171 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
+        "/api/dashboard/new": {
+            "get": {
+                "description": "Endpoint For New Product Dashboard",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get New Product",
+                "responses": {
+                    "200": {
+                        "description": "Get Summary Success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Product"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "server error",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dashboard/popular": {
+            "get": {
+                "description": "Endpoint For Popular Product Dashboard",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get Popular Product",
+                "responses": {
+                    "200": {
+                        "description": "Get Summary Success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Product"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "server error",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dashboard/report": {
+            "get": {
+                "description": "Generate an Excel report and return it as an attachment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Generate an Excel report",
+                "responses": {
+                    "200": {
+                        "description": "Order_Report.xlsx",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "500": {
+                        "description": "server error",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dashboard/summary": {
+            "get": {
+                "description": "Endpoint For Summary Dashboard",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get Summary",
+                "responses": {
+                    "200": {
+                        "description": "Get Summary Success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.Summary"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "server error",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/category": {
             "get": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Get a list of categories with optional pagination",
                 "consumes": [
                     "application/json"
@@ -31,7 +194,8 @@
                     "Categories"
                 ],
                 "summary": "Get all categories",
-                "parameters": [{
+                "parameters": [
+                    {
                         "type": "integer",
                         "default": 1,
                         "description": "Page number",
@@ -50,7 +214,8 @@
                     "200": {
                         "description": "List of categories retrieved successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -76,6 +241,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Add a new category to the database",
                 "consumes": [
                     "multipart/form-data"
@@ -87,7 +257,8 @@
                     "Categories"
                 ],
                 "summary": "Create a new category",
-                "parameters": [{
+                "parameters": [
+                    {
                         "type": "string",
                         "description": "Category Name",
                         "name": "name",
@@ -113,7 +284,8 @@
                     "201": {
                         "description": "Category created successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -144,6 +316,11 @@
         },
         "/category/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Get a single category by its ID",
                 "consumes": [
                     "application/json"
@@ -155,18 +332,21 @@
                     "Categories"
                 ],
                 "summary": "Get category by ID",
-                "parameters": [{
-                    "type": "integer",
-                    "description": "Category ID",
-                    "name": "id",
-                    "in": "path",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Category retrieved successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -195,6 +375,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Update the details of a category by its ID",
                 "consumes": [
                     "multipart/form-data"
@@ -206,7 +391,8 @@
                     "Categories"
                 ],
                 "summary": "Update an existing category",
-                "parameters": [{
+                "parameters": [
+                    {
                         "type": "integer",
                         "description": "Category ID",
                         "name": "id",
@@ -236,7 +422,8 @@
                     "200": {
                         "description": "Category updated successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -273,9 +460,11 @@
         },
         "/logout": {
             "post": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Log the user out by invalidating their authorization token",
                 "consumes": [
                     "application/json"
@@ -287,13 +476,15 @@
                     "Superadmin"
                 ],
                 "summary": "Logout user",
-                "parameters": [{
-                    "type": "string",
-                    "description": "Bearer Token",
-                    "name": "Authorization",
-                    "in": "header",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successfully logged out",
@@ -318,6 +509,11 @@
         },
         "/notification": {
             "get": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Retrieve all notifications, optionally filtered by status",
                 "consumes": [
                     "application/json"
@@ -329,17 +525,20 @@
                     "Notification"
                 ],
                 "summary": "Get all notifications",
-                "parameters": [{
-                    "type": "string",
-                    "description": "Notification status (e.g., unread)",
-                    "name": "status",
-                    "in": "query"
-                }],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Notification status (e.g., unread)",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List of notifications retrieved successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -365,6 +564,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Create a new notification",
                 "consumes": [
                     "application/json"
@@ -376,20 +580,23 @@
                     "Notification"
                 ],
                 "summary": "Create a new notification",
-                "parameters": [{
-                    "description": "Notification payload",
-                    "name": "notification",
-                    "in": "body",
-                    "required": true,
-                    "schema": {
-                        "$ref": "#/definitions/model.CreateNotification"
+                "parameters": [
+                    {
+                        "description": "Notification payload",
+                        "name": "notification",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateNotification"
+                        }
                     }
-                }],
+                ],
                 "responses": {
                     "201": {
                         "description": "Notification created successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -420,6 +627,11 @@
         },
         "/notification/mark-all-read": {
             "put": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Mark all notifications as read",
                 "consumes": [
                     "application/json"
@@ -449,6 +661,11 @@
         },
         "/notification/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Retrieve a notification by its ID",
                 "consumes": [
                     "application/json"
@@ -460,18 +677,21 @@
                     "Notification"
                 ],
                 "summary": "Get a notification by ID",
-                "parameters": [{
-                    "type": "integer",
-                    "description": "Notification ID",
-                    "name": "id",
-                    "in": "path",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Notification retrieved successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -500,6 +720,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Update the status or details of a notification",
                 "consumes": [
                     "application/json"
@@ -511,13 +736,15 @@
                     "Notification"
                 ],
                 "summary": "Update a notification by ID",
-                "parameters": [{
-                    "type": "integer",
-                    "description": "Notification ID",
-                    "name": "id",
-                    "in": "path",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Notification updated successfully",
@@ -540,6 +767,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Delete a notification using its ID",
                 "consumes": [
                     "application/json"
@@ -551,13 +783,15 @@
                     "Notification"
                 ],
                 "summary": "Delete a notification by ID",
-                "parameters": [{
-                    "type": "integer",
-                    "description": "Notification ID",
-                    "name": "id",
-                    "in": "path",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Notification deleted successfully",
@@ -582,9 +816,11 @@
         },
         "/order": {
             "get": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Retrieve a list of orders with optional search and status filtering.",
                 "consumes": [
                     "application/json"
@@ -596,7 +832,8 @@
                     "Orders"
                 ],
                 "summary": "Retrieve all orders",
-                "parameters": [{
+                "parameters": [
+                    {
                         "type": "string",
                         "description": "Search keyword to filter orders",
                         "name": "search",
@@ -613,7 +850,8 @@
                     "200": {
                         "description": "Order successfully retrieved",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -639,9 +877,11 @@
                 }
             },
             "post": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Create a new order with associated products",
                 "consumes": [
                     "application/json"
@@ -653,15 +893,17 @@
                     "Orders"
                 ],
                 "summary": "Create a new order",
-                "parameters": [{
-                    "description": "Order payload",
-                    "name": "order",
-                    "in": "body",
-                    "required": true,
-                    "schema": {
-                        "$ref": "#/definitions/model.Order"
+                "parameters": [
+                    {
+                        "description": "Order payload",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Order"
+                        }
                     }
-                }],
+                ],
                 "responses": {
                     "201": {
                         "description": "Order successfully created",
@@ -686,9 +928,11 @@
         },
         "/order/payment": {
             "get": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Get a list of all payment methods",
                 "consumes": [
                     "application/json"
@@ -704,7 +948,8 @@
                     "200": {
                         "description": "Payment methods successfully retrieved",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -732,9 +977,11 @@
         },
         "/order/table": {
             "get": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Get a list of all tables",
                 "consumes": [
                     "application/json"
@@ -750,7 +997,8 @@
                     "200": {
                         "description": "Tables successfully retrieved",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -778,9 +1026,11 @@
         },
         "/order/{id}": {
             "put": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Update the details of an order by its ID",
                 "consumes": [
                     "application/json"
@@ -792,7 +1042,8 @@
                     "Orders"
                 ],
                 "summary": "Update an existing order",
-                "parameters": [{
+                "parameters": [
+                    {
                         "type": "integer",
                         "description": "Order ID",
                         "name": "id",
@@ -831,9 +1082,11 @@
                 }
             },
             "delete": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Delete an order by its ID",
                 "consumes": [
                     "application/json"
@@ -845,18 +1098,21 @@
                     "Orders"
                 ],
                 "summary": "Delete an order",
-                "parameters": [{
-                    "type": "integer",
-                    "description": "Order ID",
-                    "name": "id",
-                    "in": "path",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successfully deleted order",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -884,7 +1140,12 @@
         },
         "/product": {
             "get": {
-                "description": "Get a list of categories with optional pagination",
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
+                "description": "Get a list of products with optional pagination",
                 "consumes": [
                     "application/json"
                 ],
@@ -892,10 +1153,11 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Categories"
+                    "Products"
                 ],
-                "summary": "Get all categories",
-                "parameters": [{
+                "summary": "Get all products",
+                "parameters": [
+                    {
                         "type": "integer",
                         "default": 1,
                         "description": "Page number",
@@ -912,9 +1174,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of categories retrieved successfully",
+                        "description": "List of products retrieved successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -932,7 +1195,7 @@
                         }
                     },
                     "500": {
-                        "description": "Failed to fetch categories",
+                        "description": "Failed to fetch products",
                         "schema": {
                             "$ref": "#/definitions/model.ErrorResponse"
                         }
@@ -940,6 +1203,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Add a new product to the inventory",
                 "consumes": [
                     "multipart/form-data"
@@ -951,7 +1219,8 @@
                     "Products"
                 ],
                 "summary": "Create a new product",
-                "parameters": [{
+                "parameters": [
+                    {
                         "type": "string",
                         "description": "Product Name",
                         "name": "name",
@@ -991,7 +1260,8 @@
                     "201": {
                         "description": "Product created successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -1022,6 +1292,11 @@
         },
         "/product/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Retrieve a single product by its ID",
                 "consumes": [
                     "application/json"
@@ -1033,18 +1308,21 @@
                     "Products"
                 ],
                 "summary": "Get product by ID",
-                "parameters": [{
-                    "type": "integer",
-                    "description": "Product ID",
-                    "name": "id",
-                    "in": "path",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Product retrieved successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -1073,6 +1351,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Update the details of a product by its ID",
                 "consumes": [
                     "multipart/form-data"
@@ -1084,7 +1367,8 @@
                     "Products"
                 ],
                 "summary": "Update an existing product",
-                "parameters": [{
+                "parameters": [
+                    {
                         "type": "integer",
                         "description": "Product ID",
                         "name": "id",
@@ -1126,7 +1410,8 @@
                     "200": {
                         "description": "Product updated successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -1161,6 +1446,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Remove a product by its ID",
                 "consumes": [
                     "application/json"
@@ -1172,19 +1462,22 @@
                     "Products"
                 ],
                 "summary": "Delete a product",
-                "parameters": [{
-                    "type": "integer",
-                    "example": 1,
-                    "description": "Product ID",
-                    "name": "id",
-                    "in": "path",
-                    "required": true
-                }],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Product deleted successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -1224,6 +1517,11 @@
         },
         "/revenue/month": {
             "get": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Get total revenue grouped by month",
                 "produces": [
                     "application/json"
@@ -1236,7 +1534,8 @@
                     "200": {
                         "description": "Fetch monthly revenue successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -1264,6 +1563,11 @@
         },
         "/revenue/products": {
             "get": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Get revenue details for all products",
                 "produces": [
                     "application/json"
@@ -1276,7 +1580,8 @@
                     "200": {
                         "description": "Fetch product revenues successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -1304,6 +1609,11 @@
         },
         "/revenue/status": {
             "get": {
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Get total revenue grouped by order status",
                 "produces": [
                     "application/json"
@@ -1316,7 +1626,8 @@
                     "200": {
                         "description": "Fetch total revenue by status successfully",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -1344,9 +1655,11 @@
         },
         "/superadmin": {
             "get": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Get a list of all admins with their names and emails",
                 "consumes": [
                     "application/json"
@@ -1362,7 +1675,8 @@
                     "200": {
                         "description": "Successfully retrieved admin data",
                         "schema": {
-                            "allOf": [{
+                            "allOf": [
+                                {
                                     "$ref": "#/definitions/model.SuccessResponse"
                                 },
                                 {
@@ -1388,9 +1702,11 @@
                 }
             },
             "put": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Update the details of a superadmin, including email, full name, address, password, and profile image",
                 "consumes": [
                     "multipart/form-data"
@@ -1402,7 +1718,8 @@
                     "Superadmin"
                 ],
                 "summary": "Update superadmin details",
-                "parameters": [{
+                "parameters": [
+                    {
                         "maxLength": 100,
                         "minLength": 3,
                         "type": "string",
@@ -1472,9 +1789,11 @@
         },
         "/superadmin/{id}": {
             "put": {
-                "security": [{
-                    "Authentication": []
-                }],
+                "security": [
+                    {
+                        "Authentication": []
+                    }
+                ],
                 "description": "Update the access permissions of a specific user based on their ID",
                 "consumes": [
                     "application/json"
@@ -1486,7 +1805,8 @@
                     "Superadmin"
                 ],
                 "summary": "Update access permissions for a user",
-                "parameters": [{
+                "parameters": [
+                    {
                         "type": "integer",
                         "description": "User ID",
                         "name": "id",
@@ -1527,6 +1847,30 @@
         }
     },
     "definitions": {
+        "helper.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "limit": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "total_items": {
+                    "type": "integer"
+                },
+                "total_pages": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.AccessPermission": {
             "type": "object",
             "properties": {
@@ -1876,6 +2220,20 @@
                     "type": "string"
                 },
                 "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Summary": {
+            "type": "object",
+            "properties": {
+                "dailySales": {
+                    "type": "integer"
+                },
+                "monthlySales": {
+                    "type": "integer"
+                },
+                "totalTables": {
                     "type": "integer"
                 }
             }
