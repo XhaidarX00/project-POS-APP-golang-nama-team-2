@@ -2,9 +2,11 @@ package revenuerepository
 
 import (
 	"errors"
+	"log"
 	"project_pos_app/model"
 	"time"
 
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -99,15 +101,35 @@ func (r *RevenueRepository) GetMonthlyRevenue() (map[string]float64, error) {
 }
 
 func (r *RevenueRepository) CalculateOrderRevenue() ([]model.OrderRevenue, error) {
-	var orders []model.OrderRevenue
+	var revenues []model.OrderRevenue
 
-	err := r.DB.Model(&model.OrderRevenue{}).
-		Select("status, SUM(revenue) as revenue, CURRENT_DATE as created_at").
-		Group("status").
-		Scan(&orders).Error
+	// Query untuk menghitung revenue dari tabel Order dan OrderProduct
+	err := r.DB.Table("orders").
+		Select(`
+			orders.status AS status,
+			SUM(orders.total_amount) AS revenue,
+			CURRENT_DATE AS created_at
+		`).
+		Joins(`
+			LEFT JOIN order_products 
+			ON orders.id = order_products.order_id
+		`).
+		Group("orders.status").
+		Scan(&revenues).Error
 
-	return orders, err
+	return revenues, err
 }
+
+// func (r *RevenueRepository) CalculateOrderRevenue() ([]model.OrderRevenue, error) {
+// 	var orders []model.OrderRevenue
+
+// 	err := r.DB.Model(&model.OrderRevenue{}).
+// 		Select("status, SUM(revenue) as revenue, CURRENT_DATE as created_at").
+// 		Group("status").
+// 		Scan(&orders).Error
+
+// 	return orders, err
+// }
 
 func (r *RevenueRepository) SaveOrderRevenue(order model.OrderRevenue) error {
 	// Validasi input
@@ -135,7 +157,7 @@ func (r *RevenueRepository) SaveOrderRevenue(order model.OrderRevenue) error {
 
 	// Proses pencarian order yang sudah ada
 	var existingOrder model.OrderRevenue
-	result := tx.Where("id = ? AND cerate_at = ?", order.ID, order.CreatedAt).First(&existingOrder)
+	result := tx.Where("id = ? AND created_at = ?", order.ID, order.CreatedAt).First(&existingOrder)
 
 	if result.Error == nil {
 		// Jika order sudah ada, lakukan pembaruan (update) data order
@@ -162,18 +184,63 @@ func (r *RevenueRepository) SaveOrderRevenue(order model.OrderRevenue) error {
 	return nil
 }
 
+// func (r *RevenueRepository) CalculateProductRevenue() ([]model.ProductRevenue, error) {
+// 	var products []model.ProductRevenue
+
+// 	err := r.DB.Table("products").
+// 		Select("products.name AS product_name, products.price AS sell_price, SUM(order_products.qty * products.price) AS total_revenue, 15.00 AS profit_margin, CURRENT_DATE AS revenue_date").
+// 		Joins("JOIN order_products ON products.id = order_products.product_id").
+// 		Joins("JOIN orders ON order_products.order_id = orders.id").
+// 		Where("orders.status = ?", "confirmed").
+// 		Group("products.name, products.price").
+// 		Scan(&products).Error
+
+// 	return products, err
+// }
+
+// CalculateProductRevenue calculates revenue details for all products
 func (r *RevenueRepository) CalculateProductRevenue() ([]model.ProductRevenue, error) {
 	var products []model.ProductRevenue
 
 	err := r.DB.Table("products").
-		Select("products.name AS product_name, products.price AS sell_price, SUM(order_products.qty * products.price) AS total_revenue, 15.00 AS profit_margin, CURRENT_DATE AS revenue_date").
+		Select(`
+			products.name AS product_name, 
+			products.price AS sell_price, 
+			SUM(order_products.qty * products.price) AS total_revenue, 
+			CURRENT_DATE AS revenue_date
+		`).
 		Joins("JOIN order_products ON products.id = order_products.product_id").
 		Joins("JOIN orders ON order_products.order_id = orders.id").
-		Where("orders.status = ?", "confirmed").
+		Where("orders.status = ?", "Completed").
 		Group("products.name, products.price").
 		Scan(&products).Error
 
-	return products, err
+	if err != nil {
+		return nil, errors.New("failed to calculate product revenue: " + err.Error())
+	}
+
+	// Calculate profit and profit margin for each product
+	ProfitMargin := viper.GetFloat64("PROFIT_MARGIN")
+	for i := range products {
+		products[i].Profit = calculateProfit(products[i].TotalRevenue, ProfitMargin)
+		products[i].ProfitMargin = calculateProfitMargin(products[i].TotalRevenue, products[i].Profit)
+	}
+
+	log.Printf("Data Product : %v\n", products)
+	return products, nil
+}
+
+// Helper function to calculate profit
+func calculateProfit(totalRevenue, profitMargin float64) float64 {
+	return totalRevenue * (profitMargin / 100)
+}
+
+// Helper function to calculate profit margin
+func calculateProfitMargin(totalRevenue, profit float64) float64 {
+	if totalRevenue == 0 {
+		return 0
+	}
+	return (profit / totalRevenue) * 100
 }
 
 func (r *RevenueRepository) SaveProductRevenue(product model.ProductRevenue) error {
@@ -231,96 +298,3 @@ func (r *RevenueRepository) SaveProductRevenue(product model.ProductRevenue) err
 
 	return nil
 }
-
-// func (r *RevenueRepository) GetTotalRevenueByStatus() (map[string]float64, error) {
-// 	type Order struct {
-// 		Status  string
-// 		Revenue float64
-// 	}
-
-// 	var orders []Order
-// 	totalRevenue := make(map[string]float64)
-
-// 	err := r.DB.Table("order_revenues").Select("status, revenue").Find(&orders).Error
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	for _, order := range orders {
-// 		totalRevenue[order.Status] += order.Revenue
-// 	}
-
-// 	return totalRevenue, nil
-// }
-
-// func (r *RevenueRepository) GetMonthlyRevenue() (map[string]float64, error) {
-// 	type Order struct {
-// 		CreatedAt time.Time
-// 		Revenue   float64
-// 	}
-
-// 	var orders []Order
-// 	monthlyRevenue := make(map[string]float64)
-
-// 	err := r.DB.Table("order_revenues").Select("created_at, revenue").Find(&orders).Error
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	for _, order := range orders {
-// 		monthStr := order.CreatedAt.Format("2006-01")
-// 		monthlyRevenue[monthStr] += order.Revenue
-// 	}
-
-// 	return monthlyRevenue, nil
-// }
-
-// func (r *RevenueRepository) CalculateProductRevenue() ([]model.ProductRevenue, error) {
-// 	var productRevenues []model.ProductRevenue
-
-// 	// Perhitungan manual tanpa relasi
-// 	query := `
-// 		SELECT
-// 			name as product_name,
-// 			sell_price,
-// 			COALESCE(SUM(revenue), 0) as total_revenue,
-// 			COALESCE(COUNT(*), 0) as total_sales,
-// 			COALESCE(SUM(revenue) / COUNT(*), 0) as profit,
-// 			15.00 as profit_margin,
-// 			CURRENT_DATE as revenue_date
-// 		FROM (
-// 			SELECT
-// 				p.name,
-// 				p.sell_price,
-// 				o.revenue
-// 			FROM products p
-// 			CROSS JOIN order_revenues o
-// 			WHERE o.status = 'confirmed'
-// 			AND o.created_at >= DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)
-// 		) as subquery
-// 		GROUP BY name, sell_price
-// 	`
-
-// 	result := r.DB.Raw(query).Scan(&productRevenues)
-// 	return productRevenues, result.Error
-// }
-
-// func (r *RevenueRepository) CalculateOrderRevenue() ([]model.OrderRevenue, error) {
-// 	var orderRevenues []model.OrderRevenue
-
-// 	// Perhitungan agregasi pendapatan berdasarkan status
-// 	query := `
-// 		SELECT
-// 			status,
-// 			SUM(revenue) as revenue,
-// 			COUNT(*) as total_orders,
-// 			DATE(created_at) as created_at
-// 		FROM order_revenues
-// 		WHERE created_at >= DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)
-// 		GROUP BY status, DATE(created_at)
-// 		ORDER BY created_at DESC
-// 	`
-
-// 	result := r.DB.Raw(query).Scan(&orderRevenues)
-// 	return orderRevenues, result.Error
-// }
