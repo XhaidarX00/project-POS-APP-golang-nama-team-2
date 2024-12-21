@@ -80,8 +80,11 @@ func dataSeeds() []interface{} {
 		model.SeedOrders(),
 		model.SeedTables(),
 		model.SeedPayments(),
+		model.SeedUsers(),
 		model.SeedSuperadmins(),
 		model.SeedStaff(),
-		model.SeedUsers(),
+		model.SeedPermissions(),
+		model.SeedAccessPermissions(),
+		model.SeedSessions(),
 	}
 }

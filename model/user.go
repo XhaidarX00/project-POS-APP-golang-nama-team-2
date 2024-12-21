@@ -5,6 +5,7 @@ import (
 	"project_pos_app/utils"
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -66,4 +67,69 @@ func SeedUsers() []User {
 	}
 
 	return seededUsers
+}
+
+func SeedSessions() []Session {
+	return []Session{
+		{
+			UserID:       1,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.1",
+			LastActivity: time.Now(),
+		},
+		{
+			UserID:       2,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.2",
+			LastActivity: time.Now(),
+		},
+		{
+			UserID:       3,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.3",
+			LastActivity: time.Now(),
+		},
+		{
+			UserID:       4,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.4",
+			LastActivity: time.Now(),
+		},
+		{
+			UserID:       5,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.5",
+			LastActivity: time.Now(),
+		},
+		{
+			UserID:       6,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.6",
+			LastActivity: time.Now(),
+		},
+		{
+			UserID:       7,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.7",
+			LastActivity: time.Now(),
+		},
+		{
+			UserID:       8,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.8",
+			LastActivity: time.Now(),
+		},
+		{
+			UserID:       9,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.9",
+			LastActivity: time.Now(),
+		},
+		{
+			UserID:       10,
+			Token:        uuid.New().String(),
+			IpAddress:    "192.168.1.10",
+			LastActivity: time.Now(),
+		},
+	}
 }

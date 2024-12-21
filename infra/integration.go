@@ -5,6 +5,7 @@ import (
 	"project_pos_app/controller"
 	"project_pos_app/database"
 	"project_pos_app/helper"
+	"project_pos_app/middleware"
 	"project_pos_app/repository"
 	"project_pos_app/service"
 
@@ -13,11 +14,12 @@ import (
 )
 
 type IntegrationContext struct {
-	Cfg   config.Config
-	DB    *gorm.DB
-	Log   *zap.Logger
-	Ctl   controller.AllController
-	Cache database.Cache
+	Cfg        config.Config
+	DB         *gorm.DB
+	Log        *zap.Logger
+	Ctl        controller.AllController
+	Cache      database.Cache
+	Middleware middleware.AllHandler
 }
 
 func NewIntegrateContext() (*IntegrationContext, error) {
@@ -47,13 +49,16 @@ func NewIntegrateContext() (*IntegrationContext, error) {
 
 	service := service.NewAllService(repo, log)
 
+	middleware := middleware.NewMiddleware(service, log)
+
 	handler := controller.NewAllController(service, log, &rdb)
 
 	return &IntegrationContext{
-		Cfg:   config,
-		DB:    db,
-		Log:   log,
-		Ctl:   handler,
-		Cache: rdb,
+		Cfg:        config,
+		DB:         db,
+		Log:        log,
+		Ctl:        handler,
+		Cache:      rdb,
+		Middleware: *middleware,
 	}, nil
 }

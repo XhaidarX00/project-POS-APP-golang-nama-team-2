@@ -1,6 +1,7 @@
 package repository
 
 import (
+	accessrepository "project_pos_app/repository/access_repository"
 	authrepository "project_pos_app/repository/auth_repository"
 	examplerepository "project_pos_app/repository/example_repository"
 	"project_pos_app/repository/notification"
@@ -21,6 +22,7 @@ type AllRepository struct {
 	Product    productrepository.ProductRepo
 	Order      orderrepository.OrderRepository
 	Superadmin profilesuperadmin.SuperadminRepo
+	Access     accessrepository.AccessRepository
 }
 
 func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
@@ -32,5 +34,6 @@ func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository {
 		Product:    productrepository.NewProductRepo(DB, Log),
 		Order:      orderrepository.NewOrderRepo(DB, Log),
 		Superadmin: profilesuperadmin.NewSuperadmin(DB, Log),
+		Access:     accessrepository.NewAccessRepository(DB, Log),
 	}
 }

@@ -10,6 +10,8 @@ import (
 
 type SuperadminRepo interface {
 	ListDataAdmin() ([]*model.ResponseEmployee, error)
+	UpdateSuperadmin(id int, admin *model.Superadmin) error
+	UpdateAccessUser(id int, input *model.AccessPermission) error
 }
 
 type superadminRepo struct {
@@ -37,4 +39,54 @@ func (sr *superadminRepo) ListDataAdmin() ([]*model.ResponseEmployee, error) {
 
 	return admin, nil
 
+}
+
+func (sr *superadminRepo) UpdateSuperadmin(id int, admin *model.Superadmin) error {
+
+	tx := sr.DB.Begin()
+
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err := tx.Model(&model.User{}).Where("id = ?", admin.UserID).Updates(admin.User).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err := tx.Model(&model.Superadmin{}).Where("id = ?", id).Updates(admin).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (ar *superadminRepo) UpdateAccessUser(id int, input *model.AccessPermission) error {
+
+	var accessPermission model.AccessPermission
+	err := ar.DB.Where("user_id = ? AND permission_id = ?", id, input.PermissionID).First(&accessPermission).Error
+	if err != nil {
+
+		if err == gorm.ErrRecordNotFound {
+			return fmt.Errorf("access permission not found for user_id %d and permission_id %d", input.UserID, input.PermissionID)
+		}
+		return err
+	}
+
+	err = ar.DB.Model(&model.AccessPermission{}).
+		Where("user_id = ? AND permission_id = ?", id, input.PermissionID).
+		Update("status", input.Status).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

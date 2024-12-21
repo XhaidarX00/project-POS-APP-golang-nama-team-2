@@ -9,6 +9,8 @@ import (
 
 type SuperadminService interface {
 	ListDataAdmin() ([]*model.ResponseEmployee, error)
+	UpdateSuperadmin(id int, admin *model.Superadmin) error
+	UpdateAccessUser(id int, input *model.AccessPermission) error
 }
 
 type superadminService struct {
@@ -28,4 +30,22 @@ func (ss *superadminService) ListDataAdmin() ([]*model.ResponseEmployee, error) 
 	}
 
 	return admins, err
+}
+
+func (ss *superadminService) UpdateSuperadmin(id int, admin *model.Superadmin) error {
+
+	if err := ss.Repo.Superadmin.UpdateSuperadmin(id, admin); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (as *superadminService) UpdateAccessUser(id int, input *model.AccessPermission) error {
+
+	err := as.Repo.Superadmin.UpdateAccessUser(id, input)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
