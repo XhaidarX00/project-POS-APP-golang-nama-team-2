@@ -25,9 +25,9 @@ type User struct {
 }
 
 type Session struct {
-	ID           int       `gorm:"primaryKey;autoIncrement" json:"id"`
-	UserID       int       `gorm:"type:int"`
-	Token        string    `gorm:"not null"`
+	ID           int `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID       int `gorm:"type:int"`
+	Token        string
 	IpAddress    string    `gorm:"not null"`
 	LastActivity time.Time `gorm:"not null"`
 }
