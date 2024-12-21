@@ -25,6 +25,8 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	NotificationRoutes(r, ctx)
 	RevenueRoutes(r, ctx)
 	ProductRoutes(r, ctx)
+	CategoryRoutes(r, ctx)
+
 	ReservationRoutes(r, ctx)
 	OrderRoutes(r, ctx)
 	SuperAdmin(r, ctx)
@@ -98,5 +100,18 @@ func SuperAdmin(r *gin.Engine, ctx *infra.IntegrationContext) {
 		superadmin.GET("/", ctx.Ctl.Superadmin.ListDataAdmin)
 		superadmin.PUT("/", ctx.Ctl.Superadmin.UpdateSuperadmin)
 		superadmin.PUT("/:id", ctx.Ctl.Superadmin.UpdateAccessUser)
+	}
+}
+
+func CategoryRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
+	categoryRoute := r.Group("/api")
+	{
+		categoryRoute.GET("/categories", ctx.Ctl.Category.GetAllCategory)
+		categoryRoute.GET("/categories/products", func(c *gin.Context) {
+			ctx.Ctl.Product.GetAllProducts(c)
+		})
+		categoryRoute.GET("/categories/:id", ctx.Ctl.Category.GetCategoryByID)
+		categoryRoute.POST("/categories", ctx.Ctl.Category.CreateCategory)
+		categoryRoute.PUT("/categories/:id", ctx.Ctl.Category.UpdateCategory)
 	}
 }

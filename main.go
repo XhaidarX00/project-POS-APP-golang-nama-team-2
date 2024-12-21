@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -48,13 +49,12 @@ func main() {
 	cmd.CronJob(ctx)
 
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    fmt.Sprintf(":%s", ctx.Cfg.Port),
 		Handler: r,
 	}
 
 	go func() {
-		// Start the server
-		log.Printf("Server running on port 8080")
+		log.Println("Server Running On Port : " + ctx.Cfg.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}
