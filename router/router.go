@@ -28,7 +28,12 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 		order.PUT("/:id", ctx.Ctl.Order.UpdateOrder)
 		order.DELETE("/:id", ctx.Ctl.Order.DeleteOrder)
 	}
-  
+
+	superadmin := r.Group("/superadmin")
+	{
+		superadmin.GET("/", ctx.Ctl.Superadmin.ListDataAdmin)
+	}
+
 	return r
 }
 
