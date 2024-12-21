@@ -5,7 +5,6 @@ import (
 	authrepository "project_pos_app/repository/auth_repository"
 	categoryrepository "project_pos_app/repository/category_repository"
 	dashboardrepository "project_pos_app/repository/dashboard_repository"
-	examplerepository "project_pos_app/repository/example_repository"
 	"project_pos_app/repository/notification"
 	orderrepository "project_pos_app/repository/order_repository"
 	productrepository "project_pos_app/repository/product"
@@ -20,7 +19,6 @@ import (
 type AllRepository struct {
 	Category    categoryrepository.CategoryRepository
 	Access      accessrepository.AccessRepository
-	Example     examplerepository.ExampleRepository
 	Auth        authrepository.AuthRepoInterface
 	Notif       notification.NotifRepoInterface
 	Revenue     revenuerepository.RevenueRepositoryInterface
