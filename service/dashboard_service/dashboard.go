@@ -3,14 +3,15 @@ package dashboardservice
 import (
 	"project_pos_app/model"
 	"project_pos_app/repository"
-	"time"
 
 	"go.uber.org/zap"
 )
 
 type ServiceDashboard interface {
 	GetPopularProduct() ([]model.Product, error)
-	GetAll(date string) ([]model.Reservation, error)
+	GetNewProduct() ([]model.Product, error)
+	GetSummary(summary *model.Summary) error
+	GetReport(report *[]model.ReportExcel) error
 }
 
 type serviceDashboard struct {
@@ -26,24 +27,23 @@ func NewRevenueService(repo *repository.AllRepository, log *zap.Logger) ServiceD
 }
 
 func (s *serviceDashboard) GetPopularProduct() ([]model.Product, error) {
-	// products, err := s.Repo.Dashboard.FindPopularProduct()
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// return products, nil
 	return s.Repo.Dashboard.FindPopularProduct()
 }
-func (s *serviceDashboard) GetAll(date string) ([]model.Reservation, error) {
-	if date == "" {
-		date = time.Now().Format("2006-01-02")
-	}
-	reservations, err := s.Repo.Reservation.FindReservations(date)
+func (s *serviceDashboard) GetNewProduct() ([]model.Product, error) {
+	return s.Repo.Dashboard.FindNewProduct()
+}
+func (s *serviceDashboard) GetSummary(summary *model.Summary) error {
+	err := s.Repo.Dashboard.FindSummary(summary)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	for i, _ := range reservations {
-		reservations[i].Date = reservations[i].ReservationDate.Format("2006-01-02")
-		reservations[i].Time = reservations[i].ReservationDate.Format("15:04:05")
+	return nil
+}
+func (s *serviceDashboard) GetReport(report *[]model.ReportExcel) error {
+	err := s.Repo.Dashboard.FindReport(report)
+	if err != nil {
+		return err
 	}
-	return reservations, nil
+
+	return nil
 }

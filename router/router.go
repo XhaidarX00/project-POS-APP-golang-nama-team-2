@@ -109,5 +109,8 @@ func DashboardRoutes(r *gin.Engine, ctx *infra.IntegrationContext) {
 	reservationRoute := r.Group("/api")
 	{
 		reservationRoute.GET("/dashboard/popular", ctx.Ctl.Dashboard.GetPopularProduct)
+		reservationRoute.GET("/dashboard/new", ctx.Ctl.Dashboard.GetNewProduct)
+		reservationRoute.GET("/dashboard/summary", ctx.Ctl.Dashboard.GetSummary)
+		reservationRoute.GET("/dashboard/report", ctx.Ctl.Dashboard.GetReport)
 	}
 }
