@@ -41,7 +41,8 @@ func CronJob(ctx *infra.IntegrationContext) error {
 	}
 
 	// Schedule the task to generate revenue reports every day at 1 AM
-	_, err = c.AddFunc("0 1 * * *", func() {
+	// _, err = c.AddFunc("0 1 * * *", func() {
+	_, err = c.AddFunc("*/1 * * * *", func() {
 		log.Println("Starting revenue report generation...")
 		// Generate order revenue
 		orders, err := ctx.Ctl.Revenue.Service.Revenue.CalculateOrderRevenue()
@@ -62,6 +63,8 @@ func CronJob(ctx *infra.IntegrationContext) error {
 			log.Printf("Error calculating product revenue: %v\n", err)
 			return
 		}
+		log.Printf("%v\n", products)
+
 		for _, product := range products {
 			product.ProfitMargin = ctx.Cfg.ProfitMargin
 			err := ctx.Ctl.Revenue.Service.Revenue.SaveProductRevenue(product)

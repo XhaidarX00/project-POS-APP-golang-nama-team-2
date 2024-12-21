@@ -3,7 +3,7 @@ package model
 import "time"
 
 type RevenueByStatus struct {
-	Status  string  `gorm:"type:varchar(50)" json:"status" binding:"required" example:"confirmed"`
+	Status  string  `gorm:"type:varchar(50)" json:"status" binding:"required" example:"Completed"`
 	Revenue float64 `gorm:"type:decimal(10,2)" json:"revenue" binding:"required" example:"100.50"`
 }
 
@@ -15,7 +15,7 @@ type MonthlyRevenue struct {
 // OrderRevenue represents the structure for orders
 type OrderRevenue struct {
 	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id" example:"1"`
-	Status    string    `gorm:"type:varchar(50)" json:"status" binding:"required" example:"confirmed"`
+	Status    string    `gorm:"type:varchar(50)" json:"status" binding:"required" example:"Completed"`
 	Revenue   float64   `gorm:"type:decimal(10,2)" json:"revenue" binding:"required" example:"100.50"`
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at" example:"2024-12-01T00:00:00Z"`
 	ProductID uint      `json:"product_id"`
@@ -50,24 +50,24 @@ func RevenueSeedProduct() []ProductRevenue {
 // RevenueSeedOrder generates dummy data for OrderRevenue
 func RevenueSeedOrder() []OrderRevenue {
 	return []OrderRevenue{
-		{Status: "confirmed", Revenue: 100.50, CreatedAt: time.Now(), ProductID: 1},
-		{Status: "pending", Revenue: 150.00, CreatedAt: time.Now().AddDate(0, 0, -1), ProductID: 2},
-		{Status: "confirmed", Revenue: 200.00, CreatedAt: time.Now().AddDate(0, 0, -2), ProductID: 3},
-		{Status: "cancelled", Revenue: 50.00, CreatedAt: time.Now().AddDate(0, 0, -3), ProductID: 4},
-		{Status: "confirmed", Revenue: 75.00, CreatedAt: time.Now().AddDate(0, 0, -4), ProductID: 5},
-		{Status: "pending", Revenue: 120.00, CreatedAt: time.Now().AddDate(0, 0, -5), ProductID: 6},
-		{Status: "confirmed", Revenue: 95.00, CreatedAt: time.Now().AddDate(0, 0, -6), ProductID: 7},
-		{Status: "cancelled", Revenue: 40.00, CreatedAt: time.Now().AddDate(0, 0, -7), ProductID: 8},
-		{Status: "confirmed", Revenue: 110.00, CreatedAt: time.Now().AddDate(0, 0, -8), ProductID: 9},
-		{Status: "pending", Revenue: 130.00, CreatedAt: time.Now().AddDate(0, 0, -9), ProductID: 10},
-		{Status: "confirmed", Revenue: 220.00, CreatedAt: time.Now().AddDate(0, -1, 0), ProductID: 8},
-		{Status: "pending", Revenue: 180.00, CreatedAt: time.Now().AddDate(0, -2, 0), ProductID: 10},
-		{Status: "cancelled", Revenue: 60.00, CreatedAt: time.Now().AddDate(0, -3, 0), ProductID: 9},
-		{Status: "confirmed", Revenue: 310.00, CreatedAt: time.Now().AddDate(0, -4, 0), ProductID: 7},
-		{Status: "pending", Revenue: 190.00, CreatedAt: time.Now().AddDate(0, -5, 0), ProductID: 15},
-		{Status: "failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, 0, -1), ProductID: 2},
-		{Status: "failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, 0, -1), ProductID: 3},
-		{Status: "failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, -1, -1), ProductID: 4},
-		{Status: "failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, -2, -1), ProductID: 5},
+		{Status: "Completed", Revenue: 100.50, CreatedAt: time.Now(), ProductID: 1},
+		{Status: "In Progress", Revenue: 150.00, CreatedAt: time.Now().AddDate(0, 0, -1), ProductID: 2},
+		{Status: "Completed", Revenue: 200.00, CreatedAt: time.Now().AddDate(0, 0, -2), ProductID: 3},
+		{Status: "Cancelled", Revenue: 50.00, CreatedAt: time.Now().AddDate(0, 0, -3), ProductID: 4},
+		{Status: "Completed", Revenue: 75.00, CreatedAt: time.Now().AddDate(0, 0, -4), ProductID: 5},
+		{Status: "In Progress", Revenue: 120.00, CreatedAt: time.Now().AddDate(0, 0, -5), ProductID: 6},
+		{Status: "Completed", Revenue: 95.00, CreatedAt: time.Now().AddDate(0, 0, -6), ProductID: 7},
+		{Status: "Cancelled", Revenue: 40.00, CreatedAt: time.Now().AddDate(0, 0, -7), ProductID: 8},
+		{Status: "Completed", Revenue: 110.00, CreatedAt: time.Now().AddDate(0, 0, -8), ProductID: 9},
+		{Status: "In Progress", Revenue: 130.00, CreatedAt: time.Now().AddDate(0, 0, -9), ProductID: 10},
+		{Status: "Completed", Revenue: 220.00, CreatedAt: time.Now().AddDate(0, -1, 0), ProductID: 8},
+		{Status: "In Progress", Revenue: 180.00, CreatedAt: time.Now().AddDate(0, -2, 0), ProductID: 10},
+		{Status: "Cancelled", Revenue: 60.00, CreatedAt: time.Now().AddDate(0, -3, 0), ProductID: 9},
+		{Status: "Completed", Revenue: 310.00, CreatedAt: time.Now().AddDate(0, -4, 0), ProductID: 7},
+		{Status: "In Progress", Revenue: 190.00, CreatedAt: time.Now().AddDate(0, -5, 0), ProductID: 15},
+		{Status: "Failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, 0, -1), ProductID: 2},
+		{Status: "Failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, 0, -1), ProductID: 3},
+		{Status: "Failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, -1, -1), ProductID: 4},
+		{Status: "Failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, -2, -1), ProductID: 5},
 	}
 }
