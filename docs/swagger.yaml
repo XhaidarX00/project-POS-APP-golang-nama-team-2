@@ -228,6 +228,31 @@ definitions:
     - sell_price
     - total_revenue
     type: object
+  model.Reservation:
+    properties:
+      date:
+        type: string
+      depositFee:
+        type: integer
+      email:
+        type: string
+      fullName:
+        type: string
+      id:
+        type: integer
+      pax:
+        type: integer
+      phoneNumber:
+        type: string
+      status:
+        type: string
+      tableNumber:
+        type: integer
+      time:
+        type: string
+      title:
+        type: string
+    type: object
   model.ResponseEmployee:
     properties:
       email:
@@ -1199,6 +1224,100 @@ paths:
       summary: Update an existing product
       tags:
       - Products
+  /reservation:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For All Reservation
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Reservation'
+                  type: array
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get All Reservation
+      tags:
+      - Reservation
+    post:
+      consumes:
+      - application/json
+      description: Create a new reservation.
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Reservation successfully created
+          schema:
+            type: string
+        "400":
+          description: Invalid form data
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Create a new Reservation
+      tags:
+      - Reservation
+    put:
+      consumes:
+      - application/json
+      description: edit existing reservation.
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Reservation successfully updated
+          schema:
+            type: string
+        "400":
+          description: Invalid form data
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: edit existing Reservation
+      tags:
+      - Reservation
+  /reservation/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For Detail Reservation
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Reservation'
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get Detail Reservation
+      tags:
+      - Reservation
   /revenue/month:
     get:
       description: Get total revenue grouped by month
