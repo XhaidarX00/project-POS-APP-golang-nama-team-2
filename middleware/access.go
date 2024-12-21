@@ -71,6 +71,31 @@ func (ac *AccessController) AccessMiddleware() gin.HandlerFunc {
 	}
 }
 
+func (ac *AccessController) SuperAdminOnly() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.GetHeader("Authorization")
+		if token == "" {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization token is required"})
+			ctx.Abort()
+			return
+		}
+
+		access, err := ac.service.Access.GetAccessRepo(token)
+		if err != nil {
+			helper.Responses(ctx, http.StatusForbidden, "Invalid or expired token", nil)
+			ctx.Abort()
+			return
+		}
+
+		if access[0].Role != "super_admin" {
+			helper.Responses(ctx, http.StatusForbidden, "super admin only", nil)
+			ctx.Abort()
+			return
+		}
+		ctx.Next()
+	}
+}
+
 func extractCorePath(route string) string {
 
 	trimmed := strings.Trim(route, "/")
