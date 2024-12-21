@@ -20,6 +20,7 @@ func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.POST("/login", ctx.Ctl.Auth.Login)
+	r.PATCH("/logout", ctx.Ctl.Superadmin.Logout)
 
 	NotificationRoutes(r, ctx)
 	RevenueRoutes(r, ctx)
