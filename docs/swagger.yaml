@@ -1,0 +1,1537 @@
+basePath: /
+definitions:
+  helper.Response:
+    properties:
+      data: {}
+      limit:
+        type: integer
+      message:
+        type: string
+      page:
+        type: integer
+      status:
+        type: integer
+      total_items:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  model.AccessPermission:
+    properties:
+      id:
+        type: integer
+      permission_id:
+        type: integer
+      status:
+        type: boolean
+      user_id:
+        type: integer
+    type: object
+  model.Category:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      description:
+        type: string
+      icon_url:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  model.CreateNotification:
+    properties:
+      message:
+        example: You have a new message
+        type: string
+      status:
+        example: new
+        type: string
+      title:
+        example: New Message
+        type: string
+    type: object
+  model.ErrorResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  model.MonthlyRevenue:
+    properties:
+      month:
+        example: January
+        type: string
+      revenue:
+        example: 100.5
+        type: number
+    required:
+    - month
+    - revenue
+    type: object
+  model.Notification:
+    properties:
+      id:
+        example: 1
+        type: integer
+      message:
+        example: You have a new message
+        type: string
+      status:
+        example: new
+        type: string
+      title:
+        example: New Message
+        type: string
+    type: object
+  model.Order:
+    properties:
+      created_at:
+        type: string
+      customer_name:
+        type: string
+      id:
+        type: integer
+      order_products:
+        items:
+          $ref: '#/definitions/model.OrderProduct'
+        type: array
+      payment_method:
+        type: integer
+      status:
+        type: string
+      table_id:
+        type: integer
+      tax:
+        type: number
+      total_amount:
+        type: number
+      updated_at:
+        type: string
+    required:
+    - customer_name
+    - table_id
+    type: object
+  model.OrderProduct:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+      product_id:
+        type: integer
+      qty:
+        type: integer
+    type: object
+  model.OrderProductResponse:
+    properties:
+      item:
+        type: string
+      order_id:
+        type: integer
+      price:
+        type: number
+      qty:
+        type: integer
+    type: object
+  model.OrderResponse:
+    properties:
+      customer_name:
+        type: string
+      id:
+        type: integer
+      order_date:
+        type: string
+      order_products:
+        items:
+          $ref: '#/definitions/model.OrderProductResponse'
+        type: array
+      status:
+        type: string
+      sub_total:
+        type: integer
+      table_id:
+        type: integer
+    type: object
+  model.Payment:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  model.Product:
+    properties:
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      item_id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      qty:
+        type: integer
+      status:
+        type: string
+      stock:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  model.ProductRevenue:
+    properties:
+      id:
+        example: 1
+        type: integer
+      product_name:
+        example: Chicken Parmesan
+        type: string
+      profit:
+        example: 7985
+        type: number
+      profit_margin:
+        example: 15
+        type: number
+      revenue_date:
+        example: "2024-03-28"
+        type: string
+      sell_price:
+        example: 55
+        type: number
+      total_revenue:
+        example: 8000
+        type: number
+    required:
+    - product_name
+    - profit
+    - profit_margin
+    - revenue_date
+    - sell_price
+    - total_revenue
+    type: object
+  model.Reservation:
+    properties:
+      date:
+        type: string
+      depositFee:
+        type: integer
+      email:
+        type: string
+      fullName:
+        type: string
+      id:
+        type: integer
+      pax:
+        type: integer
+      phoneNumber:
+        type: string
+      status:
+        type: string
+      tableNumber:
+        type: integer
+      time:
+        type: string
+      title:
+        type: string
+    type: object
+  model.ResponseEmployee:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+  model.RevenueByStatus:
+    properties:
+      revenue:
+        example: 100.5
+        type: number
+      status:
+        example: Completed
+        type: string
+    required:
+    - revenue
+    - status
+    type: object
+  model.SuccessResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  model.Summary:
+    properties:
+      dailySales:
+        type: integer
+      monthlySales:
+        type: integer
+      totalTables:
+        type: integer
+    type: object
+  model.Table:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_book:
+        type: boolean
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: http://example.com/support
+  description: API for Point Of Sale
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://example.com/terms/
+  title: App pos Team 2
+  version: "1.0"
+paths:
+  /api/dashboard/new:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For New Product Dashboard
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Product'
+                  type: array
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get New Product
+      tags:
+      - Dashboard
+  /api/dashboard/popular:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For Popular Product Dashboard
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Product'
+                  type: array
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get Popular Product
+      tags:
+      - Dashboard
+  /api/dashboard/report:
+    get:
+      consumes:
+      - application/json
+      description: Generate an Excel report and return it as an attachment
+      produces:
+      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      responses:
+        "200":
+          description: Order_Report.xlsx
+          schema:
+            type: file
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Generate an Excel report
+      tags:
+      - Dashboard
+  /api/dashboard/summary:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For Summary Dashboard
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Summary'
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get Summary
+      tags:
+      - Dashboard
+  /category:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of categories with optional pagination
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of categories retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Category'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch categories
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Get all categories
+      tags:
+      - Categories
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add a new category to the database
+      parameters:
+      - description: Category Name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Category Description
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Category Icon
+        in: formData
+        name: icon
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Category created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Category'
+              type: object
+        "400":
+          description: Invalid category data
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to create category
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Create a new category
+      tags:
+      - Categories
+  /category/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a single category by its ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Category retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Category'
+              type: object
+        "400":
+          description: Invalid category ID
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Get category by ID
+      tags:
+      - Categories
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update the details of a category by its ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Category Name
+        in: formData
+        name: name
+        type: string
+      - description: Category Description
+        in: formData
+        name: description
+        type: string
+      - description: Category Icon
+        in: formData
+        name: icon
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Category updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Category'
+              type: object
+        "400":
+          description: Invalid category ID or data
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to update category
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Update an existing category
+      tags:
+      - Categories
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: Log the user out by invalidating their authorization token
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully logged out
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Logout user
+      tags:
+      - Superadmin
+  /notification:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all notifications, optionally filtered by status
+      parameters:
+      - description: Notification status (e.g., unread)
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of notifications retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Notification'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch notifications
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Get all notifications
+      tags:
+      - Notification
+    post:
+      consumes:
+      - application/json
+      description: Create a new notification
+      parameters:
+      - description: Notification payload
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateNotification'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Notification created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Notification'
+              type: object
+        "400":
+          description: Invalid payload
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to create notification
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Create a new notification
+      tags:
+      - Notification
+  /notification/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a notification using its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification deleted successfully
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to delete notification
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Delete a notification by ID
+      tags:
+      - Notification
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a notification by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Notification'
+              type: object
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to fetch notification
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Get a notification by ID
+      tags:
+      - Notification
+    put:
+      consumes:
+      - application/json
+      description: Update the status or details of a notification
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification updated successfully
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to update notification
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Update a notification by ID
+      tags:
+      - Notification
+  /notification/mark-all-read:
+    put:
+      consumes:
+      - application/json
+      description: Mark all notifications as read
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All notifications marked as read successfully
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "500":
+          description: Failed to mark notifications as read
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Mark all notifications as read
+      tags:
+      - Notification
+  /order:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of orders with optional search and status filtering.
+      parameters:
+      - description: Search keyword to filter orders
+        in: query
+        name: search
+        type: string
+      - description: Filter orders by status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order successfully retrieved
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.OrderResponse'
+                  type: array
+              type: object
+        "404":
+          description: Order not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Retrieve all orders
+      tags:
+      - Orders
+    post:
+      consumes:
+      - application/json
+      description: Create a new order with associated products
+      parameters:
+      - description: Order payload
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/model.Order'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Order successfully created
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "400":
+          description: Failed to create order
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Create a new order
+      tags:
+      - Orders
+  /order/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an order by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted order
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: integer
+                  type: object
+              type: object
+        "404":
+          description: Order not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Delete an order
+      tags:
+      - Orders
+    put:
+      consumes:
+      - application/json
+      description: Update the details of an order by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated order payload
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/model.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order successfully updated
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "400":
+          description: Failed to update order
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Update an existing order
+      tags:
+      - Orders
+  /order/payment:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all payment methods
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Payment methods successfully retrieved
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Payment'
+                  type: array
+              type: object
+        "404":
+          description: Payment methods not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Retrieve all payment methods
+      tags:
+      - Payments
+  /order/table:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all tables
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Tables successfully retrieved
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Table'
+                  type: array
+              type: object
+        "404":
+          description: Tables not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Retrieve all tables
+      tags:
+      - Tables
+  /product:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of products with optional pagination
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of products retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Product'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch products
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Get all products
+      tags:
+      - Products
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add a new product to the inventory
+      parameters:
+      - description: Product Name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Product Description
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Product Price
+        in: formData
+        name: price
+        required: true
+        type: number
+      - description: Product Stock
+        in: formData
+        name: stock
+        required: true
+        type: integer
+      - description: Product Image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Product created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Product'
+              type: object
+        "400":
+          description: Invalid product data
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to create product
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Create a new product
+      tags:
+      - Products
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a product by its ID
+      parameters:
+      - description: Product ID
+        example: 1
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product deleted successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: string
+                  type: object
+              type: object
+        "400":
+          description: Invalid product ID
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to delete product
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Delete a product
+      tags:
+      - Products
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a single product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Product'
+              type: object
+        "400":
+          description: Invalid product ID
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Get product by ID
+      tags:
+      - Products
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update the details of a product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product Name
+        in: formData
+        name: name
+        type: string
+      - description: Product Description
+        in: formData
+        name: description
+        type: string
+      - description: Product Price
+        in: formData
+        name: price
+        type: number
+      - description: Product Stock
+        in: formData
+        name: stock
+        type: integer
+      - description: Product Image
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Product'
+              type: object
+        "400":
+          description: Invalid product ID or data
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Product not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Failed to update product
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Update an existing product
+      tags:
+      - Products
+  /reservation:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For All Reservation
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Reservation'
+                  type: array
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get All Reservation
+      tags:
+      - Reservation
+    post:
+      consumes:
+      - application/json
+      description: Create a new reservation.
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Reservation successfully created
+          schema:
+            type: string
+        "400":
+          description: Invalid form data
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Create a new Reservation
+      tags:
+      - Reservation
+    put:
+      consumes:
+      - application/json
+      description: edit existing reservation.
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Reservation successfully updated
+          schema:
+            type: string
+        "400":
+          description: Invalid form data
+          schema:
+            $ref: '#/definitions/helper.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: edit existing Reservation
+      tags:
+      - Reservation
+  /reservation/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint For Detail Reservation
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Get Summary Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.Reservation'
+              type: object
+        "500":
+          description: server error
+          schema:
+            $ref: '#/definitions/helper.Response'
+      summary: Get Detail Reservation
+      tags:
+      - Reservation
+  /revenue/month:
+    get:
+      description: Get total revenue grouped by month
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fetch monthly revenue successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.MonthlyRevenue'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch monthly revenue
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Fetch monthly revenue
+      tags:
+      - Revenue
+  /revenue/products:
+    get:
+      description: Get revenue details for all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fetch product revenues successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.ProductRevenue'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch product revenues
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Fetch product revenues
+      tags:
+      - Revenue
+  /revenue/status:
+    get:
+      description: Get total revenue grouped by order status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Fetch total revenue by status successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.RevenueByStatus'
+                  type: array
+              type: object
+        "500":
+          description: Failed to fetch total revenue by status
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Fetch total revenue by status
+      tags:
+      - Revenue
+  /superadmin:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all admins with their names and emails
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved admin data
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.ResponseEmployee'
+                  type: array
+              type: object
+        "404":
+          description: Admin data not found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Retrieve list of admins
+      tags:
+      - Superadmin
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update the details of a superadmin, including email, full name,
+        address, password, and profile image
+      parameters:
+      - description: Email of the superadmin
+        in: formData
+        maxLength: 100
+        minLength: 3
+        name: email
+        required: true
+        type: string
+      - description: Full name of the superadmin
+        in: formData
+        maxLength: 100
+        minLength: 3
+        name: full_name
+        required: true
+        type: string
+      - description: Address of the superadmin
+        in: formData
+        maxLength: 255
+        name: address
+        type: string
+      - description: New password for the superadmin
+        in: formData
+        minLength: 8
+        name: new_password
+        type: string
+      - description: Confirm password (must match new_password)
+        in: formData
+        name: confirm_password
+        type: string
+      - description: Profile image (maximum size 5MB)
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated superadmin
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "400":
+          description: Invalid input data or validation error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Update superadmin details
+      tags:
+      - Superadmin
+  /superadmin/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update the access permissions of a specific user based on their
+        ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Access Permission Payload
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.AccessPermission'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated access permissions
+          schema:
+            $ref: '#/definitions/model.SuccessResponse'
+        "400":
+          description: Invalid input payload
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Authentication: []
+      summary: Update access permissions for a user
+      tags:
+      - Superadmin
+securityDefinitions:
+  Authentication:
+    in: header
+    name: Authorization
+    type: apiKey
+  UserID:
+    in: header
+    name: User-ID
+    type: apiKey
+  UserRole:
+    in: header
+    name: User-Role
+    type: apiKey
+swagger: "2.0"

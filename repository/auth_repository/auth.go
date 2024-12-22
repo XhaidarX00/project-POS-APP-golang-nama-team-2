@@ -63,5 +63,5 @@ func (a *authRepo) Login(login *model.Login, ipAddress string) (*model.Session, 
 		}
 	}
 
-	return &session, user.Name, nil
+	return &session, session.Token, nil
 }

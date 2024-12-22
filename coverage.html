@@ -1,0 +1,3577 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>cmd: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">project_pos_app/cmd/cron.go (0.0%)</option>
+				
+				<option value="file1">project_pos_app/config/config.go (0.0%)</option>
+				
+				<option value="file2">project_pos_app/controller/auth_controller/auth.go (0.0%)</option>
+				
+				<option value="file3">project_pos_app/controller/controller.go (0.0%)</option>
+				
+				<option value="file4">project_pos_app/controller/example_controller/example.go (0.0%)</option>
+				
+				<option value="file5">project_pos_app/controller/notif_controller/notif_controller.go (100.0%)</option>
+				
+				<option value="file6">project_pos_app/controller/revenue_controller/revenue_controller.go (100.0%)</option>
+				
+				<option value="file7">project_pos_app/database/database.go (0.0%)</option>
+				
+				<option value="file8">project_pos_app/database/migration.go (0.0%)</option>
+				
+				<option value="file9">project_pos_app/database/redis.go (0.0%)</option>
+				
+				<option value="file10">project_pos_app/database/seeder.go (0.0%)</option>
+				
+				<option value="file11">project_pos_app/docs/docs.go (0.0%)</option>
+				
+				<option value="file12">project_pos_app/helper/convert.go (48.0%)</option>
+				
+				<option value="file13">project_pos_app/helper/logger.go (0.0%)</option>
+				
+				<option value="file14">project_pos_app/helper/mockSetup.go (100.0%)</option>
+				
+				<option value="file15">project_pos_app/helper/response.go (50.0%)</option>
+				
+				<option value="file16">project_pos_app/infra/integration.go (0.0%)</option>
+				
+				<option value="file17">project_pos_app/main.go (0.0%)</option>
+				
+				<option value="file18">project_pos_app/mock_testing/mockDB.go (69.6%)</option>
+				
+				<option value="file19">project_pos_app/model/category.go (0.0%)</option>
+				
+				<option value="file20">project_pos_app/model/notif.go (0.0%)</option>
+				
+				<option value="file21">project_pos_app/model/order.go (0.0%)</option>
+				
+				<option value="file22">project_pos_app/model/order_product.go (0.0%)</option>
+				
+				<option value="file23">project_pos_app/model/product.go (0.0%)</option>
+				
+				<option value="file24">project_pos_app/model/revenue.go (0.0%)</option>
+				
+				<option value="file25">project_pos_app/repository/auth_repository/auth.go (0.0%)</option>
+				
+				<option value="file26">project_pos_app/repository/example_repository/example.go (0.0%)</option>
+				
+				<option value="file27">project_pos_app/repository/notification/notif_repository.go (94.3%)</option>
+				
+				<option value="file28">project_pos_app/repository/repository.go (0.0%)</option>
+				
+				<option value="file29">project_pos_app/repository/revenue_repository/revenue_repository.go (72.3%)</option>
+				
+				<option value="file30">project_pos_app/router/router.go (0.0%)</option>
+				
+				<option value="file31">project_pos_app/service/auth_service/auth.go (0.0%)</option>
+				
+				<option value="file32">project_pos_app/service/example_service/example.go (0.0%)</option>
+				
+				<option value="file33">project_pos_app/service/notif_service/notif_service.go (72.3%)</option>
+				
+				<option value="file34">project_pos_app/service/notif_service/notif_service_mock.go (0.0%)</option>
+				
+				<option value="file35">project_pos_app/service/revenue_service/revenue_service.go (86.7%)</option>
+				
+				<option value="file36">project_pos_app/service/revenue_service/revenue_service_mock.go (0.0%)</option>
+				
+				<option value="file37">project_pos_app/service/service.go (0.0%)</option>
+				
+				<option value="file38">project_pos_app/test.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package cmd
+
+import (
+        "log"
+        "project_pos_app/infra"
+        "project_pos_app/model"
+        "time"
+
+        "github.com/robfig/cron/v3"
+)
+
+func CronJob(ctx *infra.IntegrationContext) error <span class="cov0" title="0">{
+        // Define a new cron scheduler
+        c := cron.New(cron.WithLogger(cron.VerbosePrintfLogger(log.New(log.Writer(), "cron: ", log.LstdFlags))))
+
+        // untuk kedepannya pakai websocket atau firebase
+        // Schedule the task to check stock and send notifications if stock &lt; LowStock
+        _, err := c.AddFunc("0 0 * * *", func() </span><span class="cov0" title="0">{
+                log.Println("Checking product stock levels...")
+                products, err := ctx.Ctl.Revenue.Service.Revenue.GetLowStockProducts(ctx.Cfg.LowStock)
+                if err != nil </span><span class="cov0" title="0">{
+                        log.Printf("Error fetching low stock products: %v\n", err)
+                        return
+                }</span>
+                <span class="cov0" title="0">for _, product := range products </span><span class="cov0" title="0">{
+                        data := model.Notification{
+                                Title:     "Low Stock Alert",
+                                Message:   "Product " + product.Name + " has less than 10 items in stock.",
+                                CreatedAt: time.Now(),
+                        }
+                        err := ctx.Ctl.Notif.Service.Notif.CreateNotification(data)
+                        if err != nil </span><span class="cov0" title="0">{
+                                log.Printf("Error sending notification for product %s: %v\n", product.Name, err)
+                        }</span> else<span class="cov0" title="0"> {
+                                log.Printf("Notification for product %s sent successfully.\n", product.Name)
+                        }</span>
+                }
+        })
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Schedule the task to generate revenue reports every day at 1 AM
+        <span class="cov0" title="0">_, err = c.AddFunc("0 1 * * *", func() </span><span class="cov0" title="0">{
+                log.Println("Starting revenue report generation...")
+                // Generate order revenue
+                orders, err := ctx.Ctl.Revenue.Service.Revenue.CalculateOrderRevenue()
+                if err != nil </span><span class="cov0" title="0">{
+                        log.Printf("Error calculating order revenue: %v\n", err)
+                        return
+                }</span>
+                <span class="cov0" title="0">for _, order := range orders </span><span class="cov0" title="0">{
+                        err := ctx.Ctl.Revenue.Service.Revenue.SaveOrderRevenue(order)
+                        if err != nil </span><span class="cov0" title="0">{
+                                log.Printf("Error saving order revenue for order %d: %v\n", order.ID, err)
+                        }</span>
+                }
+
+                // Generate product revenue
+                <span class="cov0" title="0">products, err := ctx.Ctl.Revenue.Service.Revenue.CalculateProductRevenue()
+                if err != nil </span><span class="cov0" title="0">{
+                        log.Printf("Error calculating product revenue: %v\n", err)
+                        return
+                }</span>
+                <span class="cov0" title="0">for _, product := range products </span><span class="cov0" title="0">{
+                        product.ProfitMargin = ctx.Cfg.ProfitMargin
+                        err := ctx.Ctl.Revenue.Service.Revenue.SaveProductRevenue(product)
+                        if err != nil </span><span class="cov0" title="0">{
+                                log.Printf("Error saving product revenue for product %s: %v\n", product.ProductName, err)
+                        }</span>
+                }
+
+                <span class="cov0" title="0">log.Println("Revenue report generation completed successfully.")</span>
+        })
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Start the cron scheduler
+        <span class="cov0" title="0">c.Start()
+
+        // Run a blocking loop to keep the cron job running
+        go func() </span><span class="cov0" title="0">{
+                select </span>{} // Prevent the function from exiting
+        }()
+
+        <span class="cov0" title="0">log.Printf("Cron job initialized and running. Current time: %v\n", time.Now())
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package config
+
+import (
+        "github.com/spf13/viper"
+        "go.uber.org/zap"
+)
+
+type Config struct {
+        AppName      string
+        Port         string
+        Debug        bool
+        Migration    bool
+        Seeder       bool
+        Database     Database
+        Redis        Redis
+        ProfitMargin float64
+        LowStock     int
+}
+
+type Database struct {
+        DBName         string
+        DBHost         string
+        DBPort         string
+        DBUser         string
+        DBPassword     string
+        DBConnection   int
+        DBTimezone     string
+        DBMaxIdleConst int
+        DBMaxOpenConst int
+        DBMaxIdleTime  int
+        DBMaxLifeTime  int
+}
+
+type Redis struct {
+        Url      string
+        Password string
+        Prefix   string
+}
+
+func SetConfig() (Config, error) <span class="cov0" title="0">{
+
+        log := zap.Logger{}
+        setEnv := viper.New()
+        setEnv.SetConfigType("dotenv")
+        viper.SetConfigFile(".env")
+
+        viper.SetDefault("DBHost", "localhost")
+        viper.SetDefault("DBPort", "5432")
+        viper.SetDefault("DBUser", "postgres")
+        viper.SetDefault("DBPassword", "admin")
+        viper.SetDefault("DBName", "database")
+
+        viper.AutomaticEnv()
+
+        err := viper.ReadInConfig()
+        if err != nil </span><span class="cov0" title="0">{
+                log.Error("Error reading config file: %s, using default values or environment variables", zap.Error(err))
+        }</span>
+
+        <span class="cov0" title="0">config := Config{
+                AppName:      viper.GetString("APP_NAME"),
+                Port:         viper.GetString("PORT"),
+                Debug:        viper.GetBool("DEBUG"),
+                Migration:    viper.GetBool("AUTO_MIGRATE"),
+                Seeder:       viper.GetBool("SEEDER"),
+                ProfitMargin: viper.GetFloat64("PROFIT_MARGIN"),
+                LowStock:     viper.GetInt("LOW_STOCK"),
+
+                Database: Database{
+                        DBName:         viper.GetString("DB_NAME"),
+                        DBHost:         viper.GetString("DB_HOST"),
+                        DBPort:         viper.GetString("DB_PORT"),
+                        DBUser:         viper.GetString("DB_USER"),
+                        DBPassword:     viper.GetString("DB_PASSWORD"),
+                        DBConnection:   viper.GetInt("DB_ConnectTimeOut"),
+                        DBTimezone:     viper.GetString("DB_TIMEZONE"),
+                        DBMaxIdleConst: viper.GetInt("DB_MAX_IDLE_CONNS"),
+                        DBMaxOpenConst: viper.GetInt("DB_MAX_OPEN_CONNS"),
+                        DBMaxIdleTime:  viper.GetInt("DB_MAX_IDLE_TIME"),
+                        DBMaxLifeTime:  viper.GetInt("DB_MAX_LIFE_TIME"),
+                },
+
+                Redis: Redis{
+                        Url:      viper.GetString("REDIS_URL"),
+                        Password: viper.GetString("REDIS_PASSWORD"),
+                        Prefix:   viper.GetString("REDIS_PREFIX"),
+                },
+        }
+
+        return config, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package authcontroller
+
+import (
+        "net/http"
+        "project_pos_app/database"
+        "project_pos_app/helper"
+        "project_pos_app/model"
+        "project_pos_app/service"
+
+        "github.com/gin-gonic/gin"
+
+        "go.uber.org/zap"
+)
+
+type AuthHadler struct {
+        Service *service.AllService
+        Log     *zap.Logger
+        Cacher  *database.Cache
+}
+
+func NewUserHandler(service *service.AllService, log *zap.Logger, rdb *database.Cache) AuthHadler <span class="cov0" title="0">{
+        return AuthHadler{
+                Service: service,
+                Log:     log,
+                Cacher:  rdb,
+        }
+}</span>
+
+func (auth *AuthHadler) Login(c *gin.Context) <span class="cov0" title="0">{
+        login := model.Login{}
+        ipAddress := c.ClientIP()
+
+        err := c.ShouldBindJSON(&amp;login)
+        if err != nil </span><span class="cov0" title="0">{
+                auth.Log.Error("Invalid payload", zap.Error(err))
+                helper.Responses(c, http.StatusInternalServerError, "Invalid Payload: "+err.Error(), nil)
+                return
+        }</span>
+
+        <span class="cov0" title="0">session, idKey, err := auth.Service.Auth.Login(&amp;login, ipAddress)
+        if err != nil </span><span class="cov0" title="0">{
+                auth.Log.Error("Failed to Login"+err.Error(), zap.Error(err))
+                helper.Responses(c, http.StatusBadRequest, err.Error(), nil)
+                return
+        }</span>
+
+        <span class="cov0" title="0">token := session.Token
+        IDKEY := idKey
+
+        auth.Log.Info("Saving token to Redis", zap.String("IDKEY", IDKEY), zap.String("token", token))
+
+        err = auth.Cacher.Set(IDKEY, token)
+        if err != nil </span><span class="cov0" title="0">{
+                helper.Responses(c, http.StatusInternalServerError, err.Error(), nil)
+        }</span>
+
+        <span class="cov0" title="0">helper.Responses(c, http.StatusOK, "successfully login", session)</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package controller
+
+import (
+        authcontroller "project_pos_app/controller/auth_controller"
+        examplecontroller "project_pos_app/controller/example_controller"
+        notifcontroller "project_pos_app/controller/notif_controller"
+        revenuecontroller "project_pos_app/controller/revenue_controller"
+        "project_pos_app/database"
+        "project_pos_app/service"
+
+        "go.uber.org/zap"
+)
+
+type AllController struct {
+        Example examplecontroller.ExampleController
+        Auth    authcontroller.AuthHadler
+        Notif   notifcontroller.NotifController
+        Revenue revenuecontroller.RevenueController
+}
+
+func NewAllController(service *service.AllService, log *zap.Logger, cfg *database.Cache) AllController <span class="cov0" title="0">{
+        return AllController{
+                Example: examplecontroller.NewExampleController(service, log),
+                Auth:    authcontroller.NewUserHandler(service, log, cfg),
+                Notif:   notifcontroller.NewNotifController(service, log),
+                Revenue: revenuecontroller.NewRevenueController(service, log),
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package examplecontroller
+
+import (
+        "project_pos_app/service"
+
+        "go.uber.org/zap"
+)
+
+type ExampleController interface {
+}
+
+type exampleController struct {
+        service *service.AllService
+        log     *zap.Logger
+}
+
+func NewExampleController(service *service.AllService, log *zap.Logger) ExampleController <span class="cov0" title="0">{
+        return &amp;exampleController{service, log}
+}</span>
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package notifcontroller
+
+import (
+        "net/http"
+        "project_pos_app/helper"
+        "project_pos_app/model"
+        "project_pos_app/service"
+        "strconv"
+
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+type NotifController struct {
+        Service *service.AllService
+        Log     *zap.Logger
+}
+
+func NewNotifController(service *service.AllService, log *zap.Logger) NotifController <span class="cov8" title="1">{
+        return NotifController{
+                Service: service,
+                Log:     log,
+        }
+}</span>
+
+// CreateNotifications godoc
+// @Summary Create a new notification
+// @Description Create a new notification
+// @Tags Notification
+// @Accept json
+// @Produce json
+// @Param notification body model.Notification true "Notification payload"
+// @Success 201 {object} model.SuccessResponse{data=model.Notification} "Notification created successfully"
+// @Failure 400 {object} model.ErrorResponse "Invalid payload"
+// @Failure 500 {object} model.ErrorResponse "Failed to create notification"
+// @Router /api/notifications [post]
+func (c *NotifController) CreateNotifications(ctx *gin.Context) <span class="cov8" title="1">{
+        var data model.Notification
+        err := ctx.ShouldBindJSON(&amp;data)
+        if err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Invalid payload", zap.Error(err))
+                helper.Responses(ctx, http.StatusBadRequest, "Invalid Payload: "+err.Error(), nil)
+                ctx.Abort()
+                return
+        }</span>
+
+        <span class="cov8" title="1">err = c.Service.Notif.CreateNotification(data)
+        if err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Failed to get all notifications", zap.Error(err))
+                helper.Responses(ctx, http.StatusInternalServerError, "Failed to fetch notifications", nil)
+                ctx.Abort()
+                return
+        }</span>
+
+        <span class="cov8" title="1">helper.Responses(ctx, http.StatusCreated, "Create notification successfully", nil)</span>
+}
+
+// GetAllNotifications godoc
+// @Summary Get all notifications
+// @Description Retrieve all notifications, optionally filtered by status
+// @Tags Notification
+// @Accept json
+// @Produce json
+// @Param status query string false "Notification status (e.g., unread)"
+// @Success 200 {object} model.SuccessResponse{data=[]model.Notification} "List of notifications retrieved successfully"
+// @Failure 500 {object} model.ErrorResponse "Failed to fetch notifications"
+// @Router /api/notifications [get]
+func (c *NotifController) GetAllNotifications(ctx *gin.Context) <span class="cov8" title="1">{
+        status := ctx.Query("status")
+        notifications, err := c.Service.Notif.GetAllNotifications(status)
+        if err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Failed to get all notifications", zap.Error(err))
+                helper.Responses(ctx, http.StatusInternalServerError, "Failed to fetch notifications", nil)
+                ctx.Abort()
+                return
+        }</span>
+        <span class="cov8" title="1">helper.Responses(ctx, http.StatusOK, "Get all notification successfully", notifications)</span>
+}
+
+// GetNotificationByID godoc
+// @Summary Get a notification by ID
+// @Description Retrieve a notification by its ID
+// @Tags Notification
+// @Accept json
+// @Produce json
+// @Param id path int true "Notification ID"
+// @Success 200 {object} model.SuccessResponse{data=model.Notification} "Notification retrieved successfully"
+// @Failure 400 {object} model.ErrorResponse "Invalid ID format"
+// @Failure 500 {object} model.ErrorResponse "Failed to fetch notification"
+// @Router /api/notifications/{id} [get]
+func (c *NotifController) GetNotificationByID(ctx *gin.Context) <span class="cov8" title="1">{
+        id := ctx.Param("id")
+        notifID, err := strconv.Atoi(id)
+        if err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Invalid notification ID", zap.Error(err))
+                helper.Responses(ctx, http.StatusBadRequest, "Invalid ID format", nil)
+                ctx.Abort()
+                return
+        }</span>
+
+        <span class="cov8" title="1">notification, err := c.Service.Notif.GetNotificationByID(notifID)
+        if err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Failed to get notification by ID", zap.Error(err))
+                helper.Responses(ctx, http.StatusInternalServerError, "Failed to fetch notification", nil)
+                ctx.Abort()
+                return
+        }</span>
+        <span class="cov8" title="1">helper.Responses(ctx, http.StatusOK, "Notification retrieved successfully", notification)</span>
+}
+
+// UpdateNotification godoc
+// @Summary Update a notification by ID
+// @Description Update the status or details of a notification
+// @Tags Notification
+// @Accept json
+// @Produce json
+// @Param id path int true "Notification ID"
+// @Success 200 {object} model.SuccessResponse "Notification updated successfully"
+// @Failure 400 {object} model.ErrorResponse "Invalid ID format"
+// @Failure 500 {object} model.ErrorResponse "Failed to update notification"
+// @Router /api/notifications/{id} [put]
+func (c *NotifController) UpdateNotification(ctx *gin.Context) <span class="cov8" title="1">{
+        id := ctx.Param("id")
+        notificationID, err := strconv.Atoi(id)
+        if err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Invalid notification ID", zap.Error(err))
+                helper.Responses(ctx, http.StatusBadRequest, "Invalid ID format", nil)
+                ctx.Abort()
+                return
+        }</span>
+
+        // existingNotif, err := c.Service.Notif.GetNotificationByID(notificationID)
+        // if err != nil || existingNotif == nil {
+        //         c.Log.Error("Invalid notification ID", zap.Error(err))
+        //         helper.Responses(ctx, http.StatusBadRequest, "Notification not found", nil)
+        //         ctx.Abort()
+        //         return
+        // }
+
+        <span class="cov8" title="1">if err := c.Service.Notif.UpdateNotification(notificationID); err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Failed to update notification", zap.Error(err))
+                helper.Responses(ctx, http.StatusInternalServerError, "Failed to update notification", nil)
+                ctx.Abort()
+                return
+        }</span>
+        <span class="cov8" title="1">helper.Responses(ctx, http.StatusOK, "Notification updated successfully", nil)</span>
+}
+
+// DeleteNotification godoc
+// @Summary Delete a notification by ID
+// @Description Delete a notification using its ID
+// @Tags Notification
+// @Accept json
+// @Produce json
+// @Param id path int true "Notification ID"
+// @Success 200 {object} model.SuccessResponse "Notification deleted successfully"
+// @Failure 400 {object} model.ErrorResponse "Invalid ID format"
+// @Failure 500 {object} model.ErrorResponse "Failed to delete notification"
+// @Router /api/notifications/{id} [delete]
+func (c *NotifController) DeleteNotification(ctx *gin.Context) <span class="cov8" title="1">{
+        id := ctx.Param("id")
+        notificationID, err := strconv.Atoi(id)
+        if err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Invalid notification ID", zap.Error(err))
+                helper.Responses(ctx, http.StatusBadRequest, "Invalid ID format", nil)
+                ctx.Abort()
+                return
+        }</span>
+
+        <span class="cov8" title="1">if err := c.Service.Notif.DeleteNotification(notificationID); err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Failed to delete notification", zap.Error(err))
+                helper.Responses(ctx, http.StatusInternalServerError, "Failed to delete notification", nil)
+                ctx.Abort()
+                return
+        }</span>
+        <span class="cov8" title="1">helper.Responses(ctx, http.StatusOK, "Notification deleted successfully", nil)</span>
+}
+
+// MarkAllNotificationsAsRead godoc
+// @Summary Mark all notifications as read
+// @Description Mark all notifications as read
+// @Tags Notification
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.SuccessResponse "All notifications marked as read successfully"
+// @Failure 500 {object} model.ErrorResponse "Failed to mark notifications as read"
+// @Router /api/notifications/mark-as-read [put]
+func (c *NotifController) MarkAllNotificationsAsRead(ctx *gin.Context) <span class="cov8" title="1">{
+        if err := c.Service.Notif.MarkAllNotificationsAsRead(); err != nil </span><span class="cov8" title="1">{
+                c.Log.Error("Failed to mark all notifications as read", zap.Error(err))
+                helper.Responses(ctx, http.StatusInternalServerError, "Failed to mark all notifications as read", nil)
+                ctx.Abort()
+                return
+        }</span>
+        <span class="cov8" title="1">helper.Responses(ctx, http.StatusOK, "All notifications marked as read", nil)</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package revenuecontroller
+
+import (
+        "net/http"
+        "project_pos_app/helper"
+        "project_pos_app/service"
+
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+type RevenueController struct {
+        Service *service.AllService
+        Log     *zap.Logger
+}
+
+func NewRevenueController(service *service.AllService, log *zap.Logger) RevenueController <span class="cov8" title="1">{
+        return RevenueController{Service: service, Log: log}
+}</span>
+
+// GetTotalRevenueByStatus godoc
+// @Summary Fetch total revenue by status
+// @Description Get total revenue grouped by order status
+// @Tags Revenue
+// @Produce json
+// @Success 200 {object} models.SuccessResponse{data=[]models.RevenueByStatus} "Fetch total revenue by status successfully"
+// @Failure 500 {object} models.ErrorResponse "Failed to fetch total revenue by status"
+// @Router /api/revenue/status [get]
+func (ctrl *RevenueController) GetTotalRevenueByStatus(ctx *gin.Context) <span class="cov8" title="1">{
+        data, err := ctrl.Service.Revenue.FetchTotalRevenueByStatus()
+        if err != nil </span><span class="cov8" title="1">{
+                ctrl.Log.Error("Failed to fetch total revenue by status", zap.Error(err))
+                helper.Responses(ctx, http.StatusInternalServerError, "Failed to fetch total revenue by status: "+err.Error(), nil)
+                ctx.Abort()
+                return
+        }</span>
+
+        <span class="cov8" title="1">helper.Responses(ctx, http.StatusOK, "Fetch total revenue by status successfully", data)</span>
+}
+
+// GetMonthlyRevenue godoc
+// @Summary Fetch monthly revenue
+// @Description Get total revenue grouped by month
+// @Tags Revenue
+// @Produce json
+// @Success 200 {object} models.SuccessResponse{data=[]models.MonthlyRevenue} "Fetch monthly revenue successfully"
+// @Failure 500 {object} models.ErrorResponse "Failed to fetch monthly revenue"
+// @Router /api/revenue/month [get]
+func (ctrl *RevenueController) GetMonthlyRevenue(ctx *gin.Context) <span class="cov8" title="1">{
+        data, err := ctrl.Service.Revenue.FetchMonthlyRevenue()
+        if err != nil </span><span class="cov8" title="1">{
+                ctrl.Log.Error("Failed to fetch monthly revenue", zap.Error(err))
+                helper.Responses(ctx, http.StatusInternalServerError, "Failed to fetch monthly revenue: "+err.Error(), nil)
+                ctx.Abort()
+                return
+        }</span>
+
+        <span class="cov8" title="1">helper.Responses(ctx, http.StatusOK, "Fetch monthly revenue successfully", data)</span>
+}
+
+// GetProductRevenues godoc
+// @Summary Fetch product revenues
+// @Description Get revenue details for all products
+// @Tags Revenue
+// @Produce json
+// @Success 200 {object} models.SuccessResponse{data=[]models.ProductRevenue} "Fetch product revenues successfully"
+// @Failure 500 {object} models.ErrorResponse "Failed to fetch product revenues"
+// @Router /api/revenue/products [get]
+func (ctrl *RevenueController) GetProductRevenues(ctx *gin.Context) <span class="cov8" title="1">{
+        data, err := ctrl.Service.Revenue.FetchProductRevenues()
+        if err != nil </span><span class="cov8" title="1">{
+                ctrl.Log.Error("Failed to fetch product revenues", zap.Error(err))
+                helper.Responses(ctx, http.StatusInternalServerError, "Failed to fetch product revenues: "+err.Error(), nil)
+                ctx.Abort()
+                return
+        }</span>
+
+        <span class="cov8" title="1">helper.Responses(ctx, http.StatusOK, "Fetch product revenues successfully", data)</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package database
+
+import (
+        "fmt"
+        "log"
+        "os"
+        "project_pos_app/config"
+        "time"
+
+        "gorm.io/driver/postgres"
+        "gorm.io/gorm"
+        "gorm.io/gorm/logger"
+)
+
+func SetDatabase(cfg config.Config) (*gorm.DB, error) <span class="cov0" title="0">{
+
+        logger := logger.New(
+                log.New(os.Stdout, "\r\n", log.LstdFlags),
+                logger.Config{
+                        SlowThreshold:             time.Second,
+                        Colorful:                  true,
+                        IgnoreRecordNotFoundError: false,
+                        LogLevel:                  logger.Info,
+                },
+        )
+
+        db, err := gorm.Open(postgres.Open(
+                fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s timezone=%s",
+                        cfg.Database.DBHost, cfg.Database.DBPort, cfg.Database.DBUser, cfg.Database.DBName, cfg.Database.DBPassword, cfg.Database.DBTimezone)), &amp;gorm.Config{
+                Logger: logger,
+        })
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to connect to database: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">if cfg.Migration </span><span class="cov0" title="0">{
+                if err := Migration(db); err != nil </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("failed to make migration: " + err.Error())
+                }</span>
+        }
+
+        <span class="cov0" title="0">if cfg.Seeder </span><span class="cov0" title="0">{
+                if err := SeedAll(db); err != nil </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("failed to make seeder: " + err.Error())
+                }</span>
+        }
+
+        <span class="cov0" title="0">return db, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package database
+
+import (
+        "fmt"
+        "log"
+        "project_pos_app/model"
+
+        "gorm.io/gorm"
+)
+
+func Migration(db *gorm.DB) error <span class="cov0" title="0">{
+        if err := db.Exec(`CREATE TABLE IF NOT EXISTS migrations (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(255) UNIQUE,
+                applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )`).Error; err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to create migrations table: %w", err)
+        }</span>
+
+        // Define migrations
+        <span class="cov0" title="0">allModel := []struct {
+                name  string
+                model interface{}
+        }{
+                // {"user", models.User{}},
+                {"notification", model.Notification{}},
+                {"revenue_product", model.ProductRevenue{}},
+                {"revenue_order", model.OrderRevenue{}},
+        }
+
+        for _, migration := range allModel </span><span class="cov0" title="0">{
+                var count int64
+                err := db.Raw("SELECT COUNT(1) FROM migrations WHERE name = ?", migration.name).Scan(&amp;count).Error
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to check migration status for %s: %w", migration.name, err)
+                }</span>
+
+                <span class="cov0" title="0">if count &gt; 0 </span><span class="cov0" title="0">{
+                        log.Printf("Migration '%s' already applied, skipping.", migration.name)
+                        continue</span>
+                }
+
+                // Run migration
+                <span class="cov0" title="0">if err := db.AutoMigrate(migration.model); err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to migrate model %T: %w", migration.model, err)
+                }</span>
+
+                // Record migration as applied
+                <span class="cov0" title="0">if err := db.Exec("INSERT INTO migrations (name) VALUES (?)", migration.name).Error; err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to record migration %s: %w", migration.name, err)
+                }</span>
+
+                <span class="cov0" title="0">log.Printf("Migration '%s' applied successfully.", migration.name)</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package database
+
+import (
+        "context"
+        "fmt"
+        "project_pos_app/config"
+        "time"
+
+        "github.com/go-redis/redis/v8"
+)
+
+type Cache struct {
+        rdb     *redis.Client
+        expired time.Duration
+        prefix  string
+}
+
+func newRedisClient(url, password string, dbIndex int) *redis.Client <span class="cov0" title="0">{
+        return redis.NewClient(&amp;redis.Options{
+                Addr:     url,
+                Password: password,
+                DB:       dbIndex,
+        })
+}</span>
+
+func NewCache(cfg config.Config, expired int) Cache <span class="cov0" title="0">{
+        return Cache{
+                rdb:     newRedisClient(cfg.Redis.Url, cfg.Redis.Password, 0),
+                expired: time.Duration(expired) * time.Second,
+                prefix:  cfg.Redis.Prefix,
+        }
+}</span>
+
+func (c *Cache) Push(name string, value []byte) error <span class="cov0" title="0">{
+        return c.rdb.RPush(context.Background(), c.prefix+"_"+name, value).Err()
+}</span>
+
+func (c *Cache) Pop(name string) (string, error) <span class="cov0" title="0">{
+        return c.rdb.LPop(context.Background(), c.prefix+"_"+name).Result()
+}</span>
+
+func (c *Cache) GetLength(name string) int64 <span class="cov0" title="0">{
+        return c.rdb.LLen(context.Background(), c.prefix+"_"+name).Val()
+}</span>
+
+func (c *Cache) Set(name string, value string) error <span class="cov0" title="0">{
+        return c.rdb.Set(context.Background(), c.prefix+"_"+name, value, c.expired).Err()
+}</span>
+
+func (c *Cache) SaveToken(name string, value string) error <span class="cov0" title="0">{
+        return c.rdb.Set(context.Background(), c.prefix+"_"+name, value, 24*time.Hour).Err()
+}</span>
+
+func (c *Cache) Get(name string) (string, error) <span class="cov0" title="0">{
+        return c.rdb.Get(context.Background(), c.prefix+"_"+name).Result()
+}</span>
+
+func (c *Cache) Delete(name string) error <span class="cov0" title="0">{
+        return c.rdb.Del(context.Background(), c.prefix+"_"+name).Err()
+}</span>
+
+func (c *Cache) DeleteByKey(key string) error <span class="cov0" title="0">{
+        return c.rdb.Del(context.Background(), key).Err()
+}</span>
+
+func (c *Cache) PrintKeys() <span class="cov0" title="0">{
+        var cursor uint64
+        for </span><span class="cov0" title="0">{
+                var keys []string
+                var err error
+                keys, cursor, err = c.rdb.Scan(context.Background(), cursor, "", 0).Result()
+                if err != nil </span><span class="cov0" title="0">{
+                        panic(err)</span>
+                }
+
+                <span class="cov0" title="0">for _, key := range keys </span><span class="cov0" title="0">{
+                        fmt.Println("key", key)
+                }</span>
+
+                <span class="cov0" title="0">if cursor == 0 </span><span class="cov0" title="0">{ // no more keys
+                        break</span>
+                }
+        }
+}
+
+func (c *Cache) GetKeys() []string <span class="cov0" title="0">{
+        var cursor uint64
+        var result []string
+        for </span><span class="cov0" title="0">{
+                var keys []string
+                var err error
+                keys, cursor, err = c.rdb.Scan(context.Background(), cursor, "", 0).Result()
+                if err != nil </span><span class="cov0" title="0">{
+                        panic(err)</span>
+                }
+
+                <span class="cov0" title="0">result = append(result, keys...)
+
+                if cursor == 0 </span><span class="cov0" title="0">{ // no more keys
+                        break</span>
+                }
+        }
+
+        <span class="cov0" title="0">return result</span>
+}
+
+func (c *Cache) GetKeysByPattern(pattern string) []string <span class="cov0" title="0">{
+        var cursor uint64
+        var result []string
+        for </span><span class="cov0" title="0">{
+                var keys []string
+                var err error
+                keys, cursor, err = c.rdb.Scan(context.Background(), cursor, pattern, 0).Result()
+                if err != nil </span><span class="cov0" title="0">{
+                        panic(err)</span>
+                }
+
+                <span class="cov0" title="0">result = append(result, keys...)
+
+                if cursor == 0 </span><span class="cov0" title="0">{ // no more keys
+                        break</span>
+                }
+        }
+
+        <span class="cov0" title="0">return result</span>
+}
+
+// Pub and Sub
+func (c *Cache) Publish(channelName string, message string) error <span class="cov0" title="0">{
+        return c.rdb.Publish(context.Background(), channelName, message).Err()
+}</span>
+
+func (c *Cache) Subcribe(channelName string) (*redis.Message, error) <span class="cov0" title="0">{
+        subscriber := c.rdb.Subscribe(context.Background(), channelName)
+        message, err := subscriber.ReceiveMessage(context.Background())
+        return message, err
+}</span>
+
+func (c *Cache) GetClient() *redis.Client <span class="cov0" title="0">{
+        return c.rdb
+}</span>
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package database
+
+import (
+        "fmt"
+        "log"
+        "project_pos_app/model"
+        "reflect"
+
+        "gorm.io/gorm"
+        "gorm.io/gorm/clause"
+)
+
+func SeedAll(db *gorm.DB) error <span class="cov0" title="0">{
+        return db.Transaction(func(tx *gorm.DB) error </span><span class="cov0" title="0">{
+                seeds := dataSeeds()
+                for _, seed := range seeds </span><span class="cov0" title="0">{
+                        var count int64
+                        name := reflect.TypeOf(seed).String()
+
+                        if err := tx.Model(seed).Count(&amp;count).Error; err != nil </span><span class="cov0" title="0">{
+                                log.Fatalf("Error checking data for table %s: %v", name, err)
+                                return err
+                        }</span>
+
+                        <span class="cov0" title="0">if count &gt; 0 </span><span class="cov0" title="0">{
+                                log.Printf("Seeding skipped for table %s, data already exists.", name)
+                                continue</span>
+                        }
+
+                        <span class="cov0" title="0">err := tx.Clauses(clause.OnConflict{DoNothing: true}).Create(seed).Error
+                        if err != nil </span><span class="cov0" title="0">{
+                                errorMessage := err.Error()
+                                log.Printf("%s seeder failed with error: %s", name, errorMessage)
+                                continue</span>
+                        }
+
+                        <span class="cov0" title="0">resetSequence(tx, seed)</span>
+                }
+
+                <span class="cov0" title="0">log.Println("Seeding completed successfully.")
+                return nil</span>
+        })
+}
+
+// resetSequence resets the auto-increment sequence in case of conflict or error
+func resetSequence(tx *gorm.DB, seed interface{}) <span class="cov0" title="0">{
+        if tx.Dialector.Name() == "postgres" </span><span class="cov0" title="0">{
+                tableName := getTableName(seed)
+                if tableName != "" </span><span class="cov0" title="0">{
+                        // Reset the sequence for PostgreSQL
+                        query := fmt.Sprintf(`
+                                SELECT setval(pg_get_serial_sequence('%s', 'id'), 
+                                COALESCE((SELECT MAX(id) FROM %s), 1))`, tableName, tableName)
+                        if err := tx.Exec(query).Error; err != nil </span><span class="cov0" title="0">{
+                                log.Printf("[WARNING] Failed to reset sequence for table %s: %s", tableName, err)
+                        }</span>
+                }
+        }
+}
+
+// getTableName returns the table name from the seed's struct
+func getTableName(seed interface{}) string <span class="cov0" title="0">{
+        seedType := reflect.TypeOf(seed)
+        if seedType.Kind() == reflect.Ptr </span><span class="cov0" title="0">{
+                seedType = seedType.Elem()
+        }</span>
+        <span class="cov0" title="0">if seedType.Kind() == reflect.Struct </span><span class="cov0" title="0">{
+                return seedType.Name()
+        }</span>
+        <span class="cov0" title="0">return ""</span>
+}
+
+func dataSeeds() []interface{} <span class="cov0" title="0">{
+        return []interface{}{
+                model.NotificationSeed(),
+                model.RevenueSeedOrder(),
+                model.RevenueSeedProduct(),
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">// Code generated by swaggo/swag. DO NOT EDIT.
+
+package docs
+
+import "github.com/swaggo/swag"
+
+const docTemplate = `{
+    "schemes": {{ marshal .Schemes }},
+    "swagger": "2.0",
+    "info": {
+        "description": "{{escape .Description}}",
+        "title": "{{.Title}}",
+        "termsOfService": "http://example.com/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://example.com/support",
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "{{.Version}}"
+    },
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
+    "paths": {
+        "/api/notifications": {
+            "get": {
+                "description": "Retrieve all notifications, optionally filtered by status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Get all notifications",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Notification status (e.g., unread)",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of notifications retrieved successfully",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Notification"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to fetch notifications",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new notification",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Create a new notification",
+                "parameters": [
+                    {
+                        "description": "Notification payload",
+                        "name": "notification",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Notification"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Notification created successfully",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.Notification"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid payload",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to create notification",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/mark-as-read": {
+            "put": {
+                "description": "Mark all notifications as read",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Mark all notifications as read",
+                "responses": {
+                    "200": {
+                        "description": "All notifications marked as read successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.SuccessResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to mark notifications as read",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/{id}": {
+            "get": {
+                "description": "Retrieve a notification by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Get a notification by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notification retrieved successfully",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.SuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.Notification"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID format",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to fetch notification",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update the status or details of a notification",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Update a notification by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notification updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID format",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to update notification",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a notification using its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Delete a notification by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notification ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notification deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/model.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID format",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to delete notification",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Notification": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "message": {
+                    "type": "string",
+                    "example": "You have a new message"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "unread"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "New Message"
+                }
+            }
+        },
+        "model.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Authentication": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        },
+        "UserID": {
+            "type": "apiKey",
+            "name": "User-ID",
+            "in": "header"
+        },
+        "UserRole": {
+            "type": "apiKey",
+            "name": "User-Role",
+            "in": "header"
+        }
+    }
+}`
+
+// SwaggerInfo holds exported Swagger Info so clients can modify it
+var SwaggerInfo = &amp;swag.Spec{
+        Version:          "1.0",
+        Host:             "localhost:8080",
+        BasePath:         "/",
+        Schemes:          []string{},
+        Title:            "App pos Team 2",
+        Description:      "API for Point Of Sale",
+        InfoInstanceName: "swagger",
+        SwaggerTemplate:  docTemplate,
+}
+
+func init() <span class="cov0" title="0">{
+        swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
+}</span>
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package helper
+
+import (
+        "fmt"
+        "reflect"
+        "strconv"
+        "strings"
+)
+
+func StructToMap(input interface{}) (map[string]any, error) <span class="cov8" title="1">{
+        // Validasi bahwa input adalah pointer ke struct atau struct
+        val := reflect.ValueOf(input)
+        if val.Kind() == reflect.Ptr </span><span class="cov8" title="1">{
+                val = val.Elem() // Dereference pointer jika diperlukan
+        }</span>
+        <span class="cov8" title="1">if val.Kind() != reflect.Struct </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("input must be a struct or a pointer to a struct, got %s", val.Kind())
+        }</span>
+
+        // Konversi struct ke map[string]any
+        <span class="cov8" title="1">result := make(map[string]any)
+        for i := 0; i &lt; val.NumField(); i++ </span><span class="cov8" title="1">{
+                field := val.Type().Field(i) // Mendapatkan definisi field
+                fieldValue := val.Field(i)
+
+                // Lewati field yang tidak dapat diakses atau tidak diisi (nil/zero value)
+                if !fieldValue.CanInterface() || isZeroValue(fieldValue) </span><span class="cov8" title="1">{
+                        continue</span>
+                }
+
+                // Tambahkan field ke map
+                <span class="cov8" title="1">fieldName := strings.ToLower(field.Name) // Bisa diganti sesuai kebutuhan
+                result[fieldName] = fieldValue.Interface()</span>
+        }
+
+        <span class="cov8" title="1">return result, nil</span>
+}
+
+func StructToMapSlice(input interface{}) ([]map[string]any, error) <span class="cov8" title="1">{
+        // Validasi bahwa input adalah slice pointer
+        val := reflect.ValueOf(input)
+        if val.Kind() != reflect.Ptr || val.Elem().Kind() != reflect.Slice </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("input must be a pointer to a slice")
+        }</span>
+
+        <span class="cov8" title="1">slice := val.Elem()
+        result := make([]map[string]any, slice.Len())
+
+        // Iterasi setiap elemen dalam slice
+        for i := 0; i &lt; slice.Len(); i++ </span><span class="cov8" title="1">{
+                item := slice.Index(i)
+                if item.Kind() == reflect.Ptr </span><span class="cov0" title="0">{
+                        item = item.Elem() // Dereference pointer jika diperlukan
+                }</span>
+
+                // Validasi bahwa item adalah struct
+                <span class="cov8" title="1">if item.Kind() != reflect.Struct </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("slice elements must be structs, got %s", item.Kind())
+                }</span>
+
+                // Konversi struct ke map[string]any
+                <span class="cov8" title="1">itemMap := make(map[string]any)
+                for j := 0; j &lt; item.NumField(); j++ </span><span class="cov8" title="1">{
+                        field := item.Type().Field(j) // Mendapatkan definisi field
+                        fieldValue := item.Field(j)
+
+                        // Lewati field yang tidak dapat diakses atau tidak diisi (nil/zero value)
+                        if !fieldValue.CanInterface() || isZeroValue(fieldValue) </span><span class="cov8" title="1">{
+                                continue</span>
+                        }
+
+                        // Tambahkan field ke map
+                        <span class="cov8" title="1">fieldName := strings.ToLower(field.Name)
+                        itemMap[fieldName] = fieldValue.Interface()</span>
+                }
+                <span class="cov8" title="1">result[i] = itemMap</span>
+        }
+
+        <span class="cov8" title="1">return result, nil</span>
+}
+
+// Fungsi untuk memeriksa apakah suatu nilai adalah nilai default (zero value)
+func isZeroValue(value reflect.Value) bool <span class="cov8" title="1">{
+        zeroValue := reflect.Zero(value.Type()).Interface()
+        return reflect.DeepEqual(value.Interface(), zeroValue)
+}</span>
+
+func ConvertFieldInData(data interface{}, fieldName string, targetType string) ([]map[string]interface{}, error) <span class="cov8" title="1">{
+        // Pastikan data adalah slice
+        dataSlice, ok := data.([]interface{})
+        if !ok </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("data is not a slice of interface{}")
+        }</span>
+
+        // Slice hasil konversi
+        <span class="cov8" title="1">result := make([]map[string]interface{}, len(dataSlice))
+
+        for i, item := range dataSlice </span><span class="cov8" title="1">{
+                // Pastikan setiap item adalah map[string]interface{}
+                itemMap, ok := item.(map[string]interface{})
+                if !ok </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("data item at index %d is not a map[string]interface{}", i)
+                }</span>
+
+                // Cek apakah fieldName ada dan memiliki tipe yang sesuai
+                <span class="cov8" title="1">if value, exists := itemMap[fieldName]; exists </span><span class="cov8" title="1">{
+                        switch targetType </span>{
+                        case "int":<span class="cov8" title="1">
+                                if floatVal, ok := value.(float64); ok </span><span class="cov8" title="1">{
+                                        itemMap[fieldName] = int(floatVal)
+                                }</span> else<span class="cov0" title="0"> {
+                                        return nil, fmt.Errorf("field '%s' is not a float64", fieldName)
+                                }</span>
+                        case "string":<span class="cov0" title="0">
+                                itemMap[fieldName] = fmt.Sprintf("%v", value)</span>
+                        case "float64":<span class="cov0" title="0">
+                                if intVal, ok := value.(int); ok </span><span class="cov0" title="0">{
+                                        itemMap[fieldName] = float64(intVal)
+                                }</span> else<span class="cov0" title="0"> if strVal, ok := value.(string); ok </span><span class="cov0" title="0">{
+                                        floatVal, err := strconv.ParseFloat(strVal, 64)
+                                        if err != nil </span><span class="cov0" title="0">{
+                                                return nil, fmt.Errorf("failed to convert field '%s' to float64: %v", fieldName, err)
+                                        }</span>
+                                        <span class="cov0" title="0">itemMap[fieldName] = floatVal</span>
+                                } else<span class="cov0" title="0"> {
+                                        return nil, fmt.Errorf("field '%s' cannot be converted to float64", fieldName)
+                                }</span>
+                        default:<span class="cov0" title="0">
+                                return nil, fmt.Errorf("unsupported target type: %s", targetType)</span>
+                        }
+                }
+
+                // Tambahkan itemMap ke hasil
+                <span class="cov8" title="1">result[i] = itemMap</span>
+        }
+
+        <span class="cov8" title="1">return result, nil</span>
+}
+
+func ConvertFieldInMap(data interface{}, fieldName string, targetType string) (map[string]interface{}, error) <span class="cov8" title="1">{
+        // Pastikan data adalah map[string]interface{}
+        itemMap, ok := data.(map[string]interface{})
+        if !ok </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("data is not a map[string]interface{}")
+        }</span>
+
+        // Cek apakah fieldName ada dan memiliki tipe yang sesuai
+        <span class="cov8" title="1">if value, exists := itemMap[fieldName]; exists </span><span class="cov8" title="1">{
+                switch targetType </span>{
+                case "int":<span class="cov8" title="1">
+                        if floatVal, ok := value.(float64); ok </span><span class="cov8" title="1">{
+                                itemMap[fieldName] = int(floatVal)
+                        }</span> else<span class="cov0" title="0"> {
+                                return nil, fmt.Errorf("field '%s' is not a float64", fieldName)
+                        }</span>
+                case "string":<span class="cov0" title="0">
+                        itemMap[fieldName] = fmt.Sprintf("%v", value)</span>
+                case "float64":<span class="cov0" title="0">
+                        if intVal, ok := value.(int); ok </span><span class="cov0" title="0">{
+                                itemMap[fieldName] = float64(intVal)
+                        }</span> else<span class="cov0" title="0"> if strVal, ok := value.(string); ok </span><span class="cov0" title="0">{
+                                floatVal, err := strconv.ParseFloat(strVal, 64)
+                                if err != nil </span><span class="cov0" title="0">{
+                                        return nil, fmt.Errorf("failed to convert field '%s' to float64: %v", fieldName, err)
+                                }</span>
+                                <span class="cov0" title="0">itemMap[fieldName] = floatVal</span>
+                        } else<span class="cov0" title="0"> {
+                                return nil, fmt.Errorf("field '%s' cannot be converted to float64", fieldName)
+                        }</span>
+                default:<span class="cov0" title="0">
+                        return nil, fmt.Errorf("unsupported target type: %s", targetType)</span>
+                }
+        }
+
+        <span class="cov8" title="1">return itemMap, nil</span>
+}
+
+func ConvertFieldInSlice(data interface{}, fieldName string, targetType string) (interface{}, error) <span class="cov0" title="0">{
+        // Gunakan refleksi untuk memeriksa tipe data
+        v := reflect.ValueOf(data)
+
+        // Pastikan data adalah slice
+        if v.Kind() != reflect.Slice </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("data is not a slice")
+        }</span>
+
+        // Iterasi elemen-elemen slice
+        <span class="cov0" title="0">result := reflect.MakeSlice(v.Type(), v.Len(), v.Cap())
+        for i := 0; i &lt; v.Len(); i++ </span><span class="cov0" title="0">{
+                item := v.Index(i)
+
+                // Pastikan elemen adalah pointer ke struct atau struct
+                if item.Kind() == reflect.Ptr </span><span class="cov0" title="0">{
+                        item = item.Elem()
+                }</span>
+                <span class="cov0" title="0">if item.Kind() != reflect.Struct </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("slice elements must be structs or pointers to structs")
+                }</span>
+
+                // Dapatkan field berdasarkan nama
+                <span class="cov0" title="0">field := item.FieldByName(fieldName)
+                if !field.IsValid() </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("field '%s' not found in struct", fieldName)
+                }</span>
+                <span class="cov0" title="0">if !field.CanSet() </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("field '%s' cannot be set", fieldName)
+                }</span>
+
+                // Konversi nilai field sesuai targetType
+                <span class="cov0" title="0">switch targetType </span>{
+                case "int":<span class="cov0" title="0">
+                        if field.Kind() == reflect.Float64 </span><span class="cov0" title="0">{
+                                field.SetInt(int64(field.Float()))
+                        }</span> else<span class="cov0" title="0"> {
+                                return nil, fmt.Errorf("field '%s' is not a float64", fieldName)
+                        }</span>
+                case "string":<span class="cov0" title="0">
+                        field.SetString(fmt.Sprintf("%v", field.Interface()))</span>
+                case "float64":<span class="cov0" title="0">
+                        if field.Kind() == reflect.Int </span><span class="cov0" title="0">{
+                                field.SetFloat(float64(field.Int()))
+                        }</span> else<span class="cov0" title="0"> if field.Kind() == reflect.String </span><span class="cov0" title="0">{
+                                floatVal, err := strconv.ParseFloat(field.String(), 64)
+                                if err != nil </span><span class="cov0" title="0">{
+                                        return nil, fmt.Errorf("failed to convert field '%s' to float64: %v", fieldName, err)
+                                }</span>
+                                <span class="cov0" title="0">field.SetFloat(floatVal)</span>
+                        } else<span class="cov0" title="0"> {
+                                return nil, fmt.Errorf("field '%s' cannot be converted to float64", fieldName)
+                        }</span>
+                default:<span class="cov0" title="0">
+                        return nil, fmt.Errorf("unsupported target type: %s", targetType)</span>
+                }
+
+                // Tambahkan elemen yang telah diubah ke slice hasil
+                <span class="cov0" title="0">result.Index(i).Set(item)</span>
+        }
+
+        <span class="cov0" title="0">return result.Interface(), nil</span>
+}
+
+// ConvertToMap menerima parameter interface{} dan mengubahnya menjadi map[string]interface{}
+func ConvertToMap(input interface{}) (map[string]interface{}, error) <span class="cov8" title="1">{
+        // Buat map untuk menyimpan hasil konversi
+        result := make(map[string]interface{})
+
+        // Dapatkan nilai refleksi dari input
+        val := reflect.ValueOf(input)
+
+        // Pastikan input adalah struct atau map
+        if val.Kind() == reflect.Struct </span><span class="cov0" title="0">{
+                // Jika input adalah struct, iterasi melalui field-nya
+                for i := 0; i &lt; val.NumField(); i++ </span><span class="cov0" title="0">{
+                        field := val.Type().Field(i)
+                        result[field.Name] = val.Field(i).Interface()
+                }</span>
+        } else<span class="cov8" title="1"> if val.Kind() == reflect.Map </span><span class="cov8" title="1">{
+                // Jika input adalah map, iterasi melalui elemen-elemennya
+                for _, key := range val.MapKeys() </span><span class="cov8" title="1">{
+                        result[fmt.Sprintf("%v", key.Interface())] = val.MapIndex(key).Interface()
+                }</span>
+        } else<span class="cov0" title="0"> {
+                return nil, fmt.Errorf("input must be a struct or map")
+        }</span>
+
+        <span class="cov8" title="1">return result, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package helper
+
+import (
+        "log"
+        "os"
+        "project_pos_app/config"
+
+        "go.uber.org/zap"
+        "go.uber.org/zap/zapcore"
+)
+
+func InitLog(cfg config.Config) (*zap.Logger, error) <span class="cov0" title="0">{
+
+        logLevel := zap.InfoLevel
+        if cfg.Debug </span><span class="cov0" title="0">{
+                logLevel = zap.DebugLevel
+        }</span>
+
+        <span class="cov0" title="0">encoderConfig := zapcore.EncoderConfig{
+                TimeKey:        "T",
+                LevelKey:       "L",
+                MessageKey:     "M",
+                CallerKey:      "C",
+                EncodeTime:     zapcore.ISO8601TimeEncoder,
+                EncodeLevel:    zapcore.CapitalLevelEncoder,
+                EncodeDuration: zapcore.StringDurationEncoder,
+                EncodeCaller:   zapcore.ShortCallerEncoder,
+        }
+
+        file, err := os.Create("app.log")
+        if err != nil </span><span class="cov0" title="0">{
+                log.Panicf("Failed to open log file: %v", err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">writer := zapcore.AddSync(file)
+        core := zapcore.NewCore(
+                zapcore.NewJSONEncoder(encoderConfig),
+                writer,
+                logLevel,
+        )
+        logger := zap.New(core)
+        logger.Info("Logger initialized successfully")
+
+        return logger, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package helper
+
+import (
+        mocktesting "project_pos_app/mock_testing"
+        "project_pos_app/repository"
+        "project_pos_app/service"
+        notifservice "project_pos_app/service/notif_service"
+        revenueservice "project_pos_app/service/revenue_service"
+
+        "github.com/DATA-DOG/go-sqlmock"
+        "go.uber.org/zap"
+        "gorm.io/driver/postgres"
+        "gorm.io/gorm"
+)
+
+func SetupTestDB() (*gorm.DB, sqlmock.Sqlmock) <span class="cov8" title="1">{
+        db, mock, _ := sqlmock.New()
+        dialector := postgres.New(postgres.Config{
+                Conn:       db,
+                DriverName: "postgres",
+        })
+        gormDB, _ := gorm.Open(dialector, &amp;gorm.Config{})
+        return gormDB, mock
+}</span>
+
+// type ServiceMock struct {
+//         Notif   notifservice.NotifServiceInterface
+//         Revenue revenueservice.RevenueServiceInterface
+// }
+
+func InitService() (*mocktesting.MockDB, *service.AllService) <span class="cov8" title="1">{
+        mockDB := new(mocktesting.MockDB)
+        MockRepo := &amp;repository.AllRepository{
+                Notif:   mockDB,
+                Revenue: mockDB,
+        }
+        mockLogger := zap.NewNop()
+        serviceNotif := notifservice.NewNotifService(MockRepo, mockLogger)
+        serviceRevenue := revenueservice.NewRevenueService(MockRepo, mockLogger)
+
+        var service service.AllService
+        service.Notif = serviceNotif
+        service.Revenue = serviceRevenue
+
+        return mockDB, &amp;service
+}</span>
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package helper
+
+import (
+        "github.com/gin-gonic/gin"
+)
+
+type Response struct {
+        Status     int
+        Message    string
+        Data       any `json:"data,omitempty"`
+        Page       int `json:"page,omitempty"`
+        Limit      int `json:"limit,omitempty"`
+        TotalItems int `json:"total_items,omitempty"`
+        TotalPages int `json:"total_pages,omitempty"`
+}
+
+func Responses(c *gin.Context, status int, massage string, data any) <span class="cov8" title="1">{
+        c.JSON(status, Response{
+                Status:  status,
+                Message: massage,
+                Data:    data,
+        })
+}</span>
+
+func ResponsePagination(c *gin.Context, data interface{}, message string, page, limit, totalItems, totalPages, httpStatusCode int) <span class="cov0" title="0">{
+        c.JSON(httpStatusCode, Response{
+                Status:     httpStatusCode,
+                Message:    message,
+                Page:       page,
+                Limit:      limit,
+                TotalItems: totalItems,
+                TotalPages: totalPages,
+                Data:       data,
+        })
+}</span>
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package infra
+
+import (
+        "project_pos_app/config"
+        "project_pos_app/controller"
+        "project_pos_app/database"
+        "project_pos_app/helper"
+        "project_pos_app/repository"
+        "project_pos_app/service"
+
+        "go.uber.org/zap"
+        "gorm.io/gorm"
+)
+
+type IntegrationContext struct {
+        Cfg   config.Config
+        DB    *gorm.DB
+        Log   *zap.Logger
+        Ctl   controller.AllController
+        Cache database.Cache
+}
+
+func NewIntegrateContext() (*IntegrationContext, error) <span class="cov0" title="0">{
+
+        errorHandler := func(err error) (*IntegrationContext, error) </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">config, err := config.SetConfig()
+        if err != nil </span><span class="cov0" title="0">{
+                return errorHandler(err)
+        }</span>
+
+        <span class="cov0" title="0">log, err := helper.InitLog(config)
+        if err != nil </span><span class="cov0" title="0">{
+                return errorHandler(err)
+        }</span>
+
+        <span class="cov0" title="0">db, err := database.SetDatabase(config)
+        if err != nil </span><span class="cov0" title="0">{
+                return errorHandler(err)
+        }</span>
+
+        <span class="cov0" title="0">rdb := database.NewCache(config, 60*60)
+
+        repo := repository.NewAllRepo(db, log)
+
+        service := service.NewAllService(repo, log)
+
+        handler := controller.NewAllController(service, log, &amp;rdb)
+
+        return &amp;IntegrationContext{
+                Cfg:   config,
+                DB:    db,
+                Log:   log,
+                Ctl:   handler,
+                Cache: rdb,
+        }, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package main
+
+import (
+        "context"
+        "log"
+        "net/http"
+        "os"
+        "os/signal"
+        "project_pos_app/cmd"
+        _ "project_pos_app/docs"
+        "project_pos_app/infra"
+        "project_pos_app/router"
+        "syscall"
+        "time"
+)
+
+// @title App pos Team 2
+// @version 1.0
+// @description API for Point Of Sale
+// @termsOfService http://example.com/terms/
+// @contact.name API Support
+// @contact.url http://example.com/support
+// @contact.email support@example.com
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+// @host localhost:8080
+// @BasePath /
+// @securityDefinitions.apikey Authentication
+// @in header
+// @name Authorization
+// @securityDefinitions.apikey UserID
+// @in header
+// @name User-ID
+// @securityDefinitions.apikey UserRole
+// @in header
+// @name User-Role
+
+func main() <span class="cov0" title="0">{
+        // Test()
+        ctx, err := infra.NewIntegrateContext()
+        if err != nil </span><span class="cov0" title="0">{
+                log.Fatal("can't init service context %w", err)
+        }</span>
+
+        <span class="cov0" title="0">r := router.NewRoutes(ctx)
+
+        // init cron
+        cmd.CronJob(ctx)
+
+        srv := &amp;http.Server{
+                Addr:    ":8080",
+                Handler: r,
+        }
+
+        go func() </span><span class="cov0" title="0">{
+                // Start the server
+                log.Printf("Server running on port 8080")
+                if err := srv.ListenAndServe(); err != nil &amp;&amp; err != http.ErrServerClosed </span><span class="cov0" title="0">{
+                        log.Fatalf("listen: %s\n", err)
+                }</span>
+        }()
+
+        // Wait for interrupt signal to gracefully shutdown the server with a timeout of 5 seconds
+        <span class="cov0" title="0">quit := make(chan os.Signal, 1)
+        signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+        &lt;-quit
+        log.Println("Shutdown Server ...")
+
+        // Create a timeout context for graceful shutdown
+        shutdownCtx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+        defer cancel()
+
+        // Attempt to gracefully shutdown the server
+        if err := srv.Shutdown(shutdownCtx); err != nil </span><span class="cov0" title="0">{
+                log.Fatal("Server Shutdown:", err)
+        }</span>
+
+        // Catching context timeout
+        <span class="cov0" title="0">select </span>{
+        case &lt;-shutdownCtx.Done():<span class="cov0" title="0">
+                log.Println("Timeout of 5 seconds.")</span>
+        }
+
+        <span class="cov0" title="0">log.Println("Server exiting")</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package mocktesting
+
+import (
+        "project_pos_app/model"
+
+        "github.com/stretchr/testify/mock"
+        "gorm.io/gorm"
+)
+
+type MockDB struct {
+        mock.Mock
+}
+
+func (m *MockDB) Where(query interface{}, args ...interface{}) *gorm.DB <span class="cov0" title="0">{
+        return m.Called(query, args).Get(0).(*gorm.DB)
+}</span>
+
+func (m *MockDB) Order(value interface{}) *gorm.DB <span class="cov0" title="0">{
+        return m.Called(value).Get(0).(*gorm.DB)
+}</span>
+
+func (m *MockDB) Find(dest interface{}) *gorm.DB <span class="cov0" title="0">{
+        return m.Called(dest).Get(0).(*gorm.DB)
+}</span>
+
+func (m *MockDB) First(dest interface{}, conds ...interface{}) *gorm.DB <span class="cov0" title="0">{
+        return m.Called(dest, conds).Get(0).(*gorm.DB)
+}</span>
+
+func (m *MockDB) Save(value interface{}) *gorm.DB <span class="cov0" title="0">{
+        return m.Called(value).Get(0).(*gorm.DB)
+}</span>
+
+func (m *MockDB) Model(value interface{}) *gorm.DB <span class="cov0" title="0">{
+        return m.Called(value).Get(0).(*gorm.DB)
+}</span>
+
+func (m *MockDB) Create(data model.Notification) error <span class="cov8" title="1">{
+        args := m.Called(data)
+        return args.Error(0)
+}</span>
+
+func (m *MockDB) GetAll(data *[]model.Notification, status string) error <span class="cov8" title="1">{
+        args := m.Called()
+
+        if notification := args.Get(0); notification != nil </span><span class="cov8" title="1">{
+                *data = notification.([]model.Notification)
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">return args.Error(1)</span>
+}
+
+func (m *MockDB) GetAllNotif(data []model.Notification) ([]model.Notification, error) <span class="cov0" title="0">{
+        args := m.Called(data)
+        return args.Get(0).([]model.Notification), args.Error(1)
+}</span>
+
+func (m *MockDB) FindByID(id int) (*model.Notification, error) <span class="cov8" title="1">{
+        args := m.Called(id) // id = 9999
+        if args.Get(0) != nil </span><span class="cov8" title="1">{
+                return args.Get(0).(*model.Notification), args.Error(1)
+        }</span>
+
+        <span class="cov8" title="1">return nil, args.Error(1)</span>
+}
+
+func (m *MockDB) Update(data *model.Notification, id int) error <span class="cov8" title="1">{
+        args := m.Called(data, id)
+        if notification := args.Get(0); notification != nil </span><span class="cov8" title="1">{
+                data = notification.(*model.Notification)
+                return nil
+        }</span>
+
+        <span class="cov0" title="0">return args.Error(1)</span>
+}
+
+func (m *MockDB) Delete(id int) error <span class="cov8" title="1">{
+        data, err := m.FindByID(id)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">args := m.Called(data.ID)
+        if notification := args.Get(0); notification != nil </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+
+        <span class="cov0" title="0">return args.Error(1)</span>
+}
+
+func (m *MockDB) MarkAllAsRead() error <span class="cov8" title="1">{
+        args := m.Called()
+
+        if notification := args.Get(0); notification != nil </span><span class="cov8" title="1">{
+                for _, v := range notification.([]model.Notification) </span><span class="cov8" title="1">{
+                        if v.Status == "new" </span><span class="cov8" title="1">{
+                                v.Status = "readed"
+                        }</span>
+                }
+
+                <span class="cov8" title="1">return nil</span>
+        }
+
+        <span class="cov8" title="1">return args.Error(1)</span>
+}
+
+// Metode mock untuk revenueService
+
+func (m *MockDB) GetTotalRevenueByStatus() (map[string]float64, error) <span class="cov8" title="1">{
+        args := m.Called()
+        if args.Get(0) != nil </span><span class="cov8" title="1">{
+                return args.Get(0).(map[string]float64), nil
+        }</span>
+        <span class="cov8" title="1">return nil, args.Error(1)</span>
+}
+
+func (m *MockDB) GetMonthlyRevenue() (map[string]float64, error) <span class="cov8" title="1">{
+        args := m.Called()
+        if revenue := args.Get(0); revenue != nil </span><span class="cov8" title="1">{
+                return revenue.(map[string]float64), nil
+        }</span>
+        <span class="cov8" title="1">return nil, args.Error(1)</span>
+}
+
+func (m *MockDB) GetProductRevenues() ([]model.ProductRevenue, error) <span class="cov8" title="1">{
+        args := m.Called()
+        if productRevenues := args.Get(0); productRevenues != nil </span><span class="cov8" title="1">{
+                return productRevenues.([]model.ProductRevenue), nil
+        }</span>
+        <span class="cov8" title="1">return nil, args.Error(1)</span>
+}
+
+func (m *MockDB) SaveOrderRevenue(order model.OrderRevenue) error <span class="cov8" title="1">{
+        args := m.Called(order)
+        return args.Error(0)
+}</span>
+
+func (m *MockDB) CalculateOrderRevenue() ([]model.OrderRevenue, error) <span class="cov0" title="0">{
+        args := m.Called()
+        if orderRevenues := args.Get(0); orderRevenues != nil </span><span class="cov0" title="0">{
+                result := orderRevenues.([]model.OrderRevenue)
+                return result, nil
+        }</span>
+        <span class="cov0" title="0">return nil, args.Error(1)</span>
+}
+
+func (m *MockDB) SaveProductRevenue(product model.ProductRevenue) error <span class="cov8" title="1">{
+        args := m.Called(product)
+        return args.Error(0)
+}</span>
+
+func (m *MockDB) CalculateProductRevenue() ([]model.ProductRevenue, error) <span class="cov0" title="0">{
+        args := m.Called()
+        if productRevenues := args.Get(0); productRevenues != nil </span><span class="cov0" title="0">{
+                result := productRevenues.([]model.ProductRevenue)
+                return result, nil
+        }</span>
+        <span class="cov0" title="0">return nil, args.Error(1)</span>
+}
+
+func (m *MockDB) FindLowStockProducts(threshold int) ([]model.Product, error) <span class="cov8" title="1">{
+        args := m.Called(threshold)
+        if products := args.Get(0); products != nil </span><span class="cov8" title="1">{
+                result := products.([]model.Product)
+                return result, nil
+        }</span>
+        <span class="cov8" title="1">return nil, args.Error(1)</span>
+}
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package model
+
+import (
+        "strconv"
+        "time"
+)
+
+type Category struct {
+        ID          uint       `gorm:"primaryKey" json:"id"`
+        IconURL     string     `json:"icon_url"`
+        Name        string     `json:"name"`
+        Description string     `json:"description"`
+        CreatedAt   time.Time  `json:"created_at"`
+        UpdatedAt   time.Time  `json:"updated_at"`
+        DeletedAt   *time.Time `gorm:"index" json:"deleted_at"`
+}
+
+func SeedCategories() []Category <span class="cov0" title="0">{
+        categories := []Category{}
+        for i := 1; i &lt;= 20; i++ </span><span class="cov0" title="0">{
+                categories = append(categories, Category{
+                        IconURL:     "https://example.com/icon" + strconv.Itoa(i) + ".png",
+                        Name:        "Category " + strconv.Itoa(i),
+                        Description: "Description for Category " + strconv.Itoa(i),
+                        CreatedAt:   time.Now(),
+                        UpdatedAt:   time.Now(),
+                })
+        }</span>
+
+        <span class="cov0" title="0">return categories</span>
+}
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package model
+
+import (
+        "fmt"
+        "time"
+)
+
+type Notification struct {
+        ID        int       `gorm:"primaryKey" json:"id" example:"1"`
+        Title     string    `json:"title" example:"New Message"`
+        Message   string    `json:"message" example:"You have a new message"`
+        Status    string    `json:"status" example:"new"`
+        CreatedAt time.Time `json:"-"`
+        UpdatedAt time.Time `json:"-"`
+}
+
+func NotifStock(productName string) Notification <span class="cov0" title="0">{
+        return Notification{
+                Title:     "Stock Alert",
+                Message:   fmt.Sprintf("products %s are out of stock. Please restock immediately.", productName),
+                Status:    "new",
+                CreatedAt: time.Now(),
+                UpdatedAt: time.Now(),
+        }
+}</span>
+
+func NotificationSeed() []Notification <span class="cov0" title="0">{
+        return []Notification{
+                {
+                        Title:     "Welcome",
+                        Message:   "Thank you for joining our platform!",
+                        Status:    "new",
+                        CreatedAt: time.Now(),
+                        UpdatedAt: time.Now(),
+                },
+                {
+                        Title:     "Discount Offer",
+                        Message:   "Get 20% off on your next purchase.",
+                        Status:    "new",
+                        CreatedAt: time.Now(),
+                        UpdatedAt: time.Now(),
+                },
+                {
+                        Title:     "System Update",
+                        Message:   "Our system will undergo maintenance tonight from 12 AM to 3 AM.",
+                        Status:    "readed",
+                        CreatedAt: time.Now(),
+                        UpdatedAt: time.Now(),
+                },
+                {
+                        Title:     "Stock Alert",
+                        Message:   "One or more products are out of stock. Please restock immediately.",
+                        Status:    "new",
+                        CreatedAt: time.Now(),
+                        UpdatedAt: time.Now(),
+                },
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package model
+
+import (
+        "time"
+)
+
+type Order struct {
+        ID            uint           `gorm:"primaryKey" json:"id"`
+        TableID       uint           `json:"table_id"`
+        ReservationID uint           `json:"reservation_id"`
+        CustomerName  string         `json:"customer_name"`
+        Status        string         `json:"status"`
+        TotalAmount   float64        `json:"total_amount"`
+        Tax           float64        `json:"tax"`
+        PaymentMethod string         `json:"payment_method"`
+        CreatedAt     time.Time      `json:"created_at"`
+        UpdatedAt     time.Time      `json:"updated_at"`
+        DeletedAt     *time.Time     `gorm:"index" json:"deleted_at"`
+        OrderProducts []OrderProduct `gorm:"foreignKey:OrderID" json:"order_products"`
+}
+
+func SeedOrders() []Order <span class="cov0" title="0">{
+        return []Order{
+                {TableID: 1, ReservationID: 1, CustomerName: "", Status: "Completed", TotalAmount: 500.00, Tax: 50.00, PaymentMethod: "Credit Card", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 2, ReservationID: 0, CustomerName: "Bob", Status: "ready", TotalAmount: 300.00, Tax: 30.00, PaymentMethod: "Cash", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 3, ReservationID: 3, CustomerName: "", Status: "in progres", TotalAmount: 0.00, Tax: 0.00, PaymentMethod: "None", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 4, ReservationID: 0, CustomerName: "Diana", Status: "Completed", TotalAmount: 450.00, Tax: 45.00, PaymentMethod: "Debit Card", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 5, ReservationID: 5, CustomerName: "", Status: "In Progress", TotalAmount: 150.00, Tax: 15.00, PaymentMethod: "Mobile Payment", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 6, ReservationID: 0, CustomerName: "Fiona", Status: "Completed", TotalAmount: 700.00, Tax: 70.00, PaymentMethod: "Credit Card", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 7, ReservationID: 7, CustomerName: "", Status: "ready", TotalAmount: 200.00, Tax: 20.00, PaymentMethod: "Cash", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 8, ReservationID: 0, CustomerName: "Helen", Status: "Completed", TotalAmount: 350.00, Tax: 35.00, PaymentMethod: "Debit Card", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 9, ReservationID: 9, CustomerName: "", Status: "ready", TotalAmount: 0.00, Tax: 0.00, PaymentMethod: "None", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 10, ReservationID: 0, CustomerName: "Jack", Status: "In Progress", TotalAmount: 400.00, Tax: 40.00, PaymentMethod: "Mobile Payment", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 11, ReservationID: 11, CustomerName: "", Status: "Completed", TotalAmount: 600.00, Tax: 60.00, PaymentMethod: "Credit Card", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 12, ReservationID: 0, CustomerName: "Leo", Status: "ready", TotalAmount: 250.00, Tax: 25.00, PaymentMethod: "Cash", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 13, ReservationID: 13, CustomerName: "", Status: "Cancelled", TotalAmount: 0.00, Tax: 0.00, PaymentMethod: "None", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 14, ReservationID: 0, CustomerName: "Nina", Status: "Completed", TotalAmount: 550.00, Tax: 55.00, PaymentMethod: "Debit Card", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 15, ReservationID: 15, CustomerName: "", Status: "In Progress", TotalAmount: 300.00, Tax: 30.00, PaymentMethod: "Mobile Payment", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 16, ReservationID: 0, CustomerName: "Paula", Status: "Completed", TotalAmount: 800.00, Tax: 80.00, PaymentMethod: "Credit Card", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 17, ReservationID: 17, CustomerName: "", Status: "ready", TotalAmount: 180.00, Tax: 18.00, PaymentMethod: "Cash", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 18, ReservationID: 0, CustomerName: "Rachel", Status: "Completed", TotalAmount: 420.00, Tax: 42.00, PaymentMethod: "Debit Card", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 19, ReservationID: 19, CustomerName: "", Status: "ready", TotalAmount: 0.00, Tax: 0.00, PaymentMethod: "None", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {TableID: 20, ReservationID: 0, CustomerName: "Tina", Status: "In Progress", TotalAmount: 500.00, Tax: 50.00, PaymentMethod: "Mobile Payment", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package model
+
+type OrderProduct struct {
+        ID        uint    `gorm:"primaryKey" json:"id"`
+        OrderID   uint    `json:"order_id"`
+        ProductID uint    `json:"product_id"`
+        Product   Product `gorm:"foreignKey:ProductID"`
+        Qty       int     `json:"qty"`
+}
+
+func SeedOrderProducts() []OrderProduct <span class="cov0" title="0">{
+        return []OrderProduct{
+                {OrderID: 1, ProductID: 1, Qty: 2},
+                {OrderID: 1, ProductID: 2, Qty: 1},
+                {OrderID: 2, ProductID: 3, Qty: 3},
+                {OrderID: 2, ProductID: 4, Qty: 2},
+                {OrderID: 3, ProductID: 5, Qty: 1},
+                {OrderID: 4, ProductID: 6, Qty: 4},
+                {OrderID: 5, ProductID: 7, Qty: 1},
+                {OrderID: 5, ProductID: 8, Qty: 2},
+                {OrderID: 6, ProductID: 9, Qty: 5},
+                {OrderID: 7, ProductID: 10, Qty: 2},
+                {OrderID: 8, ProductID: 11, Qty: 3},
+                {OrderID: 9, ProductID: 12, Qty: 2},
+                {OrderID: 10, ProductID: 13, Qty: 1},
+                {OrderID: 10, ProductID: 14, Qty: 3},
+                {OrderID: 11, ProductID: 15, Qty: 4},
+                {OrderID: 12, ProductID: 16, Qty: 2},
+                {OrderID: 13, ProductID: 17, Qty: 1},
+                {OrderID: 14, ProductID: 18, Qty: 2},
+                {OrderID: 15, ProductID: 19, Qty: 3},
+                {OrderID: 16, ProductID: 20, Qty: 1},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package model
+
+import (
+        "time"
+)
+
+type Product struct {
+        ID         uint       `gorm:"primaryKey" json:"id"`
+        ImageURL   string     `json:"image_url"`
+        Name       string     `json:"name"`
+        CategoryID uint       `json:"category_id"`
+        Qty        int        `json:"qty"`
+        Price      float64    `json:"price"`
+        Status     string     `json:"status"`
+        CreatedAt  time.Time  `json:"created_at"`
+        UpdatedAt  time.Time  `json:"updated_at"`
+        DeletedAt  *time.Time `gorm:"index" json:"deleted_at"`
+}
+
+func SeedProducts() []Product <span class="cov0" title="0">{
+        return []Product{
+                {ImageURL: "https://example.com/image1.jpg", Name: "Product 1", CategoryID: 1, Qty: 10, Price: 100.50, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image2.jpg", Name: "Product 2", CategoryID: 2, Qty: 15, Price: 200.00, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image3.jpg", Name: "Product 3", CategoryID: 3, Qty: 20, Price: 150.75, Status: "Out of Stock", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image4.jpg", Name: "Product 4", CategoryID: 4, Qty: 25, Price: 125.00, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image5.jpg", Name: "Product 5", CategoryID: 5, Qty: 30, Price: 75.90, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image6.jpg", Name: "Product 6", CategoryID: 1, Qty: 12, Price: 80.20, Status: "Out of Stock", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image7.jpg", Name: "Product 7", CategoryID: 2, Qty: 50, Price: 250.00, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image8.jpg", Name: "Product 8", CategoryID: 3, Qty: 45, Price: 120.60, Status: "Out of Stock", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image9.jpg", Name: "Product 9", CategoryID: 4, Qty: 22, Price: 180.30, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image10.jpg", Name: "Product 10", CategoryID: 5, Qty: 28, Price: 95.75, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image11.jpg", Name: "Product 11", CategoryID: 1, Qty: 11, Price: 110.00, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image12.jpg", Name: "Product 12", CategoryID: 2, Qty: 32, Price: 200.90, Status: "Out of Stock", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image13.jpg", Name: "Product 13", CategoryID: 3, Qty: 18, Price: 140.00, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image14.jpg", Name: "Product 14", CategoryID: 4, Qty: 35, Price: 130.25, Status: "Out of Stock", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image15.jpg", Name: "Product 15", CategoryID: 5, Qty: 40, Price: 85.40, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image16.jpg", Name: "Product 16", CategoryID: 1, Qty: 14, Price: 90.00, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image17.jpg", Name: "Product 17", CategoryID: 2, Qty: 55, Price: 220.00, Status: "Out of Stock", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image18.jpg", Name: "Product 18", CategoryID: 3, Qty: 60, Price: 150.40, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image19.jpg", Name: "Product 19", CategoryID: 4, Qty: 45, Price: 115.00, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+                {ImageURL: "https://example.com/image20.jpg", Name: "Product 20", CategoryID: 5, Qty: 50, Price: 99.99, Status: "Available", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+        }
+
+}</span>
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">package model
+
+import "time"
+
+// OrderRevenue represents the structure for orders
+type OrderRevenue struct {
+        ID        uint      `gorm:"primaryKey;autoIncrement" json:"id" example:"1"`
+        Status    string    `gorm:"type:varchar(50)" json:"status" binding:"required" example:"confirmed"`
+        Revenue   float64   `gorm:"type:decimal(10,2)" json:"revenue" binding:"required" example:"100.50"`
+        CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at" example:"2024-12-01T00:00:00Z"`
+        ProductID uint      `json:"product_id"`
+}
+
+// ProductRevenue represents the revenue details for products
+type ProductRevenue struct {
+        ID           uint      `gorm:"primaryKey" json:"id" example:"1"`
+        ProductName  string    `gorm:"type:varchar(100)" json:"product_name" binding:"required" example:"Chicken Parmesan"`
+        SellPrice    float64   `gorm:"type:decimal(10,2)" json:"sell_price" binding:"required" example:"55.00"`
+        Profit       float64   `gorm:"type:decimal(10,2)" json:"profit" binding:"required" example:"7985.00"`
+        ProfitMargin float64   `gorm:"type:decimal(5,2)" json:"profit_margin" binding:"required" example:"15.00"`
+        TotalRevenue float64   `gorm:"type:decimal(10,2)" json:"total_revenue" binding:"required" example:"8000.00"`
+        RevenueDate  time.Time `gorm:"type:date" json:"revenue_date" binding:"required" example:"2024-03-28"`
+}
+
+func RevenueSeedProduct() []ProductRevenue <span class="cov0" title="0">{
+        return []ProductRevenue{
+                {ProductName: "Chicken Parmesan", SellPrice: 55.00, Profit: 7985.00, ProfitMargin: 15.00, TotalRevenue: 8000.00, RevenueDate: time.Now()},
+                {ProductName: "Grilled Salmon", SellPrice: 70.00, Profit: 8900.00, ProfitMargin: 20.00, TotalRevenue: 10000.00, RevenueDate: time.Now().AddDate(0, 0, -1)},
+                {ProductName: "Vegetarian Pizza", SellPrice: 40.00, Profit: 5000.00, ProfitMargin: 12.50, TotalRevenue: 5600.00, RevenueDate: time.Now().AddDate(0, 0, -2)},
+                {ProductName: "Beef Burger", SellPrice: 30.00, Profit: 3000.00, ProfitMargin: 10.00, TotalRevenue: 3500.00, RevenueDate: time.Now().AddDate(0, 0, -3)},
+                {ProductName: "Pasta Primavera", SellPrice: 45.00, Profit: 7000.00, ProfitMargin: 18.00, TotalRevenue: 8500.00, RevenueDate: time.Now().AddDate(0, 0, -4)},
+                {ProductName: "Chicken Salad", SellPrice: 20.00, Profit: 4000.00, ProfitMargin: 15.00, TotalRevenue: 4800.00, RevenueDate: time.Now().AddDate(0, 0, -5)},
+                {ProductName: "Margherita Pizza", SellPrice: 25.00, Profit: 5500.00, ProfitMargin: 16.00, TotalRevenue: 6000.00, RevenueDate: time.Now().AddDate(0, 0, -6)},
+                {ProductName: "Fish Tacos", SellPrice: 35.00, Profit: 6200.00, ProfitMargin: 14.50, TotalRevenue: 7000.00, RevenueDate: time.Now().AddDate(0, 0, -7)},
+                {ProductName: "Lasagna", SellPrice: 50.00, Profit: 7500.00, ProfitMargin: 17.00, TotalRevenue: 8500.00, RevenueDate: time.Now().AddDate(0, 0, -8)},
+                {ProductName: "Steak and Fries", SellPrice: 60.00, Profit: 8000.00, ProfitMargin: 22.00, TotalRevenue: 9000.00, RevenueDate: time.Now().AddDate(0, 0, -9)},
+        }
+}</span>
+
+// RevenueSeedOrder generates dummy data for OrderRevenue
+func RevenueSeedOrder() []OrderRevenue <span class="cov0" title="0">{
+        return []OrderRevenue{
+                {Status: "confirmed", Revenue: 100.50, CreatedAt: time.Now(), ProductID: 1},
+                {Status: "pending", Revenue: 150.00, CreatedAt: time.Now().AddDate(0, 0, -1), ProductID: 2},
+                {Status: "confirmed", Revenue: 200.00, CreatedAt: time.Now().AddDate(0, 0, -2), ProductID: 3},
+                {Status: "cancelled", Revenue: 50.00, CreatedAt: time.Now().AddDate(0, 0, -3), ProductID: 4},
+                {Status: "confirmed", Revenue: 75.00, CreatedAt: time.Now().AddDate(0, 0, -4), ProductID: 5},
+                {Status: "pending", Revenue: 120.00, CreatedAt: time.Now().AddDate(0, 0, -5), ProductID: 6},
+                {Status: "confirmed", Revenue: 95.00, CreatedAt: time.Now().AddDate(0, 0, -6), ProductID: 7},
+                {Status: "cancelled", Revenue: 40.00, CreatedAt: time.Now().AddDate(0, 0, -7), ProductID: 8},
+                {Status: "confirmed", Revenue: 110.00, CreatedAt: time.Now().AddDate(0, 0, -8), ProductID: 9},
+                {Status: "pending", Revenue: 130.00, CreatedAt: time.Now().AddDate(0, 0, -9), ProductID: 10},
+                {Status: "confirmed", Revenue: 220.00, CreatedAt: time.Now().AddDate(0, -1, 0), ProductID: 8},
+                {Status: "pending", Revenue: 180.00, CreatedAt: time.Now().AddDate(0, -2, 0), ProductID: 10},
+                {Status: "cancelled", Revenue: 60.00, CreatedAt: time.Now().AddDate(0, -3, 0), ProductID: 9},
+                {Status: "confirmed", Revenue: 310.00, CreatedAt: time.Now().AddDate(0, -4, 0), ProductID: 7},
+                {Status: "pending", Revenue: 190.00, CreatedAt: time.Now().AddDate(0, -5, 0), ProductID: 15},
+                {Status: "failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, 0, -1), ProductID: 2},
+                {Status: "failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, 0, -1), ProductID: 3},
+                {Status: "failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, -1, -1), ProductID: 4},
+                {Status: "failed", Revenue: 0.00, CreatedAt: time.Now().AddDate(0, -2, -1), ProductID: 5},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">package authrepository
+
+import (
+        "fmt"
+        "project_pos_app/model"
+        "time"
+
+        "github.com/google/uuid"
+        "go.uber.org/zap"
+        "gorm.io/gorm"
+)
+
+type AuthRepoInterface interface {
+        Login(login *model.Login, ipAddress string) (*model.Session, string, error)
+}
+
+type authRepo struct {
+        DB  *gorm.DB
+        Log *zap.Logger
+}
+
+func NewManagementVoucherRepo(db *gorm.DB, log *zap.Logger) AuthRepoInterface <span class="cov0" title="0">{
+        return &amp;authRepo{DB: db, Log: log}
+}</span>
+
+func (a *authRepo) Login(login *model.Login, ipAddress string) (*model.Session, string, error) <span class="cov0" title="0">{
+
+        token := uuid.New().String()
+
+        user := model.User{}
+        result := a.DB.Where("email = ? AND password = ?", login.Email, login.Password).First(&amp;user)
+
+        if result.Error != nil </span><span class="cov0" title="0">{
+                if result.Error == gorm.ErrRecordNotFound </span><span class="cov0" title="0">{
+                        return nil, "", fmt.Errorf("invalid email or password")
+                }</span>
+                <span class="cov0" title="0">return nil, "", result.Error</span>
+        }
+
+        <span class="cov0" title="0">session := model.Session{
+                UserID:       user.ID,
+                Token:        token,
+                IpAddress:    ipAddress,
+                LastActivity: time.Now(),
+        }
+
+        existingSession := model.Session{}
+        err := a.DB.Where("user_id = ?", user.ID).First(&amp;existingSession).Error
+
+        if err != nil &amp;&amp; err != gorm.ErrRecordNotFound </span><span class="cov0" title="0">{
+                return nil, "", err
+        }</span>
+
+        <span class="cov0" title="0">if err == gorm.ErrRecordNotFound </span><span class="cov0" title="0">{
+                if err := a.DB.Create(&amp;session).Error; err != nil </span><span class="cov0" title="0">{
+                        return nil, "", err
+                }</span>
+
+        } else<span class="cov0" title="0"> {
+                session.ID = existingSession.ID
+                if err := a.DB.Save(&amp;session).Error; err != nil </span><span class="cov0" title="0">{
+                        return nil, "", err
+                }</span>
+        }
+
+        <span class="cov0" title="0">return &amp;session, user.Name, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file26" style="display: none">package examplerepository
+
+import (
+        "go.uber.org/zap"
+        "gorm.io/gorm"
+)
+
+type ExampleRepository interface {
+}
+
+type exampleRepository struct {
+        DB  *gorm.DB
+        Log *zap.Logger
+}
+
+func NewExampleRepo(DB *gorm.DB, Log *zap.Logger) ExampleRepository <span class="cov0" title="0">{
+        return &amp;exampleRepository{DB, Log}
+}</span>
+</pre>
+		
+		<pre class="file" id="file27" style="display: none">package notification
+
+import (
+        "fmt"
+        "project_pos_app/model"
+
+        "go.uber.org/zap"
+        "gorm.io/gorm"
+)
+
+type NotifRepoInterface interface {
+        Create(data model.Notification) error
+        GetAll(data *[]model.Notification, status string) error
+        FindByID(id int) (*model.Notification, error)
+        Update(data *model.Notification, id int) error
+        Delete(id int) error
+        MarkAllAsRead() error
+}
+
+type notifRepo struct {
+        DB  *gorm.DB
+        Log *zap.Logger
+}
+
+func NewNotifRepo(db *gorm.DB, log *zap.Logger) NotifRepoInterface <span class="cov8" title="1">{
+        return &amp;notifRepo{DB: db, Log: log}
+}</span>
+
+func (r *notifRepo) Create(data model.Notification) error <span class="cov8" title="1">{
+        if err := r.DB.Create(&amp;data).Error; err != nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("failed to create notification")
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (r *notifRepo) GetAll(data *[]model.Notification, status string) error <span class="cov8" title="1">{
+        query := r.DB
+        if status != "" </span><span class="cov8" title="1">{
+                query = query.Where("status = ?", status)
+        }</span>
+
+        <span class="cov8" title="1">if err := query.Order("created_at desc").Find(&amp;data).Error; err != nil </span><span class="cov8" title="1">{
+                r.Log.Error("Error GetnotifAll : ", zap.Error(err))
+                return fmt.Errorf("error get list notif : %s", err.Error())
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (r *notifRepo) FindByID(id int) (*model.Notification, error) <span class="cov8" title="1">{
+        var data model.Notification
+        err := r.DB.First(&amp;data, id).Error
+        if err != nil </span><span class="cov8" title="1">{
+                r.Log.Error("Failed get data", zap.Error(err))
+                return nil, fmt.Errorf("notification not found")
+        }</span>
+        <span class="cov8" title="1">return &amp;data, nil</span>
+}
+
+func (r *notifRepo) Update(data *model.Notification, id int) error <span class="cov8" title="1">{
+        var err error
+        data, err = r.FindByID(id)
+        if err != nil </span><span class="cov8" title="1">{
+                r.Log.Error("Error UpdateNotif : ", zap.Error(err))
+                return fmt.Errorf("error update notif : %s", err.Error())
+        }</span>
+
+        <span class="cov8" title="1">data.Status = "readed"
+        if err := r.DB.Save(&amp;data).Error; err != nil </span><span class="cov0" title="0">{
+                r.Log.Error("Error UpdateNotif : ", zap.Error(err))
+                return fmt.Errorf("error update notif : %s", err.Error())
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (r *notifRepo) Delete(id int) error <span class="cov8" title="1">{
+        if err := r.DB.Delete(&amp;model.Notification{}, id).Error; err != nil </span><span class="cov8" title="1">{
+                r.Log.Error("Error Delete Notif : ", zap.Error(err))
+                return fmt.Errorf("error delete notif : %s", err.Error())
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (r *notifRepo) MarkAllAsRead() error <span class="cov8" title="1">{
+        if err := r.DB.Model(&amp;model.Notification{}).Where("status = ?", "new").Update("status", "readed").Error; err != nil </span><span class="cov8" title="1">{
+                r.Log.Error("Error Update Status All Notif : ", zap.Error(err))
+                return fmt.Errorf("error update status all notif")
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file28" style="display: none">package repository
+
+import (
+        authrepository "project_pos_app/repository/auth_repository"
+        examplerepository "project_pos_app/repository/example_repository"
+        "project_pos_app/repository/notification"
+        revenuerepository "project_pos_app/repository/revenue_repository"
+
+        "go.uber.org/zap"
+        "gorm.io/gorm"
+)
+
+type AllRepository struct {
+        Example examplerepository.ExampleRepository
+        Auth    authrepository.AuthRepoInterface
+        Notif   notification.NotifRepoInterface
+        Revenue revenuerepository.RevenueRepositoryInterface
+}
+
+func NewAllRepo(DB *gorm.DB, Log *zap.Logger) *AllRepository <span class="cov0" title="0">{
+        return &amp;AllRepository{
+                Example: examplerepository.NewExampleRepo(DB, Log),
+                Auth:    authrepository.NewManagementVoucherRepo(DB, Log),
+                Notif:   notification.NewNotifRepo(DB, Log),
+                Revenue: revenuerepository.NewRevenueRepository(DB, Log),
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file29" style="display: none">package revenuerepository
+
+import (
+        "errors"
+        "project_pos_app/model"
+        "time"
+
+        "go.uber.org/zap"
+        "gorm.io/gorm"
+)
+
+type RevenueRepositoryInterface interface {
+        GetTotalRevenueByStatus() (map[string]float64, error)
+        GetMonthlyRevenue() (map[string]float64, error)
+        GetProductRevenues() ([]model.ProductRevenue, error)
+        SaveOrderRevenue(order model.OrderRevenue) error
+        CalculateOrderRevenue() ([]model.OrderRevenue, error)
+        SaveProductRevenue(product model.ProductRevenue) error
+        CalculateProductRevenue() ([]model.ProductRevenue, error)
+        FindLowStockProducts(threshold int) ([]model.Product, error)
+}
+
+type RevenueRepository struct {
+        DB  *gorm.DB
+        Log *zap.Logger
+}
+
+func NewRevenueRepository(db *gorm.DB, log *zap.Logger) RevenueRepositoryInterface <span class="cov8" title="1">{
+        return &amp;RevenueRepository{
+                DB:  db,
+                Log: log,
+        }
+}</span>
+
+func (r *RevenueRepository) FindLowStockProducts(threshold int) ([]model.Product, error) <span class="cov8" title="1">{
+        var products []model.Product
+        result := r.DB.Where("qty &lt; ?", threshold).Find(&amp;products)
+        return products, result.Error
+}</span>
+
+func (r *RevenueRepository) GetProductRevenues() ([]model.ProductRevenue, error) <span class="cov8" title="1">{
+        var productRevenues []model.ProductRevenue
+        err := r.DB.Table("product_revenues").
+                Order("total_revenue DESC").
+                Find(&amp;productRevenues).Error
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return productRevenues, nil</span>
+}
+
+func (r *RevenueRepository) GetTotalRevenueByStatus() (map[string]float64, error) <span class="cov8" title="1">{
+        var results []struct {
+                Status  string
+                Revenue float64
+        }
+
+        totalRevenue := make(map[string]float64)
+
+        err := r.DB.Model(&amp;model.OrderRevenue{}).
+                Select("status, SUM(revenue) as revenue").
+                Group("status").
+                Scan(&amp;results).Error
+
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">for _, res := range results </span><span class="cov8" title="1">{
+                totalRevenue[res.Status] = res.Revenue
+        }</span>
+
+        <span class="cov8" title="1">return totalRevenue, nil</span>
+}
+
+func (r *RevenueRepository) GetMonthlyRevenue() (map[string]float64, error) <span class="cov0" title="0">{
+        var results []struct {
+                Month   string
+                Revenue float64
+        }
+
+        monthlyRevenue := make(map[string]float64)
+
+        // Dapatkan tahun sekarang
+        currentYear := time.Now().Year()
+
+        // Tambahkan filter untuk tahun sekarang
+        err := r.DB.Model(&amp;model.OrderRevenue{}).
+                Select("TO_CHAR(created_at, 'YYYY-MM') as month, SUM(revenue) as revenue").
+                Where("EXTRACT(YEAR FROM created_at) = ?", currentYear). // Filter data berdasarkan tahun sekarang
+                Group("month").
+                Order("month").
+                Scan(&amp;results).Error
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">for _, res := range results </span><span class="cov0" title="0">{
+                monthlyRevenue[res.Month] = res.Revenue
+        }</span>
+
+        <span class="cov0" title="0">return monthlyRevenue, nil</span>
+}
+
+func (r *RevenueRepository) CalculateOrderRevenue() ([]model.OrderRevenue, error) <span class="cov8" title="1">{
+        var orders []model.OrderRevenue
+
+        err := r.DB.Model(&amp;model.OrderRevenue{}).
+                Select("status, SUM(revenue) as revenue, CURRENT_DATE as created_at").
+                Group("status").
+                Scan(&amp;orders).Error
+
+        return orders, err
+}</span>
+
+func (r *RevenueRepository) SaveOrderRevenue(order model.OrderRevenue) error <span class="cov8" title="1">{
+        // Validasi input
+        if order.Status == "" </span><span class="cov8" title="1">{
+                return errors.New("order status cannot be empty")
+        }</span>
+        <span class="cov8" title="1">if order.Revenue &lt; 0 </span><span class="cov8" title="1">{
+                return errors.New("revenue cannot be negative")
+        }</span>
+        <span class="cov8" title="1">if order.CreatedAt.IsZero() </span><span class="cov8" title="1">{
+                return errors.New("created_at cannot be empty")
+        }</span>
+
+        // Mulai transaksi untuk memastikan konsistensi data
+        <span class="cov8" title="1">tx := r.DB.Begin()
+        if tx.Error != nil </span><span class="cov0" title="0">{
+                // return errors.New("database error")
+                return tx.Error
+        }</span>
+        <span class="cov8" title="1">defer func() </span><span class="cov8" title="1">{
+                if r := recover(); r != nil </span><span class="cov0" title="0">{
+                        tx.Rollback() // Rollback jika terjadi panic
+                }</span>
+        }()
+
+        // Proses pencarian order yang sudah ada
+        <span class="cov8" title="1">var existingOrder model.OrderRevenue
+        result := tx.Where("id = ? AND cerate_at = ?", order.ID, order.CreatedAt).First(&amp;existingOrder)
+
+        if result.Error == nil </span><span class="cov8" title="1">{
+                // Jika order sudah ada, lakukan pembaruan (update) data order
+                if err := tx.Model(&amp;existingOrder).Updates(order).Error; err != nil </span><span class="cov0" title="0">{
+                        tx.Rollback()
+                        // return errors.New("database error")
+                        return err
+                }</span>
+        } else<span class="cov8" title="1"> if errors.Is(result.Error, gorm.ErrRecordNotFound) </span><span class="cov8" title="1">{
+                // Jika order belum ada, buat data baru
+                if err := tx.Create(&amp;order).Error; err != nil </span><span class="cov0" title="0">{
+                        tx.Rollback()
+                        // return errors.New("database error")
+                        return err
+                }</span>
+        } else<span class="cov8" title="1"> {
+                tx.Rollback()
+                // return errors.New("database error")
+                // return err
+        }</span>
+
+        // Komit transaksi jika tidak ada error
+        <span class="cov8" title="1">tx.Commit()
+        return nil</span>
+}
+
+func (r *RevenueRepository) CalculateProductRevenue() ([]model.ProductRevenue, error) <span class="cov8" title="1">{
+        var products []model.ProductRevenue
+
+        err := r.DB.Table("products").
+                Select("products.name AS product_name, products.price AS sell_price, SUM(order_products.qty * products.price) AS total_revenue, 15.00 AS profit_margin, CURRENT_DATE AS revenue_date").
+                Joins("JOIN order_products ON products.id = order_products.product_id").
+                Joins("JOIN orders ON order_products.order_id = orders.id").
+                Where("orders.status = ?", "confirmed").
+                Group("products.name, products.price").
+                Scan(&amp;products).Error
+
+        return products, err
+}</span>
+
+func (r *RevenueRepository) SaveProductRevenue(product model.ProductRevenue) error <span class="cov8" title="1">{
+        // Validasi input
+        if product.ProductName == "" </span><span class="cov8" title="1">{
+                return errors.New("product name cannot be empty")
+        }</span>
+        <span class="cov8" title="1">if product.SellPrice &lt;= 0 </span><span class="cov8" title="1">{
+                return errors.New("sell price must be positive")
+        }</span>
+        <span class="cov8" title="1">if product.RevenueDate.IsZero() </span><span class="cov8" title="1">{
+                return errors.New("revenue date cannot be empty")
+        }</span>
+
+        // Mulai transaksi untuk memastikan konsistensi data
+        <span class="cov8" title="1">tx := r.DB.Begin()
+        if tx.Error != nil </span><span class="cov0" title="0">{
+                // return errors.New("database error")
+                return tx.Error
+        }</span>
+        <span class="cov8" title="1">defer func() </span><span class="cov8" title="1">{
+                if r := recover(); r != nil </span><span class="cov0" title="0">{
+                        tx.Rollback() // Rollback jika terjadi panic
+                }</span>
+        }()
+
+        // Proses pencarian produk yang sudah ada
+        <span class="cov8" title="1">var existingRevenue model.ProductRevenue
+        result := tx.Where("product_name = ? AND revenue_date = ?", product.ProductName, product.RevenueDate).First(&amp;existingRevenue)
+
+        if result.Error == nil </span><span class="cov8" title="1">{
+                // Jika produk sudah ada, lakukan pembaruan (update) data produk
+                if err := tx.Model(&amp;existingRevenue).Updates(product).Error; err != nil </span><span class="cov0" title="0">{
+                        tx.Rollback()
+                        // return errors.New("database error")
+                        return err
+                }</span>
+        } else<span class="cov8" title="1"> if errors.Is(result.Error, gorm.ErrRecordNotFound) </span><span class="cov8" title="1">{
+                // Jika produk belum ada, buat data baru
+                if err := tx.Create(&amp;product).Error; err != nil </span><span class="cov0" title="0">{
+                        tx.Rollback()
+                        // return errors.New("database error")
+                        return err
+                }</span>
+        } else<span class="cov0" title="0"> {
+                // Jika error lain terjadi
+                tx.Rollback()
+                // return errors.New("database error")
+        }</span>
+
+        // Komit transaksi jika tidak ada error
+        <span class="cov8" title="1">if err := tx.Commit().Error; err != nil </span><span class="cov0" title="0">{
+                return errors.New("failed to commit transaction")
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+// func (r *RevenueRepository) GetTotalRevenueByStatus() (map[string]float64, error) {
+//         type Order struct {
+//                 Status  string
+//                 Revenue float64
+//         }
+
+//         var orders []Order
+//         totalRevenue := make(map[string]float64)
+
+//         err := r.DB.Table("order_revenues").Select("status, revenue").Find(&amp;orders).Error
+//         if err != nil {
+//                 return nil, err
+//         }
+
+//         for _, order := range orders {
+//                 totalRevenue[order.Status] += order.Revenue
+//         }
+
+//         return totalRevenue, nil
+// }
+
+// func (r *RevenueRepository) GetMonthlyRevenue() (map[string]float64, error) {
+//         type Order struct {
+//                 CreatedAt time.Time
+//                 Revenue   float64
+//         }
+
+//         var orders []Order
+//         monthlyRevenue := make(map[string]float64)
+
+//         err := r.DB.Table("order_revenues").Select("created_at, revenue").Find(&amp;orders).Error
+//         if err != nil {
+//                 return nil, err
+//         }
+
+//         for _, order := range orders {
+//                 monthStr := order.CreatedAt.Format("2006-01")
+//                 monthlyRevenue[monthStr] += order.Revenue
+//         }
+
+//         return monthlyRevenue, nil
+// }
+
+// func (r *RevenueRepository) CalculateProductRevenue() ([]model.ProductRevenue, error) {
+//         var productRevenues []model.ProductRevenue
+
+//         // Perhitungan manual tanpa relasi
+//         query := `
+//                 SELECT
+//                         name as product_name,
+//                         sell_price,
+//                         COALESCE(SUM(revenue), 0) as total_revenue,
+//                         COALESCE(COUNT(*), 0) as total_sales,
+//                         COALESCE(SUM(revenue) / COUNT(*), 0) as profit,
+//                         15.00 as profit_margin,
+//                         CURRENT_DATE as revenue_date
+//                 FROM (
+//                         SELECT
+//                                 p.name,
+//                                 p.sell_price,
+//                                 o.revenue
+//                         FROM products p
+//                         CROSS JOIN order_revenues o
+//                         WHERE o.status = 'confirmed'
+//                         AND o.created_at &gt;= DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)
+//                 ) as subquery
+//                 GROUP BY name, sell_price
+//         `
+
+//         result := r.DB.Raw(query).Scan(&amp;productRevenues)
+//         return productRevenues, result.Error
+// }
+
+// func (r *RevenueRepository) CalculateOrderRevenue() ([]model.OrderRevenue, error) {
+//         var orderRevenues []model.OrderRevenue
+
+//         // Perhitungan agregasi pendapatan berdasarkan status
+//         query := `
+//                 SELECT
+//                         status,
+//                         SUM(revenue) as revenue,
+//                         COUNT(*) as total_orders,
+//                         DATE(created_at) as created_at
+//                 FROM order_revenues
+//                 WHERE created_at &gt;= DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)
+//                 GROUP BY status, DATE(created_at)
+//                 ORDER BY created_at DESC
+//         `
+
+//         result := r.DB.Raw(query).Scan(&amp;orderRevenues)
+//         return orderRevenues, result.Error
+// }
+</pre>
+		
+		<pre class="file" id="file30" style="display: none">package router
+
+import (
+        "project_pos_app/infra"
+
+        "github.com/gin-gonic/gin"
+        swaggerFiles "github.com/swaggo/files"
+        ginSwagger "github.com/swaggo/gin-swagger"
+)
+
+func NewRoutes(ctx *infra.IntegrationContext) *gin.Engine <span class="cov0" title="0">{
+
+        r := gin.Default()
+        r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+        r.POST("/login", ctx.Ctl.Auth.Login)
+
+        NotificationRoutes(r, ctx)
+        RevenueRoutes(r, ctx)
+        return r
+}</span>
+
+func NotificationRoutes(r *gin.Engine, ctx *infra.IntegrationContext) <span class="cov0" title="0">{
+        notifRoute := r.Group("/api")
+        </span><span class="cov0" title="0">{
+                notifRoute.POST("/notifications", ctx.Ctl.Notif.CreateNotifications)
+                notifRoute.GET("/notifications", ctx.Ctl.Notif.GetAllNotifications)
+                notifRoute.GET("/notifications/:id", ctx.Ctl.Notif.GetNotificationByID)
+                notifRoute.PUT("/notifications/:id", ctx.Ctl.Notif.UpdateNotification)
+                notifRoute.DELETE("/notifications/:id", ctx.Ctl.Notif.DeleteNotification)
+                notifRoute.PUT("/notifications/mark-all-read", ctx.Ctl.Notif.MarkAllNotificationsAsRead)
+        }</span>
+}
+
+func RevenueRoutes(r *gin.Engine, ctx *infra.IntegrationContext) <span class="cov0" title="0">{
+        revenueRoute := r.Group("/api")
+        </span><span class="cov0" title="0">{
+                revenueRoute.GET("/revenue/month", ctx.Ctl.Revenue.GetMonthlyRevenue)
+                revenueRoute.GET("/revenue/products", ctx.Ctl.Revenue.GetProductRevenues)
+                revenueRoute.GET("/revenue/status", ctx.Ctl.Revenue.GetTotalRevenueByStatus)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file31" style="display: none">package authservice
+
+import (
+        "project_pos_app/model"
+        "project_pos_app/repository"
+
+        "go.uber.org/zap"
+)
+
+type AuthService interface {
+        Login(login *model.Login, ipAddress string) (*model.Session, string, error)
+}
+
+type authService struct {
+        repo *repository.AllRepository
+        log  *zap.Logger
+}
+
+func NewManagementVoucherService(repo *repository.AllRepository, log *zap.Logger) AuthService <span class="cov0" title="0">{
+        return &amp;authService{repo, log}
+}</span>
+
+func (as *authService) Login(login *model.Login, ipAddress string) (*model.Session, string, error) <span class="cov0" title="0">{
+
+        session, idKey, err := as.repo.Auth.Login(login, ipAddress)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, "", err
+        }</span>
+
+        <span class="cov0" title="0">return session, idKey, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file32" style="display: none">package exampleservice
+
+import (
+        "project_pos_app/repository"
+
+        "go.uber.org/zap"
+)
+
+type ExampleService interface {
+}
+
+type exampleService struct {
+        Repo *repository.AllRepository
+        Log  *zap.Logger
+}
+
+func NewExampleService(Repo *repository.AllRepository, Log *zap.Logger) ExampleService <span class="cov0" title="0">{
+        return &amp;exampleService{Repo, Log}
+}</span>
+</pre>
+		
+		<pre class="file" id="file33" style="display: none">package notifservice
+
+import (
+        "fmt"
+        "project_pos_app/model"
+        "project_pos_app/repository"
+        "time"
+
+        "go.uber.org/zap"
+)
+
+type NotifServiceInterface interface {
+        CreateNotification(data model.Notification) error
+        GetAllNotifications(status string) ([]model.Notification, error)
+        GetNotificationByID(id int) (*model.Notification, error)
+        UpdateNotification(id int) error
+        DeleteNotification(id int) error
+        MarkAllNotificationsAsRead() error
+}
+
+type notifService struct {
+        Repo *repository.AllRepository
+        Log  *zap.Logger
+}
+
+func NewNotifService(repo *repository.AllRepository, log *zap.Logger) NotifServiceInterface <span class="cov8" title="1">{
+        return &amp;notifService{
+                Repo: repo,
+                Log:  log,
+        }
+}</span>
+
+func (s *notifService) CreateNotification(data model.Notification) error <span class="cov8" title="1">{
+        now := time.Now()
+        dynamicDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
+        if data.Status == "" </span><span class="cov8" title="1">{
+                data.Status = "new"
+        }</span>
+        <span class="cov8" title="1">data.CreatedAt = dynamicDate
+        data.UpdatedAt = dynamicDate
+
+        if data.Title == "" </span><span class="cov8" title="1">{
+                return fmt.Errorf("title should not none")
+        }</span>
+
+        <span class="cov8" title="1">return s.Repo.Notif.Create(data)</span>
+}
+
+func (s *notifService) GetAllNotifications(status string) ([]model.Notification, error) <span class="cov8" title="1">{
+        var notifications []model.Notification
+        if err := s.Repo.Notif.GetAll(&amp;notifications, status); err != nil </span><span class="cov0" title="0">{
+                s.Log.Error("Failed to fetch notifications", zap.Error(err))
+                return nil, fmt.Errorf("failed to fetch notifications: %w", err)
+        }</span>
+        <span class="cov8" title="1">return notifications, nil</span>
+}
+
+func (s *notifService) GetNotificationByID(id int) (*model.Notification, error) <span class="cov8" title="1">{
+        notification, err := s.Repo.Notif.FindByID(id)
+        if err != nil </span><span class="cov8" title="1">{
+                s.Log.Error("Failed to fetch notification by ID", zap.Error(err))
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">if notification.Title == "" </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("title is reqired")
+        }</span>
+
+        <span class="cov8" title="1">return notification, nil</span>
+}
+
+func (s *notifService) UpdateNotification(id int) error <span class="cov8" title="1">{
+        notification, err := s.Repo.Notif.FindByID(id)
+        if err != nil </span><span class="cov0" title="0">{
+                s.Log.Error("Failed to find notification for update", zap.Error(err))
+                return fmt.Errorf("failed to find notification for update: %w", err)
+        }</span>
+
+        <span class="cov8" title="1">if notification.Title == "" </span><span class="cov8" title="1">{
+                return fmt.Errorf("title is reqired")
+        }</span>
+
+        <span class="cov8" title="1">notification.Status = "readed"
+        if err := s.Repo.Notif.Update(notification, id); err != nil </span><span class="cov0" title="0">{
+                s.Log.Error("Failed to update notification", zap.Error(err))
+                return fmt.Errorf("failed to update notification: %w", err)
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (s *notifService) DeleteNotification(id int) error <span class="cov8" title="1">{
+        notif, err := s.Repo.Notif.FindByID(id)
+        if err != nil </span><span class="cov0" title="0">{
+                s.Log.Error("Failed to find notification for update", zap.Error(err))
+                return fmt.Errorf("failed to find notification for update: %w", err)
+        }</span>
+
+        <span class="cov8" title="1">if notif.Title == "" </span><span class="cov8" title="1">{
+                return fmt.Errorf("title is reqired")
+        }</span>
+
+        <span class="cov8" title="1">if err := s.Repo.Notif.Delete(id); err != nil </span><span class="cov0" title="0">{
+                s.Log.Error("Failed to delete notification", zap.Error(err))
+                return fmt.Errorf("failed to delete notification: %w", err)
+        }</span>
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (s *notifService) MarkAllNotificationsAsRead() error <span class="cov8" title="1">{
+        if err := s.Repo.Notif.MarkAllAsRead(); err != nil </span><span class="cov0" title="0">{
+                s.Log.Error("Failed to mark all notifications as read", zap.Error(err))
+                return fmt.Errorf("failed to mark all notifications as read: %w", err)
+        }</span>
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file34" style="display: none">package notifservice
+
+import (
+        mocktesting "project_pos_app/mock_testing"
+        "project_pos_app/model"
+        "time"
+
+        "go.uber.org/zap"
+)
+
+// MockNotifServiceInterface mendefinisikan kontrak untuk mock service notifikasi
+type MockNotifServiceInterface interface {
+        CreateNotification(data model.Notification) error
+        GetAllNotifications(status string) ([]model.Notification, error)
+        GetNotificationByID(id int) (*model.Notification, error)
+        DeleteNotification(id int) error
+        MarkAllNotificationsAsRead() error
+        UpdateNotification(int) error
+}
+
+// MockNotifService implementasi mock service untuk notifikasi
+type MockNotifService struct {
+        Repo *mocktesting.MockDB
+        Log  *zap.Logger
+}
+
+// NewMockNotifService membuat instance baru dari mock service notifikasi
+func NewMockNotifService(repo *mocktesting.MockDB, log *zap.Logger) MockNotifServiceInterface <span class="cov0" title="0">{
+        return &amp;MockNotifService{
+                Repo: repo,
+                Log:  log,
+        }
+}</span>
+
+// CreateNotification membuat notifikasi baru
+func (m *MockNotifService) CreateNotification(data model.Notification) error <span class="cov0" title="0">{
+        m.Log.Info("Creating Mock notification", zap.Any("notification", data))
+        args := m.Repo.Called(data)
+        return args.Error(0)
+}</span>
+
+// GetAllNotifications mengambil semua notifikasi berdasarkan status
+func (m *MockNotifService) GetAllNotifications(status string) ([]model.Notification, error) <span class="cov0" title="0">{
+        now := time.Now()
+        defaultData := []model.Notification{
+                {
+                        ID:        1,
+                        Title:     "Notification 1",
+                        Message:   "First test notification",
+                        CreatedAt: now,
+                        UpdatedAt: now,
+                        Status:    status,
+                },
+                {
+                        ID:        2,
+                        Title:     "Notification 2",
+                        Message:   "Second test notification",
+                        CreatedAt: now,
+                        UpdatedAt: now,
+                        Status:    status,
+                },
+        }
+
+        m.Log.Info("Fetching notifications", zap.String("status", status))
+
+        err := m.Repo.GetAll(&amp;defaultData, status)
+        if err != nil </span><span class="cov0" title="0">{
+                m.Log.Error("Failed to get notifications", zap.Error(err))
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return defaultData, nil</span>
+}
+
+// GetNotificationByID mengambil notifikasi berdasarkan ID
+func (m *MockNotifService) GetNotificationByID(id int) (*model.Notification, error) <span class="cov0" title="0">{
+        m.Log.Info("Fetching notification by ID", zap.Int("id", id))
+        return m.Repo.FindByID(id)
+}</span>
+
+// UpdateNotification memperbarui notifikasi
+func (m *MockNotifService) UpdateNotification(id int) error <span class="cov0" title="0">{
+        data := &amp;model.Notification{
+                ID:      1,
+                Title:   "Testing",
+                Message: "Test notification",
+                Status:  "new",
+        }
+        m.Log.Info("Updating notification", zap.Int("id", id))
+        return m.Repo.Update(data, id)
+}</span>
+
+// DeleteNotification menghapus notifikasi
+func (m *MockNotifService) DeleteNotification(id int) error <span class="cov0" title="0">{
+        m.Log.Info("Deleting notification", zap.Int("id", id))
+        return m.Repo.Delete(id)
+}</span>
+
+// MarkAllNotificationsAsRead menandai semua notifikasi sebagai sudah dibaca
+func (m *MockNotifService) MarkAllNotificationsAsRead() error <span class="cov0" title="0">{
+        m.Log.Info("Marking all notifications as read")
+        return m.Repo.MarkAllAsRead()
+}</span>
+</pre>
+		
+		<pre class="file" id="file35" style="display: none">package revenueservice
+
+import (
+        "errors"
+        "project_pos_app/model"
+        "project_pos_app/repository"
+
+        "go.uber.org/zap"
+)
+
+type RevenueServiceInterface interface {
+        FetchTotalRevenueByStatus() (map[string]float64, error)
+        FetchMonthlyRevenue() (map[string]float64, error)
+        FetchProductRevenues() ([]model.ProductRevenue, error)
+        SaveOrderRevenue(order model.OrderRevenue) error
+        CalculateOrderRevenue() ([]model.OrderRevenue, error)
+        SaveProductRevenue(product model.ProductRevenue) error
+        CalculateProductRevenue() ([]model.ProductRevenue, error)
+        GetLowStockProducts(threshold int) ([]model.Product, error)
+}
+
+type revenueService struct {
+        Repo *repository.AllRepository
+        Log  *zap.Logger
+}
+
+func NewRevenueService(repo *repository.AllRepository, log *zap.Logger) RevenueServiceInterface <span class="cov8" title="1">{
+        return &amp;revenueService{
+                Repo: repo,
+                Log:  log,
+        }
+}</span>
+
+func (s *revenueService) FetchTotalRevenueByStatus() (map[string]float64, error) <span class="cov8" title="1">{
+        return s.Repo.Revenue.GetTotalRevenueByStatus()
+}</span>
+
+func (s *revenueService) FetchMonthlyRevenue() (map[string]float64, error) <span class="cov8" title="1">{
+        return s.Repo.Revenue.GetMonthlyRevenue()
+}</span>
+
+func (s *revenueService) FetchProductRevenues() ([]model.ProductRevenue, error) <span class="cov8" title="1">{
+        return s.Repo.Revenue.GetProductRevenues()
+}</span>
+
+func (s *revenueService) GetLowStockProducts(threshold int) ([]model.Product, error) <span class="cov8" title="1">{
+        if threshold &lt;= 0 </span><span class="cov8" title="1">{
+                return nil, errors.New("threshold must be a positive number")
+        }</span>
+        <span class="cov8" title="1">return s.Repo.Revenue.FindLowStockProducts(threshold)</span>
+}
+
+func (s *revenueService) CalculateProductRevenue() ([]model.ProductRevenue, error) <span class="cov0" title="0">{
+        return s.Repo.Revenue.CalculateProductRevenue()
+}</span>
+
+func (s *revenueService) SaveProductRevenue(product model.ProductRevenue) error <span class="cov8" title="1">{
+        if product.ProductName == "" </span><span class="cov8" title="1">{
+                return errors.New("product name cannot be empty")
+        }</span>
+        <span class="cov8" title="1">return s.Repo.Revenue.SaveProductRevenue(product)</span>
+}
+
+func (s *revenueService) CalculateOrderRevenue() ([]model.OrderRevenue, error) <span class="cov0" title="0">{
+        return s.Repo.Revenue.CalculateOrderRevenue()
+}</span>
+
+func (s *revenueService) SaveOrderRevenue(order model.OrderRevenue) error <span class="cov8" title="1">{
+        if order.Status == "" </span><span class="cov8" title="1">{
+                return errors.New("order status cannot be empty")
+        }</span>
+        <span class="cov8" title="1">return s.Repo.Revenue.SaveOrderRevenue(order)</span>
+}
+</pre>
+		
+		<pre class="file" id="file36" style="display: none">package revenueservice
+
+import (
+        mocktesting "project_pos_app/mock_testing"
+        "project_pos_app/model"
+
+        "go.uber.org/zap"
+)
+
+// MockRevenueServiceInterface mendefinisikan kontrak untuk mock service revenue
+type MockRevenueServiceInterface interface {
+        FetchTotalRevenueByStatus() (map[string]float64, error)
+        FetchMonthlyRevenue() (map[string]float64, error)
+        FetchProductRevenues() ([]model.ProductRevenue, error)
+        SaveOrderRevenue(order model.OrderRevenue) error
+        CalculateOrderRevenue() ([]model.OrderRevenue, error)
+        SaveProductRevenue(product model.ProductRevenue) error
+        CalculateProductRevenue() ([]model.ProductRevenue, error)
+        GetLowStockProducts(threshold int) ([]model.Product, error)
+}
+
+// MockRevenueService implementasi mock service untuk revenue
+type MockRevenueService struct {
+        Repo *mocktesting.MockDB
+        Log  *zap.Logger
+}
+
+// NewMockRevenueService membuat instance baru dari mock service revenue
+func NewMockRevenueService(repo *mocktesting.MockDB, log *zap.Logger) MockRevenueServiceInterface <span class="cov0" title="0">{
+        return &amp;MockRevenueService{
+                Repo: repo,
+                Log:  log,
+        }
+}</span>
+
+// FetchTotalRevenueByStatus mengambil total revenue berdasarkan status
+func (m *MockRevenueService) FetchTotalRevenueByStatus() (map[string]float64, error) <span class="cov0" title="0">{
+        m.Log.Info("Fetching total revenue by status")
+        result, err := m.Repo.GetTotalRevenueByStatus()
+        if err != nil </span><span class="cov0" title="0">{
+                m.Log.Error("Failed to fetch total revenue by status", zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return result, nil</span>
+}
+
+// FetchMonthlyRevenue mengambil revenue bulanan
+func (m *MockRevenueService) FetchMonthlyRevenue() (map[string]float64, error) <span class="cov0" title="0">{
+        m.Log.Info("Fetching monthly revenue")
+        result, err := m.Repo.GetMonthlyRevenue()
+        if err != nil </span><span class="cov0" title="0">{
+                m.Log.Error("Failed to fetch monthly revenue", zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return result, nil</span>
+}
+
+// FetchProductRevenues mengambil revenue per produk
+func (m *MockRevenueService) FetchProductRevenues() ([]model.ProductRevenue, error) <span class="cov0" title="0">{
+        m.Log.Info("Fetching product revenues")
+        var result []model.ProductRevenue
+        result, err := m.Repo.GetProductRevenues()
+        if err != nil </span><span class="cov0" title="0">{
+                m.Log.Error("Failed to fetch product revenues", zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return result, nil</span>
+}
+
+// SaveOrderRevenue menyimpan revenue pesanan
+func (m *MockRevenueService) SaveOrderRevenue(order model.OrderRevenue) error <span class="cov0" title="0">{
+        m.Log.Info("Saving order revenue", zap.Any("order", order))
+        return m.Repo.SaveOrderRevenue(order)
+}</span>
+
+// CalculateOrderRevenue menghitung revenue pesanan
+func (m *MockRevenueService) CalculateOrderRevenue() ([]model.OrderRevenue, error) <span class="cov0" title="0">{
+        m.Log.Info("Calculating order revenue")
+        result, err := m.Repo.CalculateOrderRevenue()
+        if err != nil </span><span class="cov0" title="0">{
+                m.Log.Error("Failed to calculate order revenue", zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return result, nil</span>
+}
+
+// SaveProductRevenue menyimpan revenue produk
+func (m *MockRevenueService) SaveProductRevenue(product model.ProductRevenue) error <span class="cov0" title="0">{
+        m.Log.Info("Saving product revenue", zap.Any("product", product))
+        return m.Repo.SaveProductRevenue(product)
+}</span>
+
+// CalculateProductRevenue menghitung revenue produk
+func (m *MockRevenueService) CalculateProductRevenue() ([]model.ProductRevenue, error) <span class="cov0" title="0">{
+        m.Log.Info("Calculating product revenue")
+        result, err := m.Repo.CalculateProductRevenue()
+        if err != nil </span><span class="cov0" title="0">{
+                m.Log.Error("Failed to calculate product revenue", zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return result, nil</span>
+}
+
+// GetLowStockProducts mendapatkan produk dengan stok rendah
+func (m *MockRevenueService) GetLowStockProducts(threshold int) ([]model.Product, error) <span class="cov0" title="0">{
+        m.Log.Info("Fetching low stock products", zap.Int("threshold", threshold))
+        result, err := m.Repo.FindLowStockProducts(threshold)
+        if err != nil </span><span class="cov0" title="0">{
+                m.Log.Error("Failed to fetch low stock products", zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return result, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file37" style="display: none">package service
+
+import (
+        "project_pos_app/repository"
+        authservice "project_pos_app/service/auth_service"
+        exampleservice "project_pos_app/service/example_service"
+        notifservice "project_pos_app/service/notif_service"
+        revenueservice "project_pos_app/service/revenue_service"
+
+        "go.uber.org/zap"
+)
+
+type AllService struct {
+        Example exampleservice.ExampleService
+        Auth    authservice.AuthService
+        Notif   notifservice.NotifServiceInterface
+        Revenue revenueservice.RevenueServiceInterface
+}
+
+func NewAllService(repo *repository.AllRepository, log *zap.Logger) *AllService <span class="cov0" title="0">{
+        return &amp;AllService{
+                Example: exampleservice.NewExampleService(repo, log),
+                Auth:    authservice.NewManagementVoucherService(repo, log),
+                Notif:   notifservice.NewNotifService(repo, log),
+                Revenue: revenueservice.NewRevenueService(repo, log),
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file38" style="display: none">package main
+
+func Test() {<span class="cov0" title="0">
+
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
